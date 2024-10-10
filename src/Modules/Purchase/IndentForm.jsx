@@ -10,8 +10,8 @@ import {
   Paper,
   Title,
   Grid,
-  DateInput, // Import the DateInput component
 } from "@mantine/core";
+import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 
