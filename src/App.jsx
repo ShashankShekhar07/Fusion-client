@@ -10,6 +10,7 @@ import ForgotPassword from "./pages/forgotPassword";
 import AcademicPage from "./Modules/Academic/index";
 import ValidateAuth from "./helper/validateauth";
 import PurchasePage from "./Modules/Purchase/purchase";
+import ViewIndent from "./Modules/Purchase/ViewIndent";
 
 export default function App() {
   const location = useLocation();
@@ -54,6 +55,7 @@ export default function App() {
           element={
             <Layout>
               <PurchasePage />
+              <ViewIndent />
             </Layout>
           }
         />
