@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PiPrinter } from "react-icons/pi";
+// import { PiPrinter } from "react-icons/pi";
 import {
   Container,
   Grid,
@@ -12,6 +12,8 @@ import {
   FileInput,
   Title,
 } from "@mantine/core";
+import DataTable from "./Table";
+import DataTable2 from "./Table2";
 
 function ViewIndent() {
   const [remarks, setRemarks] = useState("");
@@ -29,22 +31,33 @@ function ViewIndent() {
 
   return (
     <div>
-      <Container size="lg" py="xl" px="md" backgroundColor="">
+      <Container
+        size="lg"
+        px="md"
+        backgroundColor="white"
+        style={{
+          backgroundColor: "white",
+          shadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          padding: "20px",
+        }}
+      >
         {/* Main Paper/Card Container */}
         <Paper
           shadow="sm"
           padding="lg"
           radius="md"
           style={{
-            backgroundColor: "#EAEAEAFF",
+            backgroundColor: "#f3f9ff",
             marginRight: "170px",
             marginLeft: "170px",
+            marginTop: "2px",
+            padding: "5px",
           }}
         >
           {/* Header Section */}
           <Group position="apart" mb="lg" justify="space-evenly">
             <Title order={3}>Note Sheets</Title>
-            <PiPrinter size={28} />
+            {/* <PiPrinter size={28} /> */}
             <Title order={3}>Attachments</Title>
           </Group>
 
@@ -66,74 +79,22 @@ function ViewIndent() {
                 <Text>CSE-2027-9-#619</Text>
               </Group>
             </Grid.Col>
+            <Grid.Col span={2}>
+              <Text>
+                <DataTable />
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Text>
+                <DataTable2 />
+              </Text>
+            </Grid.Col>
           </Grid>
 
           {/* Description and Approval Section */}
-          <Grid columns={2} gutter="lg" mt="lg" style={{ marginLeft: "24px" }}>
-            {/* Left Column */}
-            <Grid.Col span={1}>
-              <Text>
-                <strong>Description:</strong>
-              </Text>
-              <Text>
-                <strong>Quantity:</strong> 40
-              </Text>
-              <Text>
-                <strong>Estimated Cost:</strong> 2
-              </Text>
-              <Text>
-                <strong>Specification:</strong> nknsadf
-              </Text>
-              <Text>
-                <strong>Item Nature:</strong> Consumable
-              </Text>
-              <Text>
-                <strong>Replaced:</strong> Yes
-              </Text>
-              <Text>
-                <strong>Expected Delivery:</strong> Oct 1, 2024
-              </Text>
-              <Text>
-                <strong>Financial Approval:</strong> No
-              </Text>
-              <Text>
-                <strong>Head Approval:</strong> Yes
-              </Text>
-            </Grid.Col>
-            {/* Right Column */}
-            <Grid.Col span={1}>
-              <Text>
-                <strong>Name:</strong> 2
-              </Text>
-              <Text>
-                <strong>SubType:</strong> Subtype
-              </Text>
-              <Text>
-                <strong>Purpose:</strong> New
-              </Text>
-              <Text>
-                <strong>Type:</strong> Equipment
-              </Text>
-              <Text>
-                <strong>Indigenous:</strong> Yes
-              </Text>
-              <Text>
-                <strong>Budgetary Head:</strong> sdsf
-              </Text>
-              <Text>
-                <strong>Sources of Supply:</strong> sfnsdfin
-              </Text>
-              <Text>
-                <strong>Purchased:</strong> No
-              </Text>
-              <Text>
-                <strong>Director Approval:</strong> Yes
-              </Text>
-            </Grid.Col>
-          </Grid>
 
           {/* Remarks and Form Section */}
-          <Group
+          {/* <Group
             direction="column"
             spacing="sm"
             mt="xl"
@@ -152,6 +113,7 @@ function ViewIndent() {
             </Group>
 
             <Group position="apart">
+              
               <Text>
                 <strong>vkJain-HOD(CSE):</strong> nice
               </Text>
@@ -167,7 +129,7 @@ function ViewIndent() {
                 <strong>Received By:</strong> psadmin
               </Text>
             </Group>
-          </Group>
+          </Group> */}
 
           {/* Form to Submit Remarks, Receiver, and File */}
           <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>

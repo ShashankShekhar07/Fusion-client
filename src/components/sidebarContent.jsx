@@ -112,7 +112,7 @@ const Modules = [
     label: "Purchase and Store",
     id: "purchase_and_store",
     icon: <StoreIcon size={18} />,
-    url: "/",
+    url: "/purchase",
   },
   {
     label: "Human Resource",
