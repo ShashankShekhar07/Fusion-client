@@ -14,6 +14,7 @@ import {
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function IndentForm() {
   const [file, setFile] = useState(null);
@@ -40,6 +41,7 @@ function IndentForm() {
       receiverDesignation: "",
     },
   });
+  const navigate = useNavigate();
 
   return (
     <Center style={{ minHeight: "100vh" }}>
@@ -49,8 +51,8 @@ function IndentForm() {
         p="lg"
         withBorder
         style={{
-          maxWidth: "600px", // Maximum form width
-          width: "100%", // Full width on smaller screens
+          maxWidth: "1000px",
+          width: "100%",
         }}
       >
         <Title order={2} align="center" mb="md">
@@ -218,7 +220,12 @@ function IndentForm() {
 
             <Grid.Col sm={12}>
               <Flex justify="flex-end" p="md">
-                <Button type="submit">Save Draft</Button>
+                <Button
+                  type="submit"
+                  onClick={() => navigate("/purchase/saved_indents")}
+                >
+                  Save Draft
+                </Button>
               </Flex>
             </Grid.Col>
 
@@ -260,7 +267,12 @@ function IndentForm() {
 
             <Grid.Col sm={12}>
               <Flex justify="flex-end" p="md">
-                <Button type="submit">Send</Button>
+                <Button
+                  type="submit"
+                  onClick={() => navigate("/purchase/all_filed_indents")}
+                >
+                  Send
+                </Button>
               </Flex>
             </Grid.Col>
           </Grid>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 // import { PiPrinter } from "react-icons/pi";
 import {
@@ -8,25 +8,11 @@ import {
   Text,
   Group,
   Button,
-  TextInput,
-  FileInput,
   Title,
 } from "@mantine/core";
 
-function ViewIndent() {
-  const [remarks, setRemarks] = useState("");
-  const [file, setFile] = useState(null);
-  const [receiver, setReceiver] = useState("");
+function EmployeeViewFileIndent() {
   const navigate = useNavigate();
-
-  const handleSubmit = () => {
-    navigate("/Inbox");
-    alert("Submitted");
-    alert(`Remarks: ${remarks}`);
-    alert(`File: ${file ? file.name : "No file selected"}`);
-    alert(`Receiver: ${receiver}`);
-  };
-
   return (
     <div>
       <Container size="lg" py="xl" px="md" backgroundColor="">
@@ -127,7 +113,19 @@ function ViewIndent() {
                 <strong>Purchased:</strong> No
               </Text>
               <Text>
-                <strong>Director Approval:</strong> Yes
+                <strong>Director Approval:</strong> No
+              </Text>
+              <Text>
+                <strong>Expected Delivery:</strong> Oct 1,2024
+              </Text>
+              <Text>
+                <strong>Sources of Supply:</strong> shop
+              </Text>
+              <Text>
+                <strong>Financial Approval:</strong> No
+              </Text>
+              <Text>
+                <strong>Purchased:</strong> No
               </Text>
             </Grid.Col>
           </Grid>
@@ -147,70 +145,18 @@ function ViewIndent() {
                 <strong>Received By:</strong> vkjain-HOD(CSE)
               </Text>
             </Group>
-
-            <Group position="apart">
-              <Text>File with id#619 created by Atul and sent to vkJain</Text>
-            </Group>
-
-            <Group position="apart">
-              <Text>
-                <strong>vkJain-HOD(CSE):</strong> nice
-              </Text>
-              <Text style={{ textAlign: "right", flex: 1 }}>
-                <strong>Received By:</strong> bhartenduks-Director
-              </Text>
-            </Group>
-
-            <Group position="apart">
-              <Text>
-                <strong>bhartenduks-Director:</strong> good
-              </Text>
-              <Text style={{ textAlign: "right", flex: 1 }}>
-                <strong>Received By:</strong> psadmin
-              </Text>
-            </Group>
           </Group>
 
           {/* Form to Submit Remarks, Receiver, and File */}
-          <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>
-            <TextInput
-              label="Remarks"
-              value={remarks}
-              onChange={(e) => setRemarks(e.target.value)}
-              placeholder="Add remarks here..."
-              required
-              mt="md"
-            />
-
-            <TextInput
-              label="Receiver"
-              value={receiver}
-              onChange={(e) => setReceiver(e.target.value)}
-              placeholder="Enter receiver name..."
-              required
-              mt="md"
-            />
-
-            <FileInput
-              label="Attach Files"
-              placeholder="Choose file..."
-              value={file}
-              onChange={setFile}
-              mt="md"
-              required
-            />
-
+          <form style={{ marginLeft: "24px" }}>
             {/* Submit and Archive Buttons */}
             <Group position="right" mt="lg" style={{ justifyContent: "end" }}>
               <Button
                 type="submit"
                 color="#9095A0FF"
-                onClick={() => navigate("/archive")}
+                onClick={() => navigate("/purchase/archieved_indents")}
               >
-                Archive
-              </Button>
-              <Button type="submit" color="#9095A0FF">
-                Send
+                Archieve
               </Button>
             </Group>
           </form>
@@ -220,4 +166,4 @@ function ViewIndent() {
   );
 }
 
-export default ViewIndent;
+export default EmployeeViewFileIndent;

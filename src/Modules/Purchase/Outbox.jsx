@@ -1,43 +1,51 @@
 import React from "react";
-import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
+import { MantineProvider, Table, Button, Text, Box, Flex } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
-const bookings = [
+const indents = [
   {
     id: 1,
-    intender: "Atul-professor",
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
     email: "atul@iiitdmj.ac.in",
-    fileId: "CSE-2024-9-#616",
+    fileid: "CSE-2024-9-#616",
     subject: "Furniture requirements",
-    date: "Sept 3, 2024",
+    Date: "Sept 3, 2024",
   },
   {
     id: 2,
-    intender: "Atul-professor",
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
     email: "atul@iiitdmj.ac.in",
-    fileId: "CSE-2024-9-#616",
-    subject: "Furniture Requirements",
-    date: "Sept 3, 2024",
+    fileid: "CSE-2024-9-#616",
+    subject: "Furniture requirements",
+    Date: "Sept 3, 2024",
   },
   {
     id: 3,
-    intender: "Atul-professor",
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
     email: "atul@iiitdmj.ac.in",
-    fileId: "CSE-2024-9-#616",
+    fileid: "CSE-2024-9-#616",
     subject: "Furniture requirements",
-    date: "Sept 3, 2024",
+    Date: "Sept 3, 2024",
   },
   {
     id: 4,
-    intender: "Atul-professor",
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
     email: "atul@iiitdmj.ac.in",
-    fileId: "CSE-2024-9-#616",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
+    fileid: "CSE-2024-9-#616",
     subject: "Furniture requirements",
-    date: "Sept 3, 2024",
+    Date: "Sept 3, 2024",
   },
 ];
 
-function InboxTable() {
+function OutboxTable() {
   const navigate = useNavigate();
   return (
     <Box p="md" style={{ margin: 0 }}>
@@ -59,7 +67,7 @@ function InboxTable() {
             m: "auto",
           }}
         >
-          Inbox
+          Outbox
         </Text>
       </Box>
       <Table
@@ -73,10 +81,13 @@ function InboxTable() {
         <thead>
           <tr>
             <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
-              Received as
+              Send By
             </th>
             <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
-              File Id
+              Send to
+            </th>
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+              file Id
             </th>
             <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Subject
@@ -90,8 +101,8 @@ function InboxTable() {
           </tr>
         </thead>
         <tbody>
-          {bookings.map((booking) => (
-            <tr key={booking.id}>
+          {indents.map((row) => (
+            <tr key={row.id} style={{ backgroundColor: "#F3F9FF" }}>
               <td
                 style={{
                   padding: "12px",
@@ -99,9 +110,9 @@ function InboxTable() {
                   textAlign: "center",
                 }}
               >
-                <Text weight={500}>{booking.intender}</Text>
+                <Text weight={500}>{row.name}</Text>
                 <Text size="sm" color="dimmed">
-                  {booking.email}
+                  {row.email}
                 </Text>
               </td>
               <td
@@ -111,7 +122,10 @@ function InboxTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.fileId}
+                <Text weight={500}>{row.receiver}</Text>
+                <Text size="sm" color="dimmed">
+                  {row.receiver_email}
+                </Text>
               </td>
               <td
                 style={{
@@ -120,7 +134,7 @@ function InboxTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.subject}
+                {row.fileid}
               </td>
               <td
                 style={{
@@ -129,7 +143,7 @@ function InboxTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.date}
+                {row.subject}
               </td>
               <td
                 style={{
@@ -138,17 +152,36 @@ function InboxTable() {
                   textAlign: "center",
                 }}
               >
-                <Button
-                  variant="outline"
-                  color="blue"
-                  style={{ marginRight: "8px" }}
-                  onClick={() => navigate("/purchase/viewindent")}
+                {row.Date}
+              </td>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                <Flex
+                  direction="column"
+                  gap="md"
+                  justify="center"
+                  align="center"
+                  style={{ marginTop: "10px", marginBottom: "10px" }}
                 >
-                  View
-                </Button>
-                <Button variant="outline" color="red">
-                  Delete
-                </Button>
+                  <Button
+                    variant="outline"
+                    color="blue"
+                    style={{ marginRight: "8px" }}
+                    onClick={() =>
+                      navigate("/purchase/Employeeviewfiledindent")
+                    }
+                  >
+                    View
+                  </Button>
+                  <Button variant="outline" color="red">
+                    Delete
+                  </Button>
+                </Flex>
               </td>
             </tr>
           ))}
@@ -158,7 +191,7 @@ function InboxTable() {
   );
 }
 
-function Inbox() {
+function Outbox() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Box
@@ -183,11 +216,11 @@ function Inbox() {
             maxHeight: "80vh", // Limit height to 80% of the viewport
           }}
         >
-          <InboxTable />
+          <OutboxTable />
         </Box>
       </Box>
     </MantineProvider>
   );
 }
 
-export default Inbox;
+export default Outbox;

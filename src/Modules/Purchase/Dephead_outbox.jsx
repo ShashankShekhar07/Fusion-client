@@ -44,7 +44,7 @@ const indents = [
   },
 ];
 
-function Dephead_outbox() {
+function DepheadOutbox() {
   return (
     <Box p="md" style={{ margin: 10 }}>
       <Box
@@ -180,4 +180,4 @@ function Dephead_outbox() {
   );
 }
 
-export default Dephead_outbox;
+export default DepheadOutbox;

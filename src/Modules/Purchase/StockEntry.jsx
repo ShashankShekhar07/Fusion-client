@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { PiPrinter } from "react-icons/pi";
+// import { PiPrinter } from "react-icons/pi";
 import {
   Button,
   TextInput,
@@ -56,9 +56,7 @@ function StockEntry() {
               </Title>
             </Grid.Col>
             <Grid.Col span={2}>
-              <Center>
-                <PiPrinter size={28} />
-              </Center>
+              <Center>{/* <PiPrinter size={28} /> */}</Center>
             </Grid.Col>
           </Grid>
 
