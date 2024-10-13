@@ -167,7 +167,7 @@ function ViewIndent() {
                 color="#9095A0FF"
                 onClick={() => navigate("/archive")}
               >
-                Archive
+                Archieve
               </Button>
               <Button type="submit" color="#9095A0FF">
                 Send

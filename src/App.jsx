@@ -11,14 +11,17 @@ import AcademicPage from "./Modules/Academic/index";
 import ValidateAuth from "./helper/validateauth";
 // import PurchasePage from "./Modules/Purchase/purchase";
 import PurchaseNavbar from "./Modules/Purchase/PurchaseNavbar";
-import Inbox from "./Modules/Purchase/Inbox";
+// import Inbox from "./Modules/Purchase/Inbox";
 import SaveIndents from "./Modules/Purchase/SavedIndentes";
 import IndentForm from "./Modules/Purchase/IndentForm";
 import FiledIndents from "./Modules/Purchase/FilledIndents";
-import Outbox from "./Modules/Purchase/Outbox";
+// import Outbox from "./Modules/Purchase/Outbox/Outbox";
+import EmployeeViewFileIndent from "./Modules/Purchase/EmployeeViewFileIndent";
 import Archieved from "./Modules/Purchase/ArchievedIndents";
 import ViewIndent from "./Modules/Purchase/ViewIndent";
-import EmployeeViewFileIndent from "./Modules/Purchase/EmployeeViewFileIndent";
+import StockEntry from "./Modules/Purchase/StockEntry";
+import InboxForAll from "./Modules/Purchase/Inboxforall";
+import OutboxForAll from "./Modules/Purchase/Outboxforall";
 
 export default function App() {
   const location = useLocation();
@@ -81,7 +84,7 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <Inbox />
+              <InboxForAll />
             </Layout>
           }
         />
@@ -108,7 +111,7 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <Outbox />
+              <OutboxForAll />
             </Layout>
           }
         />
@@ -136,6 +139,15 @@ export default function App() {
             <Layout>
               <PurchaseNavbar />
               <EmployeeViewFileIndent />
+            </Layout>
+          }
+        />
+        <Route
+          path="/purchase/stock_entry"
+          element={
+            <Layout>
+              <PurchaseNavbar />
+              <StockEntry />
             </Layout>
           }
         />
