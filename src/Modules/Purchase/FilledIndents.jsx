@@ -1,44 +1,55 @@
-import React from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-
-const indents = [
-  {
-    id: 1,
-    name: "Atul-professor",
-    email: "atul@iiitdmj.ac.in",
-    Fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-  {
-    id: 2,
-    name: "Atul-professor",
-    email: "atul@iiitdmj.ac.in",
-    Fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-  {
-    id: 3,
-    name: "Atul-professor",
-    email: "atul@iiitdmj.ac.in",
-    Fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-  {
-    id: 4,
-    name: "Atul-professor",
-    email: "atul@iiitdmj.ac.in",
-    Fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-];
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function FiledIndentsTable() {
   const navigate = useNavigate();
+  const [fileIndent, setFileIndent] = useState([]); // State for indents data
+  const [loading, setLoading] = useState(true); // State for loading status
+  const [error, setError] = useState(null); // State for error handling
+  // const navigate = useNavigate();
+  const role = useSelector((state) => state.user.role);
+  const username = useSelector((state) => state.user.username);
+  console.log(role);
+  // const [department, setDepartment] = useState("");
+  // console.log(useSelector((state) => state.user));
+
+  useEffect(() => {
+    // Fetch indents from the server using HoldsDesignation ID from local storage
+    const fetchIndents = async () => {
+      try {
+        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
+        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
+
+        const response = await axios.get(
+          `http://127.0.0.1:8000/purchase-and-store/api/indentview/4322?role=${role}`, // Use dynamic HoldsDesignation ID
+          {
+            headers: {
+              Authorization: `Token ${token}`, // Add the token in Authorization header
+            },
+          },
+        );
+        setFileIndent(response.data.Data); // Set the fetched data to indents state
+        // setDepartment(response.data.department);
+        setLoading(false); // Stop loading once data is fetched
+      } catch (err) {
+        setError("Failed to fetch indents."); // Handle errors
+        setLoading(false);
+      }
+    };
+
+    fetchIndents(); // Call the function to fetch indents
+  }, []); // Empty dependency array to run effect on mount
+  console.log(fileIndent);
+  if (loading) {
+    return <Text>Loading...</Text>; // Display loading state
+  }
+
+  if (error) {
+    return <Text color="red">{error}</Text>; // Display error message
+  }
   return (
     <Box p="md" style={{ margin: 0 }}>
       {" "}
@@ -90,7 +101,7 @@ function FiledIndentsTable() {
           </tr>
         </thead>
         <tbody>
-          {indents.map((booking) => (
+          {fileIndent.map((booking) => (
             <tr key={booking.id}>
               <td
                 style={{
@@ -101,7 +112,7 @@ function FiledIndentsTable() {
               >
                 <Text weight={500}>{booking.name}</Text>
                 <Text size="sm" color="dimmed">
-                  {booking.email}
+                  {username}
                 </Text>
               </td>
               <td
@@ -111,7 +122,7 @@ function FiledIndentsTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.Fileid}
+                {booking.draft_file.id}
               </td>
               <td
                 style={{
@@ -120,7 +131,9 @@ function FiledIndentsTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.subject}
+                {booking.draft_file.subject
+                  ? booking.draft_file.subject
+                  : "None"}
               </td>
               <td
                 style={{
@@ -129,7 +142,7 @@ function FiledIndentsTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.Date}
+                {booking.draft_file.upload_date}
               </td>
               <td
                 style={{
