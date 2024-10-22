@@ -11,7 +11,7 @@ import AcademicPage from "./Modules/Academic/index";
 import ValidateAuth from "./helper/validateauth";
 // import PurchasePage from "./Modules/Purchase/purchase";
 import PurchaseNavbar from "./Modules/Purchase/PurchaseNavbar";
-// import Inbox from "./Modules/Purchase/Inbox";
+import Inbox from "./Modules/Purchase/Inbox";
 import SaveIndents from "./Modules/Purchase/SavedIndentes";
 import IndentForm from "./Modules/Purchase/IndentForm";
 import FiledIndents from "./Modules/Purchase/FilledIndents";
@@ -20,7 +20,7 @@ import EmployeeViewFileIndent from "./Modules/Purchase/EmployeeViewFileIndent";
 import Archieved from "./Modules/Purchase/ArchievedIndents";
 import ViewIndent from "./Modules/Purchase/ViewIndent";
 import StockEntry from "./Modules/Purchase/StockEntry";
-import InboxForAll from "./Modules/Purchase/Inboxforall";
+// import InboxForAll from "./Modules/Purchase/Inboxforall";
 import OutboxForAll from "./Modules/Purchase/Outboxforall";
 
 export default function App() {
@@ -84,7 +84,7 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <InboxForAll />
+              <Inbox />
             </Layout>
           }
         />
