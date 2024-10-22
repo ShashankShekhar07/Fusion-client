@@ -5,11 +5,15 @@ import classes from "../Modules/Dashboard/Dashboard.module.css";
 
 function CustomBreadcrumbs() {
   const currentModule = useSelector((state) => state.module.current_module);
-  const items = [{ title: currentModule }].map((item, index) => (
-    <Text key={index} className={classes.fusionText} fw={600}>
-      {item.title}
-    </Text>
-  ));
+  const activeTab = useSelector((state) => state.module.active_tab);
+
+  const items = [{ title: currentModule }, { title: activeTab }].map(
+    (item, index) => (
+      <Text key={index} className={classes.fusionText} fw={600}>
+        {item.title}
+      </Text>
+    ),
+  );
 
   return (
     <Breadcrumbs

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
   setUserName,
+  setRollNo,
   setRoles,
   setRole,
   setAccessibleModules,
@@ -29,9 +30,11 @@ function ValidateAuth() {
           designation_info,
           accessible_modules,
           last_selected_role,
+          roll_no,
         } = data;
 
         dispatch(setUserName(name));
+        dispatch(setRollNo(roll_no));
         dispatch(setRoles(designation_info));
         if (last_selected_role) {
           dispatch(setRole(last_selected_role));

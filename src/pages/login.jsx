@@ -89,6 +89,12 @@ function LoginPage() {
               onChange={(e) => setUsername(e.target.value)}
               required
               disabled={loading}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
             />
             <PasswordInput
               label="Password"
@@ -98,6 +104,12 @@ function LoginPage() {
               required
               mt="lg"
               disabled={loading}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
             />
             <Group justify="space-between" mt="lg">
               <Link style={{ textDecoration: "none" }} to="/reset-password">
