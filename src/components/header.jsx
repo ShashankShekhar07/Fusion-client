@@ -89,9 +89,7 @@ function Header({ opened, toggleSidebar }) {
         size="sm"
       />
       <Flex justify="space-between" align="center" h="100%">
-        <Text fz="h2" ff="monospace">
-          FUSION - IIITDMJ's ERP Portal
-        </Text>
+        <Text fz="h2">FUSION - IIITDMJ's ERP Portal</Text>
         <Flex
           justify="flex-end"
           align="center"

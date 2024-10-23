@@ -17,12 +17,10 @@ import axios from "axios";
 
 function IndentForm() {
   const [file, setFile] = useState(null);
-  // const [errorMessage, setErrorMessage] = useState("");
-  const [receiverName, setReceiverName] = useState(""); // For manual entry of receiver name
-  const [designations, setDesignations] = useState([]); // State for storing fetched designations
+  const [receiverName, setReceiverName] = useState("");
+  const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
   const uploader_username = useSelector((state) => state.user);
-  // console.log("Uploader username:", uploader_username);
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
@@ -39,7 +37,7 @@ function IndentForm() {
     sourceOfSupply: "",
     remark: "",
     forwardTo: "",
-    receiverDesignation: "", // Updated to store selected designation
+    receiverDesignation: "",
   });
 
   const handleInputChange = (field) => (event) => {
@@ -49,7 +47,6 @@ function IndentForm() {
     }));
   };
 
-  // Handle number changes and convert them to integers
   const handleNumberChange = (field) => (event) => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -94,14 +91,13 @@ function IndentForm() {
 
   const handleReceiverChange = (value) => {
     setReceiverName(value);
-    // Fetch designations when receiver name is entered/updated
     fetchDesignations(value);
   };
 
   const handleDesignationChange = (value) => {
     setFormValues((prevValues) => ({
       ...prevValues,
-      receiverDesignation: value, // Update selected designation in form values
+      receiverDesignation: value,
     }));
   };
 
@@ -143,6 +139,7 @@ function IndentForm() {
       );
 
       console.log("Success:", response.data);
+      navigate("/purchase/all_filed_indents");
     } catch (error) {
       console.error("Error submitting form:", error);
       // setErrorMessage(

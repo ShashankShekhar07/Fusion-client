@@ -10,7 +10,7 @@ function InboxTable() {
   // const navigate = useNavigate();
   const role = useSelector((state) => state.user.role);
   const username = useSelector((state) => state.user.username);
-  console.log(role);
+  console.log(useSelector((state) => state.user));
   // const [department, setDepartment] = useState("");
   // console.log(useSelector((state) => state.user));
 

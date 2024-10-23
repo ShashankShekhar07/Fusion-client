@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 // import { PiPrinter } from "react-icons/pi";
 import {
   Container,
@@ -12,15 +12,16 @@ import {
   // FileInput,
   Title,
 } from "@mantine/core";
+import axios from "axios";
 import DataTable from "./Table";
-import DataTable2 from "./Table2";
+// import DataTable2 from "./Table2";
 
 function EmployeeViewFileIndent() {
   // const [remarks, setRemarks] = useState("");
   // const [file, setFile] = useState(null);
   // const [receiver, setReceiver] = useState("");
   const navigate = useNavigate();
-
+  const { indentID } = useParams();
   const handleSubmit = () => {
     navigate("/Inbox");
     alert("Submitted");
@@ -28,6 +29,33 @@ function EmployeeViewFileIndent() {
     // alert(`File: ${file ? file.name : "No file selected"}`);
     // alert(`Receiver: ${receiver}`);
   };
+
+  const [indent, setIndent] = useState(null);
+
+  const fetchIndentDetails = async () => {
+    try {
+      const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage
+      const response = await axios.post(
+        "http://127.0.0.1:8000/purchase-and-store/api/view_indent/",
+        { file_id: indentID },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      setIndent(response.data);
+    } catch (error) {
+      console.error("Error fetching indents:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (indentID) {
+      fetchIndentDetails(indentID);
+    }
+  }, [indentID]);
 
   return (
     <div>
@@ -47,7 +75,8 @@ function EmployeeViewFileIndent() {
           padding="lg"
           radius="md"
           style={{
-            backgroundColor: "#f3f9ff",
+            // backgroundColor: "#f3f9ff",
+            backgroundColor: "#D9EAF7",
             marginRight: "170px",
             marginLeft: "170px",
             marginTop: "2px",
@@ -76,19 +105,19 @@ function EmployeeViewFileIndent() {
                 <Text weight={600}>
                   <strong>File ID:</strong>
                 </Text>
-                <Text>CSE-2027-9-#619</Text>
+                <Text>CSE-2027-9-#{indentID}</Text>
               </Group>
             </Grid.Col>
             <Grid.Col span={2}>
               <Text>
-                <DataTable />
+                <DataTable indent={indent} />
               </Text>
             </Grid.Col>
-            <Grid.Col span={2}>
+            {/* <Grid.Col span={2}>
               <Text>
                 <DataTable2 />
               </Text>
-            </Grid.Col>
+            </Grid.Col> */}
           </Grid>
 
           {/* Description and Approval Section */}
@@ -164,14 +193,16 @@ function EmployeeViewFileIndent() {
             <Group position="right" mt="lg" style={{ justifyContent: "end" }}>
               <Button
                 type="submit"
-                color="#9095A0FF"
+                variant="fill"
+                color="blue"
+                // color="#9095A0FF"
                 onClick={() => navigate("/archive")}
               >
                 Archieve
               </Button>
-              <Button type="submit" color="#9095A0FF">
+              {/* <Button type="submit" color="#9095A0FF">
                 Send
-              </Button>
+              </Button> */}
             </Group>
           </form>
         </Paper>
