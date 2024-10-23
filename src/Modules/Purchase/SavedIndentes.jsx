@@ -12,33 +12,57 @@ function SavedIndentsTable() {
   const role = useSelector((state) => state.user.role);
   const [department, setDepartment] = useState("");
   console.log(useSelector((state) => state.user));
+  const fetchIndents = async () => {
+    try {
+      const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
+      // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
+
+      const response = await axios.get(
+        `http://127.0.0.1:8000/purchase-and-store/api/draftview/4322`, // Use dynamic HoldsDesignation ID
+        {
+          headers: {
+            Authorization: `Token ${token}`, // Add the token in Authorization header
+          },
+        },
+      );
+      setIndents(response.data.files); // Set the fetched data to indents state
+      setDepartment(response.data.department);
+      setLoading(false); // Stop loading once data is fetched
+    } catch (err) {
+      setError("Failed to fetch indents."); // Handle errors
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     // Fetch indents from the server using HoldsDesignation ID from local storage
-    const fetchIndents = async () => {
-      try {
-        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
-        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
-
-        const response = await axios.get(
-          `http://127.0.0.1:8000/purchase-and-store/api/draftview/4322`, // Use dynamic HoldsDesignation ID
-          {
-            headers: {
-              Authorization: `Token ${token}`, // Add the token in Authorization header
-            },
-          },
-        );
-        setIndents(response.data.files); // Set the fetched data to indents state
-        setDepartment(response.data.department);
-        setLoading(false); // Stop loading once data is fetched
-      } catch (err) {
-        setError("Failed to fetch indents."); // Handle errors
-        setLoading(false);
-      }
-    };
 
     fetchIndents(); // Call the function to fetch indents
   }, []); // Empty dependency array to run effect on mount
   console.log(indents);
+
+  const remove_indent = async (id) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await axios.post(
+        "http://127.0.0.1:8000/purchase-and-store/api/delete_indent/",
+        {
+          file_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        },
+      );
+      fetchIndents();
+    } catch (err) {
+      console.error(
+        "Error removing indent:",
+        err.response?.data || err.message,
+      );
+    }
+  };
+
   if (loading) {
     return <Text>Loading...</Text>; // Display loading state
   }
@@ -148,11 +172,17 @@ function SavedIndentsTable() {
                   variant="outline"
                   color="blue"
                   style={{ marginRight: "8px" }}
-                  onClick={() => navigate("/purchase/viewsavedindent")}
+                  onClick={() =>
+                    navigate(`/purchase/viewsavedindent/${booking.id}`)
+                  }
                 >
                   View
                 </Button>
-                <Button variant="outline" color="red">
+                <Button
+                  variant="outline"
+                  color="red"
+                  onClick={() => remove_indent(booking.id)}
+                >
                   Delete
                 </Button>
               </td>

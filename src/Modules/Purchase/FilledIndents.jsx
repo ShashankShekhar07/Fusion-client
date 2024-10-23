@@ -15,33 +15,63 @@ function FiledIndentsTable() {
   console.log(role);
   // const [department, setDepartment] = useState("");
   // console.log(useSelector((state) => state.user));
+  // const fetchIndents
+  // useEffect(() => {
+  //   // Fetch indents from the server using HoldsDesignation ID from local storage
+
+  //   fetchIndents(); // Call the function to fetch indents
+  // }, []); // Empty dependency array to run effect on mount
+
+  const fetchIndents = async () => {
+    try {
+      const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
+      // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
+
+      const response = await axios.get(
+        `http://127.0.0.1:8000/purchase-and-store/api/indentview/4322?role=${role}`, // Use dynamic HoldsDesignation ID
+        {
+          headers: {
+            Authorization: `Token ${token}`, // Add the token in Authorization header
+          },
+        },
+      );
+      setFileIndent(response.data.Data); // Set the fetched data to indents state
+      console.log(fileIndent);
+      // setDepartment(response.data.department);
+      setLoading(false); // Stop loading once data is fetched
+    } catch (err) {
+      setError("Failed to fetch indents."); // Handle errors
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    // Fetch indents from the server using HoldsDesignation ID from local storage
-    const fetchIndents = async () => {
-      try {
-        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
-        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
+    fetchIndents();
+  }, []);
 
-        const response = await axios.get(
-          `http://127.0.0.1:8000/purchase-and-store/api/indentview/4322?role=${role}`, // Use dynamic HoldsDesignation ID
-          {
-            headers: {
-              Authorization: `Token ${token}`, // Add the token in Authorization header
-            },
+  const remove_indent = async (id) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await axios.post(
+        "http://127.0.0.1:8000/purchase-and-store/api/delete_indent/",
+        {
+          file_id: id,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
-        setFileIndent(response.data.Data); // Set the fetched data to indents state
-        // setDepartment(response.data.department);
-        setLoading(false); // Stop loading once data is fetched
-      } catch (err) {
-        setError("Failed to fetch indents."); // Handle errors
-        setLoading(false);
-      }
-    };
+        },
+      );
+      fetchIndents();
+    } catch (err) {
+      console.error(
+        "Error removing indent:",
+        err.response?.data || err.message,
+      );
+    }
+  };
 
-    fetchIndents(); // Call the function to fetch indents
-  }, []); // Empty dependency array to run effect on mount
   console.log(fileIndent);
   if (loading) {
     return <Text>Loading...</Text>; // Display loading state
@@ -110,7 +140,7 @@ function FiledIndentsTable() {
                   textAlign: "center",
                 }}
               >
-                <Text weight={500}>{booking.name}</Text>
+                {/* <Text weight={500}>{booking.name}</Text> */}
                 <Text size="sm" color="dimmed">
                   {username}
                 </Text>
@@ -131,9 +161,10 @@ function FiledIndentsTable() {
                   textAlign: "center",
                 }}
               >
-                {booking.draft_file.subject
+                {booking.indent.item_name ? booking.indent.item_name : "None"}
+                {/* {booking.draft_file.subject
                   ? booking.draft_file.subject
-                  : "None"}
+                  : "None"} */}
               </td>
               <td
                 style={{
@@ -155,11 +186,22 @@ function FiledIndentsTable() {
                   variant="outline"
                   color="blue"
                   style={{ marginRight: "8px" }}
-                  onClick={() => navigate("/purchase/employeeviewfiledindent")}
+                  onClick={() =>
+                    navigate(
+                      `/purchase/employeeviewfiledindent/${booking.indent.file_info}`,
+                    )
+                  }
+                  // onClick={() => navigate("/purchase/employeeviewfiledindent")}
                 >
                   View
                 </Button>
-                <Button variant="outline" color="red">
+                <Button
+                  variant="outline"
+                  color="red"
+                  onClick={() => {
+                    remove_indent(booking.indent.file_info);
+                  }}
+                >
                   Delete
                 </Button>
               </td>
