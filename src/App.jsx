@@ -11,17 +11,17 @@ import AcademicPage from "./Modules/Academic/index";
 import ValidateAuth from "./helper/validateauth";
 // import PurchasePage from "./Modules/Purchase/purchase";
 import PurchaseNavbar from "./Modules/Purchase/PurchaseNavbar";
-// import Inbox from "./Modules/Purchase/Inbox";
-import SaveIndents from "./Modules/Purchase/SavedIndentes";
+import Inbox from "./Modules/Purchase/Inbox";
 import IndentForm from "./Modules/Purchase/IndentForm";
-import FiledIndents from "./Modules/Purchase/FilledIndents";
+import FiledIndents from "./Modules/Purchase/FilledIndents.jsx";
 // import Outbox from "./Modules/Purchase/Outbox/Outbox";
 import EmployeeViewFileIndent from "./Modules/Purchase/EmployeeViewFileIndent";
 import Archieved from "./Modules/Purchase/ArchievedIndents";
 import ViewIndent from "./Modules/Purchase/ViewIndent";
 import StockEntry from "./Modules/Purchase/StockEntry";
-import InboxForAll from "./Modules/Purchase/Inboxforall";
+// import InboxForAll from "./Modules/Purchase/Inboxforall";
 import OutboxForAll from "./Modules/Purchase/Outboxforall";
+import SavedIndents from "./Modules/Purchase/SavedIndentes";
 
 export default function App() {
   const location = useLocation();
@@ -84,7 +84,7 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <InboxForAll />
+              <Inbox />
             </Layout>
           }
         />
@@ -93,7 +93,7 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <SaveIndents />
+              <SavedIndents />
             </Layout>
           }
         />
@@ -125,7 +125,7 @@ export default function App() {
           }
         />
         <Route
-          path="/purchase/viewsavedindent"
+          path="/purchase/viewsavedindent/:indentID"
           element={
             <Layout>
               <PurchaseNavbar />
@@ -133,8 +133,17 @@ export default function App() {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/purchase/employeeviewfiledindent"
+          element={
+            <Layout>
+              <PurchaseNavbar />
+              <EmployeeViewFileIndent />
+            </Layout>
+          }
+        /> */}
+        <Route
+          path="/purchase/employeeviewfiledindent/:indentID"
           element={
             <Layout>
               <PurchaseNavbar />

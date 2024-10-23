@@ -9,6 +9,7 @@ This Project is the frontend of the Fusion - IIITDMJ's ERP Portal. We've migrate
 - [Mantine UI](https://mantine.dev/getting-started/) for UI components
 - [Redux](https://redux-toolkit.js.org/introduction/getting-started) for state management
 - [Phosphor-icons](https://phosphoricons.com/) for icons
+- [Mantine-React-Table](https://v2.mantine-react-table.com/docs/examples/basic) for tables
 
 Check the `package.json` file for more information about all the libraries being used.
 This project is using Eslint and Prettier for linting and formatting the code.
@@ -36,7 +37,6 @@ Make sure that your backend server is running properly before starting the front
 8. All the styles related to a **module** are in the `src/modules/<module-name>/styles` folder.
 9. All the state management related code is in the `src/redux` folder. The `src/redux/userSlice.jsx` file contains user-related states. 
 
-
 - Note: You can access the username and role of the user using the `useSelector` hook.
 
 ```jsx
@@ -54,12 +54,13 @@ const ExampleComponent = () => {
 }
 ```
 
+- For styles, you can use the `mantine` library for components and css-modules for custom styles(Refer this [guide](https://mantine.dev/styles/css-modules/)).
+
 ## Style Guide
 
 - All the folder names should be in kebab-case.
 - All the file names should be in camelCase.
 - All the constants should be in UPPERCASE.
-- All the components should be in PascalCase.
 
 **Note**: Please make sure to follow the project structure and naming conventions while adding new files or folders to the project.
 
