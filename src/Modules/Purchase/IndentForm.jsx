@@ -9,6 +9,7 @@ import {
   Title,
   Grid,
 } from "@mantine/core";
+import "@mantine/dates/styles.css";
 import { DateInput } from "@mantine/dates";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -373,9 +374,11 @@ function IndentForm() {
 
             {/* create button for draft */}
             <Grid.Col sm={12}>
-              <Button type="submit" fullWidth onClick={handleDraft}>
-                Save Draft
-              </Button>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button type="submit" onClick={handleDraft}>
+                  Save Draft
+                </Button>
+              </div>
             </Grid.Col>
 
             <Grid.Col sm={12}>
@@ -414,9 +417,9 @@ function IndentForm() {
             </Grid.Col>
 
             <Grid.Col sm={12}>
-              <Button type="submit" fullWidth>
-                Submit Indent
-              </Button>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Button type="submit">Submit Indent</Button>
+              </div>
             </Grid.Col>
           </Grid>
         </form>
