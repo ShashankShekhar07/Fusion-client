@@ -1,4 +1,5 @@
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
+// import { MantineReactTable } from "mantine-react-table";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -81,7 +82,7 @@ function FiledIndentsTable() {
     return <Text color="red">{error}</Text>; // Display error message
   }
   return (
-    <Box p="md" style={{ margin: 0 }}>
+    <Box p="md" style={{ margin: 5 }}>
       {" "}
       {/* Removed margin-top completely */}
       <Box
@@ -105,7 +106,7 @@ function FiledIndentsTable() {
       </Box>
       <Table
         style={{
-          backgroundColor: "#f3f9ff", // Changed background color
+          // backgroundColor: "#f3f9ff", // Changed background color
           borderRadius: "8px", // Border radius for table
           overflow: "hidden", // Overflow hidden to round table corners
           border: "1px solid #E0E0E0", // Optional border for visibility
@@ -113,19 +114,19 @@ function FiledIndentsTable() {
       >
         <thead>
           <tr>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            {/* <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+             */}
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Created By
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Fileid
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Subject
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
-              Date
-            </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>Date</th>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Features
             </th>
           </tr>
@@ -141,9 +142,7 @@ function FiledIndentsTable() {
                 }}
               >
                 {/* <Text weight={500}>{booking.name}</Text> */}
-                <Text size="sm" color="dimmed">
-                  {username}
-                </Text>
+                <Text size="sm">{username}</Text>
               </td>
               <td
                 style={{
@@ -183,8 +182,7 @@ function FiledIndentsTable() {
                 }}
               >
                 <Button
-                  variant="outline"
-                  color="blue"
+                  color="green"
                   style={{ marginRight: "8px" }}
                   onClick={() =>
                     navigate(
@@ -246,3 +244,186 @@ function FiledIndents() {
 }
 
 export default FiledIndents;
+
+// import { MantineProvider, Box, Text, Tooltip, ActionIcon } from "@mantine/core";
+// import { IconTrash, IconEye } from "@tabler/icons-react";
+// import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+// import { useNavigate } from "react-router-dom";
+// import React, { useState, useEffect, useMemo } from "react";
+// import axios from "axios";
+// import { useSelector } from "react-redux";
+// import { useMutation } from "@tanstack/react-query";
+
+// // Separate ActionCell component
+// function ActionCell({ row, navigate, removeIndentMutation }) {
+//   return (
+//     <Box style={{ display: "flex", justifyContent: "center" }}>
+//       <Tooltip label="View">
+//         <ActionIcon
+//           color="green"
+//           onClick={() =>
+//             navigate(
+//               `/purchase/employeeviewfiledindent/${row.original.indent.file_info}`,
+//             )
+//           }
+//         >
+//           <IconEye />
+//         </ActionIcon>
+//       </Tooltip>
+//       <Tooltip label="Delete">
+//         <ActionIcon
+//           color="red"
+//           onClick={() =>
+//             removeIndentMutation.mutate(row.original.indent.file_info)
+//           }
+//         >
+//           <IconTrash />
+//         </ActionIcon>
+//       </Tooltip>
+//     </Box>
+//   );
+// }
+
+// function FiledIndentsTable() {
+//   const navigate = useNavigate();
+//   const [fileIndent, setFileIndent] = useState([]); // State for indents data
+//   const [loading, setLoading] = useState(true); // State for loading status
+//   const [error, setError] = useState(null); // State for error handling
+//   const role = useSelector((state) => state.user.role);
+//   const username = useSelector((state) => state.user.username);
+
+//   const fetchIndents = async () => {
+//     try {
+//       const token = localStorage.getItem("authToken");
+//       const response = await axios.get(
+//         `http://127.0.0.1:8000/purchase-and-store/api/indentview/4322?role=${role}`,
+//         {
+//           headers: {
+//             Authorization: `Token ${token}`,
+//           },
+//         },
+//       );
+//       setFileIndent(response.data.Data);
+//       setLoading(false);
+//     } catch (err) {
+//       setError("Failed to fetch indents.");
+//       setLoading(false);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchIndents();
+//   }, []);
+
+//   const removeIndentMutation = useMutation({
+//     mutationFn: async (id) => {
+//       const token = localStorage.getItem("authToken");
+//       await axios.post(
+//         "http://127.0.0.1:8000/purchase-and-store/api/delete_indent/",
+//         { file_id: id },
+//         {
+//           headers: {
+//             Authorization: `Token ${token}`,
+//           },
+//         },
+//       );
+//     },
+//     onSuccess: () => {
+//       fetchIndents();
+//     },
+//     onError: (error) => {
+//       console.error(
+//         "Error removing indent:",
+//         error.response?.data || error.message,
+//       );
+//     },
+//   });
+
+//   const columns = useMemo(
+//     () => [
+//       {
+//         accessorKey: "username",
+//         header: "Created By",
+//         Cell: () => <Text size="sm">{username}</Text>,
+//       },
+//       {
+//         accessorKey: "draft_file.id",
+//         header: "File ID",
+//         Cell: ({ cell }) => cell.getValue(),
+//       },
+//       {
+//         accessorKey: "indent.item_name",
+//         header: "Subject",
+//         Cell: ({ cell }) => cell.getValue() || "None",
+//       },
+//       {
+//         accessorKey: "draft_file.upload_date",
+//         header: "Date",
+//       },
+//       {
+//         accessorKey: "actions",
+//         header: "Features",
+//         Cell: ({ row }) => (
+//           <ActionCell
+//             row={row}
+//             navigate={navigate}
+//             removeIndentMutation={removeIndentMutation}
+//           />
+//         ),
+//       },
+//     ],
+//     [navigate, removeIndentMutation, username],
+//   );
+
+//   const table = useMantineReactTable({
+//     columns,
+//     data: fileIndent,
+//     enableColumnResizing: true,
+//     state: {
+//       isLoading: loading,
+//       showAlertBanner: !!error,
+//     },
+//     mantineToolbarAlertBannerProps: error
+//       ? {
+//           color: "red",
+//           children: error,
+//         }
+//       : undefined,
+//   });
+
+//   return <MantineReactTable table={table} />;
+// }
+
+// function FiledIndents() {
+//   return (
+//     <MantineProvider withGlobalStyles withNormalizeCSS>
+//       <Box
+//         style={{
+//           display: "flex",
+//           justifyContent: "center",
+//           alignItems: "center",
+//           height: "80vh",
+//           overflow: "auto",
+//         }}
+//       >
+//         <Box
+//           style={{
+//             maxWidth: "1440px",
+//             width: "100%",
+//             backgroundColor: "white",
+//             borderRadius: "12px",
+//             padding: "16px",
+//             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+//             overflowX: "auto",
+//             overflowY: "auto",
+//             maxHeight: "80vh",
+//           }}
+//         >
+//           <FiledIndentsTable />
+//         </Box>
+//       </Box>
+//     </MantineProvider>
+//   );
+// }
+
+// export default FiledIndents;

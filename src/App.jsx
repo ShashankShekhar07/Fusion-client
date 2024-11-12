@@ -1,5 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "mantine-react-table/styles.css";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { Notifications } from "@mantine/notifications";
 import { Layout } from "./components/layout";
@@ -19,9 +20,9 @@ import EmployeeViewFileIndent from "./Modules/Purchase/EmployeeViewFileIndent";
 import Archieved from "./Modules/Purchase/ArchievedIndents";
 import ViewIndent from "./Modules/Purchase/ViewIndent";
 import StockEntry from "./Modules/Purchase/StockEntry";
-// import InboxForAll from "./Modules/Purchase/Inboxforall";
-import OutboxForAll from "./Modules/Purchase/Outboxforall";
 import SavedIndents from "./Modules/Purchase/SavedIndentes";
+import Outbox from "./Modules/Purchase/Outbox.jsx";
+import ViewIndentInbox from "./Modules/Purchase/ViewIndentInbox.jsx";
 
 export default function App() {
   const location = useLocation();
@@ -106,7 +107,7 @@ export default function App() {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/purchase/outbox"
           element={
             <Layout>
@@ -114,13 +115,22 @@ export default function App() {
               <OutboxForAll />
             </Layout>
           }
-        />
+        /> */}
         <Route
-          path="/purchase/viewindent"
+          path="/purchase/outbox"
           element={
             <Layout>
               <PurchaseNavbar />
-              <ViewIndent />
+              <Outbox />
+            </Layout>
+          }
+        />
+        <Route
+          path="/purchase/viewindent/:indentID"
+          element={
+            <Layout>
+              <PurchaseNavbar />
+              <ViewIndentInbox />
             </Layout>
           }
         />
@@ -133,15 +143,6 @@ export default function App() {
             </Layout>
           }
         />
-        {/* <Route
-          path="/purchase/employeeviewfiledindent"
-          element={
-            <Layout>
-              <PurchaseNavbar />
-              <EmployeeViewFileIndent />
-            </Layout>
-          }
-        /> */}
         <Route
           path="/purchase/employeeviewfiledindent/:indentID"
           element={

@@ -171,7 +171,12 @@ function StockEntry() {
           </Grid>
 
           <Center mt="lg">
-            <Button type="submit" radius="md" color="gray">
+            <Button
+              type="submit"
+              radius="md"
+              color="green"
+              style={{ marginRight: "8px" }}
+            >
               Add Product
             </Button>
           </Center>
