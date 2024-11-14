@@ -27,9 +27,10 @@ function EmployeeViewFileIndent() {
   const { indentID } = useParams();
   const [indent, setIndent] = useState(null);
   const role = useSelector((state) => state.user.role);
-  const archieveIndent = async (file_id) => {
+
+  const archieveIndent = async (indent_id) => {
     // Send POST request to archive the file
-    const id = file_id;
+    const id = indent_id;
     try {
       setLoading(true);
       const token = localStorage.getItem("authToken");
