@@ -89,9 +89,9 @@ function OutboxTable() {
             <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               file Id
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            {/* <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Subject
-            </th>
+            </th> */}
             <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Date
             </th>
@@ -134,7 +134,7 @@ function OutboxTable() {
               >
                 {row.id}
               </td>
-              <td
+              {/* <td
                 style={{
                   padding: "12px",
                   borderBottom: "1px solid #E0E0E0",
@@ -142,7 +142,7 @@ function OutboxTable() {
                 }}
               >
                 {row.subject}
-              </td>
+              </td> */}
               <td
                 style={{
                   padding: "12px",
@@ -167,8 +167,7 @@ function OutboxTable() {
                   style={{ marginTop: "10px", marginBottom: "10px" }}
                 >
                   <Button
-                    variant="outline"
-                    color="blue"
+                    color="green"
                     style={{ marginRight: "8px" }}
                     onClick={() =>
                       navigate(`/purchase/employeeviewfiledindent/${row.id}`)

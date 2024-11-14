@@ -14,7 +14,7 @@ function InboxTable() {
   console.log(useSelector((state) => state.user));
   // const [department, setDepartment] = useState("");
   // console.log(useSelector((state) => state.user));
-
+  // const desigid = useSelector((state) => state.user.Holds_designation);
   useEffect(() => {
     // Fetch indents from the server using HoldsDesignation ID from local storage
     const fetchIndents = async () => {
@@ -165,8 +165,7 @@ function InboxTable() {
                 }}
               >
                 <Button
-                  variant="outline"
-                  color="blue"
+                  color="green"
                   style={{ marginRight: "8px" }}
                   onClick={() =>
                     navigate(`/purchase/forward_indent/${booking.id}`)

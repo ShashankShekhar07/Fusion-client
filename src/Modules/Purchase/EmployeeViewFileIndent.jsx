@@ -71,7 +71,6 @@ function EmployeeViewFileIndent() {
           padding: "20px",
         }}
       >
-        {/* Main Paper/Card Container */}
         <Paper
           shadow="sm"
           padding="lg"
