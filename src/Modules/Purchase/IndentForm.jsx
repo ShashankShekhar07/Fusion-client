@@ -881,6 +881,9 @@ function IndentForm() {
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
   const uploader_username = useSelector((state) => state.user);
+  // const username = useSelector((state) => state.user.roll_no);
+  const role = useSelector((state) => state.user.role);
+  console.log(uploader_username);
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
@@ -988,7 +991,7 @@ function IndentForm() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        "http://127.0.0.1:8000/purchase-and-store/api/create_proposal/",
+        `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/?role=${role}`,
         data,
         {
           headers: {
@@ -1046,8 +1049,8 @@ function IndentForm() {
       );
 
       console.log("Success:", response.data);
-      // navigate("/purchase/saved_indents");
       navigate("/purchase/saved_indents");
+      // navigate("/purchase/saved_indents");
     } catch (error) {
       console.error("Error submitting form:", error);
       // setErrorMessage(

@@ -12,8 +12,10 @@ function FiledIndentsTable() {
   const [error, setError] = useState(null); // State for error handling
   // const navigate = useNavigate();
   const role = useSelector((state) => state.user.role);
-  const username = useSelector((state) => state.user.username);
+  // eslint-disable-next-line no-restricted-globals
   console.log(role);
+  const username = useSelector((state) => state.user.roll_no);
+  // console.log(username);
   // const [department, setDepartment] = useState("");
   // console.log(useSelector((state) => state.user));
   // const fetchIndents
@@ -29,7 +31,7 @@ function FiledIndentsTable() {
       // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/purchase-and-store/api/indentview/4322?role=${role}`, // Use dynamic HoldsDesignation ID
+        `http://127.0.0.1:8000/purchase-and-store/api/indentview/${username}?role=${role}`, // Use dynamic HoldsDesignation ID
         {
           headers: {
             Authorization: `Token ${token}`, // Add the token in Authorization header
@@ -39,6 +41,7 @@ function FiledIndentsTable() {
       setFileIndent(response.data.Data); // Set the fetched data to indents state
       console.log(fileIndent);
       // setDepartment(response.data.department);
+      console.log(response.data);
       setLoading(false); // Stop loading once data is fetched
     } catch (err) {
       setError("Failed to fetch indents."); // Handle errors
@@ -49,7 +52,7 @@ function FiledIndentsTable() {
   useEffect(() => {
     fetchIndents();
   }, []);
-
+  console.log(fileIndent);
   const remove_indent = async (id) => {
     try {
       const token = localStorage.getItem("authToken");
@@ -142,7 +145,9 @@ function FiledIndentsTable() {
                 }}
               >
                 {/* <Text weight={500}>{booking.name}</Text> */}
-                <Text size="sm">{username}</Text>
+                <Text size="sm" color="dimmed">
+                  {booking.draft_file.uploader}
+                </Text>
               </td>
               <td
                 style={{

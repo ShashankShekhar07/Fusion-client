@@ -10,15 +10,17 @@ function SavedIndentsTable() {
   const [error, setError] = useState(null); // State for error handling
   const navigate = useNavigate();
   const role = useSelector((state) => state.user.role);
+  const username = useSelector((state) => state.user.roll_no);
   const [department, setDepartment] = useState("");
   console.log(useSelector((state) => state.user));
+  // console.log(useSelector((state) => state.user));
   const fetchIndents = async () => {
     try {
       const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
       // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/purchase-and-store/api/draftview/4322`, // Use dynamic HoldsDesignation ID
+        `http://127.0.0.1:8000/purchase-and-store/api/draftview/${username}`, // Use dynamic HoldsDesignation ID
         {
           headers: {
             Authorization: `Token ${token}`, // Add the token in Authorization header
