@@ -264,7 +264,12 @@ function ViewIndent() {
               </Grid.Col>
 
               <Grid.Col sm={12}>
-                <Button type="submit" fullWidth>
+                <Button
+                  type="submit"
+                  fullWidth
+                  color="green"
+                  style={{ marginRight: "8px" }}
+                >
                   Submit Indent
                 </Button>
               </Grid.Col>
@@ -273,13 +278,18 @@ function ViewIndent() {
             {/* Submit and Archive Buttons */}
             <Group position="right" mt="lg" style={{ justifyContent: "end" }}>
               <Button
+                color="green"
+                style={{ marginRight: "8px" }}
                 type="submit"
-                color="#9095A0FF"
                 onClick={() => navigate("/archive")}
               >
                 Archieve
               </Button>
-              <Button type="submit" color="#9095A0FF">
+              <Button
+                type="submit"
+                color="green"
+                style={{ marginRight: "8px" }}
+              >
                 Send
               </Button>
             </Group>

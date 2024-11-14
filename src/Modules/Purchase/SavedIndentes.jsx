@@ -130,7 +130,7 @@ function SavedIndentsTable() {
                 }}
               >
                 <Text weight={500}>{booking.name}</Text>
-                <Text size="sm" color="dimmed">
+                <Text size="sm">
                   {booking.uploader} - {role}
                 </Text>
               </td>
@@ -169,8 +169,7 @@ function SavedIndentsTable() {
                 }}
               >
                 <Button
-                  variant="outline"
-                  color="blue"
+                  color="green"
                   style={{ marginRight: "8px" }}
                   onClick={() =>
                     navigate(`/purchase/viewsavedindent/${booking.id}`)

@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function InboxTable() {
   const [inbox, setInbox] = useState([]); // State for indents data
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error handling
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const role = useSelector((state) => state.user.role);
   const username = useSelector((state) => state.user.username);
   console.log(role);
   // const [department, setDepartment] = useState("");
   // console.log(useSelector((state) => state.user));
-
+  // const desigid = useSelector((state) => state.user.Holds_designation);
   useEffect(() => {
     // Fetch indents from the server using HoldsDesignation ID from local storage
     const fetchIndents = async () => {
@@ -161,11 +162,10 @@ function InboxTable() {
                 }}
               >
                 <Button
-                  variant="outline"
-                  color="blue"
+                  color="green"
                   style={{ marginRight: "8px" }}
                   // eslint-disable-next-line no-undef
-                  onClick={() => navigate("/purchase/viewindent")}
+                  onClick={() => navigate(`/purchase/viewindent/${booking.id}`)}
                 >
                   View
                 </Button>
