@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function InboxTable() {
   const [inbox, setInbox] = useState([]); // State for indents data
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error handling
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const role = useSelector((state) => state.user.role);
-  const username = useSelector((state) => state.user.username);
+  const username = useSelector((state) => state.user.roll_no);
   console.log(useSelector((state) => state.user));
   // const [department, setDepartment] = useState("");
   // console.log(useSelector((state) => state.user));
@@ -22,13 +23,16 @@ function InboxTable() {
         // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/purchase-and-store/api/indentview2/4397?role=${role}`, // Use dynamic HoldsDesignation ID
+          `http://127.0.0.1:8000/purchase-and-store/api/indentview2/${username}?role=${role}`, // Use dynamic HoldsDesignation ID
           {
             headers: {
               Authorization: `Token ${token}`, // Add the token in Authorization header
             },
           },
         );
+        // const filteredData = response.data.in_file.filter(
+        //   (item) => item.receiver_designation_name === role,
+        // );
         setInbox(response.data.in_file); // Set the fetched data to indents state
         // setDepartment(response.data.department);
         setLoading(false); // Stop loading once data is fetched
@@ -39,7 +43,7 @@ function InboxTable() {
     };
 
     fetchIndents(); // Call the function to fetch indents
-  }, []); // Empty dependency array to run effect on mount
+  }, [role]); // Empty dependency array to run effect on mount
   if (loading) {
     return <Text>Loading...</Text>; // Display loading state
   }
@@ -164,8 +168,9 @@ function InboxTable() {
                   variant="outline"
                   color="blue"
                   style={{ marginRight: "8px" }}
-                  // eslint-disable-next-line no-undef
-                  onClick={() => navigate("/purchase/viewindent")}
+                  onClick={() =>
+                    navigate(`/purchase/forward_indent/${booking.id}`)
+                  }
                 >
                   View
                 </Button>

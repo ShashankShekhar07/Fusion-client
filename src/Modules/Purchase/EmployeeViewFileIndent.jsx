@@ -16,6 +16,8 @@ import axios from "axios";
 import DataTable from "./Table";
 // import DataTable2 from "./Table2";
 
+// const username = useSelector((state) => state.user.roll_no);
+
 function EmployeeViewFileIndent() {
   // const [remarks, setRemarks] = useState("");
   // const [file, setFile] = useState(null);
@@ -56,7 +58,7 @@ function EmployeeViewFileIndent() {
       fetchIndentDetails(indentID);
     }
   }, [indentID]);
-
+  console.log(indent);
   return (
     <div>
       <Container
