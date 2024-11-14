@@ -1,52 +1,51 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box, Flex } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-
-const indents = [
-  {
-    id: 1,
-    name: "Atul-professor",
-    receiver: "bhartenduks-Director",
-    receiver_email: "bhartenduks@iiitdmj.ac.in",
-    email: "atul@iiitdmj.ac.in",
-    fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-  {
-    id: 2,
-    name: "Atul-professor",
-    receiver: "bhartenduks-Director",
-    receiver_email: "bhartenduks@iiitdmj.ac.in",
-    email: "atul@iiitdmj.ac.in",
-    fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-  {
-    id: 3,
-    name: "Atul-professor",
-    receiver: "bhartenduks-Director",
-    receiver_email: "bhartenduks@iiitdmj.ac.in",
-    email: "atul@iiitdmj.ac.in",
-    fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-  {
-    id: 4,
-    name: "Atul-professor",
-    receiver: "bhartenduks-Director",
-    email: "atul@iiitdmj.ac.in",
-    receiver_email: "bhartenduks@iiitdmj.ac.in",
-    fileid: "CSE-2024-9-#616",
-    subject: "Furniture requirements",
-    Date: "Sept 3, 2024",
-  },
-];
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function OutboxTable() {
+  const [outbox, setOutbox] = useState([]); // State for indents data
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // State for loading status
+  const [error, setError] = useState(null); // State for error handling
+  // const navigate = useNavigate();
+  const role = useSelector((state) => state.user.role);
+  console.log(role);
+  useEffect(() => {
+    // Fetch indents from the server using HoldsDesignation ID from local storage
+    const fetchIndents = async () => {
+      try {
+        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
+        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
+
+        const response = await axios.get(
+          `http://127.0.0.1:8000/purchase-and-store/api/outboxview2/4322?role=${role}`, // Use dynamic HoldsDesignation ID
+          {
+            headers: {
+              Authorization: `Token ${token}`, // Add the token in Authorization header
+            },
+          },
+        );
+        console.log(response.data.in_file);
+        setOutbox(response.data.in_file); // Set the fetched data to indents state
+        // setDepartment(response.data.department);
+        setLoading(false); // Stop loading once data is fetched
+      } catch (err) {
+        setError("Failed to fetch indents."); // Handle errors
+        setLoading(false);
+      }
+    };
+
+    fetchIndents(); // Call the function to fetch indents
+  }, []); // Empty dependency array to run effect on mount
+  if (loading) {
+    return <Text>Loading...</Text>; // Display loading state
+  }
+
+  if (error) {
+    return <Text style={{ color: "red" }}>{error}</Text>; // Display error message
+  }
   return (
     <Box p="md" style={{ margin: 0 }}>
       {" "}
@@ -101,7 +100,7 @@ function OutboxTable() {
           </tr>
         </thead>
         <tbody>
-          {indents.map((row) => (
+          {outbox.map((row) => (
             <tr key={row.id} style={{ backgroundColor: "#F3F9FF" }}>
               <td
                 style={{
@@ -110,7 +109,7 @@ function OutboxTable() {
                   textAlign: "center",
                 }}
               >
-                <Text weight={500}>{row.name}</Text>
+                <Text weight={500}>{row.uploader}</Text>
                 <Text size="sm" color="dimmed">
                   {row.email}
                 </Text>
@@ -122,7 +121,7 @@ function OutboxTable() {
                   textAlign: "center",
                 }}
               >
-                <Text weight={500}>{row.receiver}</Text>
+                <Text weight={500}>{row.designation}</Text>
                 <Text size="sm" color="dimmed">
                   {row.receiver_email}
                 </Text>
@@ -134,7 +133,7 @@ function OutboxTable() {
                   textAlign: "center",
                 }}
               >
-                {row.fileid}
+                {row.id}
               </td>
               <td
                 style={{
@@ -152,7 +151,7 @@ function OutboxTable() {
                   textAlign: "center",
                 }}
               >
-                {row.Date}
+                {row.upload_date}
               </td>
               <td
                 style={{

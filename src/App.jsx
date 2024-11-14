@@ -20,8 +20,9 @@ import Archieved from "./Modules/Purchase/ArchievedIndents";
 import ViewIndent from "./Modules/Purchase/ViewIndent";
 import StockEntry from "./Modules/Purchase/StockEntry";
 // import InboxForAll from "./Modules/Purchase/Inboxforall";
-import OutboxForAll from "./Modules/Purchase/Outboxforall";
+// import OutboxForAll from "./Modules/Purchase/Outboxforall";
 import SavedIndents from "./Modules/Purchase/SavedIndentes";
+import Outbox from "./Modules/Purchase/Outbox";
 
 export default function App() {
   const location = useLocation();
@@ -111,7 +112,7 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <OutboxForAll />
+              <Outbox />
             </Layout>
           }
         />
