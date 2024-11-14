@@ -14,6 +14,14 @@ function FiledIndentsTable() {
   const role = useSelector((state) => state.user.role);
   const username = useSelector((state) => state.user.username);
   console.log(role);
+  // const [department, setDepartment] = useState("");
+  // console.log(useSelector((state) => state.user));
+  // const fetchIndents
+  // useEffect(() => {
+  //   // Fetch indents from the server using HoldsDesignation ID from local storage
+
+  //   fetchIndents(); // Call the function to fetch indents
+  // }, []); // Empty dependency array to run effect on mount
 
   const fetchIndents = async () => {
     try {
