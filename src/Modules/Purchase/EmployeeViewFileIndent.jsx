@@ -13,6 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import DataTable from "./Table";
 // import DataTable2 from "./Table2";
 
@@ -20,8 +21,37 @@ function EmployeeViewFileIndent() {
   // const [remarks, setRemarks] = useState("");
   // const [file, setFile] = useState(null);
   // const [receiver, setReceiver] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { indentID } = useParams();
+  const [indent, setIndent] = useState(null);
+  const role = useSelector((state) => state.user.role);
+  const archieveIndent = async () => {
+    // Send POST request to archive the file
+    const id = 628;
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        `http://127.0.0.1:8000/purchase-and-store/api/archieve_indent/4322/?role=${role}&file_id=${id}`, // Fixed URL format
+        {}, // Empty body as no data needed
+        {
+          headers: {
+            Authorization: `Token ${token}`, // Correct placement of headers
+          },
+        },
+      );
+
+      console.log(response);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setError("Failed to archieve indent."); // Handle errors
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = () => {
     navigate("/Inbox");
     alert("Submitted");
@@ -29,8 +59,6 @@ function EmployeeViewFileIndent() {
     // alert(`File: ${file ? file.name : "No file selected"}`);
     // alert(`Receiver: ${receiver}`);
   };
-
-  const [indent, setIndent] = useState(null);
 
   const fetchIndentDetails = async () => {
     try {
@@ -46,8 +74,8 @@ function EmployeeViewFileIndent() {
         },
       );
       setIndent(response.data);
-    } catch (error) {
-      console.error("Error fetching indents:", error);
+    } catch (err) {
+      console.error("Error fetching indents:", err);
     }
   };
 
@@ -57,6 +85,13 @@ function EmployeeViewFileIndent() {
     }
   }, [indentID]);
 
+  if (loading) {
+    return <Text>Loading...</Text>; // Display loading state
+  }
+
+  if (error) {
+    return <Text color="red">{error}</Text>; // Display error message
+  }
   return (
     <div>
       <Container
@@ -195,7 +230,9 @@ function EmployeeViewFileIndent() {
                 variant="fill"
                 color="blue"
                 // color="#9095A0FF"
-                onClick={() => navigate("/archive")}
+                onClick={() => {
+                  archieveIndent();
+                }}
               >
                 Archieve
               </Button>
