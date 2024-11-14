@@ -27,15 +27,14 @@ function EmployeeViewFileIndent() {
   const { indentID } = useParams();
   const [indent, setIndent] = useState(null);
   const role = useSelector((state) => state.user.role);
-  const archieveIndent = async () => {
+  const archieveIndent = async (file_id) => {
     // Send POST request to archive the file
-    const id = 628;
+    const id = file_id;
     try {
       setLoading(true);
       const token = localStorage.getItem("authToken");
-      const response = await axios.post(
+      const response = await axios.get(
         `http://127.0.0.1:8000/purchase-and-store/api/archieve_indent/4322/?role=${role}&file_id=${id}`, // Fixed URL format
-        {}, // Empty body as no data needed
         {
           headers: {
             Authorization: `Token ${token}`, // Correct placement of headers
@@ -44,6 +43,7 @@ function EmployeeViewFileIndent() {
       );
 
       console.log(response);
+      navigate("/purchase/outbox");
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -231,7 +231,7 @@ function EmployeeViewFileIndent() {
                 color="blue"
                 // color="#9095A0FF"
                 onClick={() => {
-                  archieveIndent();
+                  archieveIndent(indentID);
                 }}
               >
                 Archieve
