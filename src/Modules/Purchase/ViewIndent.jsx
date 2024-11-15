@@ -150,7 +150,6 @@ function ViewIndent() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-
         `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/?role=${role}`,
 
         data,
