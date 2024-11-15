@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import DataTable from "./Table";
-import DataTable2 from "./Table2";
+// import DataTable2 from "./Table2";
 
 function ViewIndent() {
   // const [remarks, setRemarks] = useState("");
@@ -25,11 +25,15 @@ function ViewIndent() {
   const [receiverName, setReceiverName] = useState("");
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
-  const uploader_username = useSelector((state) => state.user);
+
+  const uploader_username = useSelector((state) => state.user.roll_no);
+
   const role = useSelector((state) => state.user.role);
   const { indentID } = useParams();
 
   const [indent, setIndent] = useState(null);
+  const [fileInfo, setFileInfo] = useState(null);
+  const [department, setDepartment] = useState("");
 
   const fetchIndentDetails = async () => {
     try {
@@ -44,7 +48,9 @@ function ViewIndent() {
           },
         },
       );
-      setIndent(response.data);
+      setIndent(response.data.indent);
+      setFileInfo(response.data.file);
+      setDepartment(response.data.department);
       console.log(response.data);
       console.log(indent);
     } catch (error) {
@@ -115,7 +121,8 @@ function ViewIndent() {
       receiverDesignation: value,
     }));
   };
-
+  const year = fileInfo ? fileInfo.upload_date.slice(0, 4) : "";
+  const month = fileInfo ? fileInfo.upload_date.slice(5, 7) : "";
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
@@ -143,7 +150,9 @@ function ViewIndent() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/role=${role}`,
+
+        `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/?role=${role}`,
+
         data,
         {
           headers: {
@@ -204,7 +213,9 @@ function ViewIndent() {
                 <Text weight={600}>
                   <strong>Created by:</strong>
                 </Text>
-                <Text>atul-professor</Text>
+                <Text>
+                  {uploader_username} - {role}{" "}
+                </Text>
               </Group>
             </Grid.Col>
             <Grid.Col span={1}>
@@ -212,7 +223,9 @@ function ViewIndent() {
                 <Text weight={600}>
                   <strong>File ID:</strong>
                 </Text>
-                <Text>CSE-2027-9-#619</Text>
+                <Text>
+                  {department}-{year}-{month}-#{fileInfo ? fileInfo.id : ""}
+                </Text>
               </Group>
             </Grid.Col>
             <Grid.Col span={2}>
@@ -220,11 +233,11 @@ function ViewIndent() {
                 <DataTable indent={indent} />
               </Text>
             </Grid.Col>
-            <Grid.Col span={2}>
+            {/* <Grid.Col span={2}>
               <Text>
                 <DataTable2 />
               </Text>
-            </Grid.Col>
+            </Grid.Col> */}
           </Grid>
 
           <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>
@@ -264,7 +277,7 @@ function ViewIndent() {
                 />
               </Grid.Col>
 
-              <Grid.Col sm={12}>
+              {/* <Grid.Col sm={12}>
                 <Button
                   type="submit"
                   fullWidth
@@ -273,7 +286,7 @@ function ViewIndent() {
                 >
                   Submit Indent
                 </Button>
-              </Grid.Col>
+              </Grid.Col> */}
             </Grid>
 
             {/* Submit and Archive Buttons */}
