@@ -25,7 +25,9 @@ function ViewIndent() {
   const [receiverName, setReceiverName] = useState("");
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
+
   const uploader_username = useSelector((state) => state.user.roll_no);
+
   const role = useSelector((state) => state.user.role);
   const { indentID } = useParams();
 
@@ -148,7 +150,9 @@ function ViewIndent() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
+
         `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/?role=${role}`,
+
         data,
         {
           headers: {
