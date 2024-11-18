@@ -11,19 +11,42 @@ import {
   Title,
 } from "@mantine/core";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import DataTable from "./Table";
 import { viewIndentRoute } from "../../routes/purchaseRoutes";
 
 function EmployeeViewFileIndent() {
   const { indentID } = useParams();
-  const handleSubmit = () => {
-    alert("Submitted");
+  const token = localStorage.getItem("authToken");
+  const role = useSelector((state) => state.user.role);
+  const archieveIndent = async () => {
+    // Send POST request to archive the file
+    const id = indentID;
+    try {
+      // setLoading(true);
+      const response = await axios.get(
+        `http://127.0.0.1:8000/purchase-and-store/api/archieve_indent/4322/?role=${role}&file_id=${id}`, // Fixed URL format
+        {
+          headers: {
+            Authorization: `Token ${token}`, // Correct placement of headers
+          },
+        },
+      );
+
+      console.log(response);
+      // navigate("/purchase/outbox");
+      // setLoading(false);
+    } catch (err) {
+      console.log(err);
+      // setError("Failed to archieve indent."); // Handle errors
+      // setLoading(false);
+    }
   };
   const [indent, setIndent] = useState(null);
 
   const fetchIndentDetails = async () => {
     try {
-      const token = localStorage.getItem("authToken");
+      // const token = localStorage.getItem("authToken");
       const response = await axios.post(
         viewIndentRoute,
         { file_id: indentID },
@@ -107,7 +130,7 @@ function EmployeeViewFileIndent() {
               </Text>
             </Grid.Col> */}
           </Grid>
-          <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>
+          <form onSubmit={archieveIndent} style={{ marginLeft: "24px" }}>
             <Group position="right" mt="lg" style={{ justifyContent: "end" }}>
               <Button type="submit" variant="fill" color="blue">
                 Archieve
