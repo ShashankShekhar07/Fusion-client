@@ -1,52 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { MantineProvider, Table, Button, Text, Box, Flex } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { outboxViewRoute2 } from "../../routes/purchaseRoutes";
 
+const indents = [
+  {
+    id: 1,
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
+    email: "atul@iiitdmj.ac.in",
+    fileid: "CSE-2024-9-#616",
+    subject: "Furniture requirements",
+    Date: "Sept 3, 2024",
+  },
+  {
+    id: 2,
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
+    email: "atul@iiitdmj.ac.in",
+    fileid: "CSE-2024-9-#616",
+    subject: "Furniture requirements",
+    Date: "Sept 3, 2024",
+  },
+  {
+    id: 3,
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
+    email: "atul@iiitdmj.ac.in",
+    fileid: "CSE-2024-9-#616",
+    subject: "Furniture requirements",
+    Date: "Sept 3, 2024",
+  },
+  {
+    id: 4,
+    name: "Atul-professor",
+    receiver: "bhartenduks-Director",
+    email: "atul@iiitdmj.ac.in",
+    receiver_email: "bhartenduks@iiitdmj.ac.in",
+    fileid: "CSE-2024-9-#616",
+    subject: "Furniture requirements",
+    Date: "Sept 3, 2024",
+  },
+];
 function OutboxTable() {
-  const [outbox, setOutbox] = useState([]);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const role = useSelector((state) => state.user.role);
-  // const username = useSelector((state) => state.user.roll_no);
-  // const username = useSelector((state) => state.user.username);
-  console.log(role);
-  useEffect(() => {
-    const fetchIndents = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
-        const response = await axios.get(outboxViewRoute2(role), {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        console.log(response.data.in_file);
-        setOutbox(response.data.in_file);
-        // setDepartment(response.data.department);
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to fetch indents.");
-        setLoading(false);
-      }
-    };
-
-    fetchIndents();
-  }, []);
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text style={{ color: "red" }}>{error}</Text>; // Display error message
-  }
   return (
     <Box p="md" style={{ margin: 0 }}>
       {" "}
-      {/* <Box
+      {/* Removed margin-top completely */}
+      <Box
         mb="md"
         style={{
           display: "flex",
@@ -59,25 +63,7 @@ function OutboxTable() {
           style={{
             paddingBottom: 15,
             fontWeight: "bold",
-          }}
-        >
-          Outbox
-        </Text>
-      </Box> */}
-      <Box
-        mb="md"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text
-          size="26px"
-          style={{
-            fontWeight: "bold",
-            textAlign: "center",
-            color: "#1881d9",
+            m: "auto",
           }}
         >
           Outbox
@@ -93,192 +79,111 @@ function OutboxTable() {
       >
         <thead>
           <tr>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Send By
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Send to
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
-              File Id
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+              file Id
             </th>
-            {/* <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Subject
-            </th> */}
-            <th style={{ backgroundColor: "white", padding: "12px" }}>Date</th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            </th>
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+              Date
+            </th>
+            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Features
             </th>
           </tr>
         </thead>
         <tbody>
-          {outbox.map((row, index) =>
-            index % 2 === 0 ? (
-              <tr key={row.id} style={{ backgroundColor: "#f8fafb" }}>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
+          {indents.map((row) => (
+            <tr key={row.id} style={{ backgroundColor: "#F3F9FF" }}>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                <Text weight={500}>{row.name}</Text>
+                <Text size="sm" color="dimmed">
+                  {row.email}
+                </Text>
+              </td>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                <Text weight={500}>{row.receiver}</Text>
+                <Text size="sm" color="dimmed">
+                  {row.receiver_email}
+                </Text>
+              </td>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                {row.fileid}
+              </td>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                {row.subject}
+              </td>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                {row.Date}
+              </td>
+              <td
+                style={{
+                  padding: "12px",
+                  borderBottom: "1px solid #E0E0E0",
+                  textAlign: "center",
+                }}
+              >
+                <Flex
+                  direction="column"
+                  gap="md"
+                  justify="center"
+                  align="center"
+                  style={{ marginTop: "10px", marginBottom: "10px" }}
                 >
-                  <Text weight={500}>{row.uploader}</Text>
-                  {/* <Text syle={{ size: "sm", color: "dimmed" }}>
-                    {row.email}
-                  </Text> */}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Text weight={500}>{row.designation}</Text>
-                  {/* <Text style={{ size: "sm", color: "dimmed" }}> */}
-                  {/* {row.receiver_email} */}
-                  {/* </Text> */}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  {row.id}
-                </td>
-                {/* <td
-              style={{
-                padding: "12px",
-                borderBottom: "1px solid #E0E0E0",
-                textAlign: "center",
-              }}
-            >
-              {row.subject}
-            </td> */}
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  {row.upload_date}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Flex
-                    direction="row"
-                    gap="md"
-                    justify="center"
-                    align="center"
-                    style={{ marginTop: "10px", marginBottom: "10px" }}
+                  <Button
+                    variant="outline"
+                    color="blue"
+                    style={{ marginRight: "8px" }}
+                    onClick={() =>
+                      navigate("/purchase/Employeeviewfiledindent")
+                    }
                   >
-                    <Button
-                      color="green"
-                      style={{ marginRight: "8px" }}
-                      onClick={() =>
-                        navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
-                      }
-                    >
-                      View
-                    </Button>
-                    <Button variant="outline" color="red">
-                      Delete
-                    </Button>
-                  </Flex>
-                </td>
-              </tr>
-            ) : (
-              <tr key={row.id} style={{ backgroundColor: "white" }}>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Text weight={500}>{row.uploader}</Text>
-                  <Text syle={{ size: "sm", color: "dimmed" }}>
-                    {row.email}
-                  </Text>
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Text weight={500}>{row.designation}</Text>
-                  <Text style={{ size: "sm", color: "dimmed" }}>
-                    {row.receiver_email}
-                  </Text>
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  {row.id}
-                </td>
-                {/* <td
-            style={{
-              padding: "12px",
-              borderBottom: "1px solid #E0E0E0",
-              textAlign: "center",
-            }}
-          >
-            {row.subject}
-          </td> */}
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  {row.upload_date}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Flex
-                    direction="row"
-                    gap="md"
-                    justify="center"
-                    align="center"
-                    style={{ marginTop: "10px", marginBottom: "10px" }}
-                  >
-                    <Button
-                      color="green"
-                      style={{ marginRight: "8px" }}
-                      onClick={() =>
-                        navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
-                      }
-                    >
-                      View
-                    </Button>
-                    <Button variant="outline" color="red">
-                      Delete
-                    </Button>
-                  </Flex>
-                </td>
-              </tr>
-            ),
-          )}
+                    View
+                  </Button>
+                  <Button variant="outline" color="red">
+                    Delete
+                  </Button>
+                </Flex>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Box>
@@ -315,5 +220,4 @@ function Outbox() {
     </MantineProvider>
   );
 }
-
 export default Outbox;

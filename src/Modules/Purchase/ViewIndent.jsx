@@ -105,11 +105,6 @@ function ViewIndent() {
       setDesignations(response.data); // Set the fetched designations in state
     } catch (error) {
       console.error("Error fetching designations:", error);
-      // setErrorMessage(
-      //   error.response
-      //     ? error.response.data
-      //     : "An error occurred while fetching designations",
-      // );
     }
   };
 
@@ -168,11 +163,6 @@ function ViewIndent() {
       navigate("/purchase/all_filed_indents");
     } catch (error) {
       console.error("Error submitting form:", error);
-      // setErrorMessage(
-      //   error.response
-      //     ? error.response.data
-      //     : "An error occurred during submission",
-      // );
     }
   };
 

@@ -19,15 +19,6 @@ function FiledIndentsTable() {
   // eslint-disable-next-line no-restricted-globals
   console.log(role);
   const username = useSelector((state) => state.user.roll_no);
-  // console.log(username);
-  // const [department, setDepartment] = useState("");
-  // console.log(useSelector((state) => state.user));
-  // const fetchIndents
-  // useEffect(() => {
-  //   // Fetch indents from the server using HoldsDesignation ID from local storage
-
-  //   fetchIndents(); // Call the function to fetch indents
-  // }, []); // Empty dependency array to run effect on mount
 
   const fetchIndents = async () => {
     try {
