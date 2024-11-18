@@ -89,7 +89,10 @@ function FiledIndentsTable() {
     return <Text color="red">{error}</Text>; // Display error message
   }
   return (
-    <Box p="md" style={{ margin: 5 }}>
+    <Box
+      p="md"
+      style={{ marginTop: "32px", marginLeft: "32px", marginRight: "32px" }}
+    >
       {" "}
       {/* Removed margin-top completely */}
       <Box
