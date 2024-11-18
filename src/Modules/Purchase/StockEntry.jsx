@@ -1,5 +1,7 @@
 import { useState } from "react";
 // import { PiPrinter } from "react-icons/pi";
+import axios from "axios";
+import { useSelector } from "react-redux";
 import {
   Button,
   TextInput,
@@ -15,25 +17,49 @@ import {
 } from "@mantine/core";
 
 function StockEntry() {
-  const [pname, setPname] = useState("");
-  const [pprice, setPprice] = useState("");
+  // formData.append("id", pid); // Assuming pname represents id
+  // formData.append("vendor", "SomeVendor"); // Replace with actual vendor input
+  // formData.append("current_stock", pquantity);
+  // formData.append("bill", file); // Ensure `file` is a File object
+  // formData.append("location", cat);
+  const [pid, setPid] = useState("");
+  const [vendor, setVendor] = useState("");
   const [pquantity, setPquantity] = useState("");
   const [cat, setCat] = useState("");
-  const [dept, setDept] = useState("");
-  const [desc, setDesc] = useState("");
+  const [receivedDate, setReceivedDate] = useState("");
   const [file, setFile] = useState("");
+  const token = localStorage.getItem("authToken");
+  const handleSubmit = async () => {
+    event.preventDefault();
+    const formData = new FormData();
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    alert("submitted");
-    alert(pname);
-    alert(pprice);
-    alert(pquantity);
-    alert(cat);
-    alert(dept);
-    alert(desc);
-    alert(file);
-  }
+    formData.append("id", pid); // Assuming pname represents id
+    formData.append("vendor", vendor); // Replace with actual vendor input
+    formData.append("current_stock", pquantity);
+    formData.append("bill", file); // Ensure `file` is a File object
+    formData.append("location", cat); // Assuming category is location
+    formData.append("recieved_date", receivedDate);
+
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/purchase-and-store/api/stockEntry/4322`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Token ${token}`, // Add token for authentication
+          },
+        },
+      );
+      navigate("/purchase/");
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.error(
+        "Error:",
+        error.response ? error.response.data : error.message,
+      );
+    }
+  };
 
   return (
     <Container size="lg">
@@ -65,25 +91,25 @@ function StockEntry() {
             <Grid.Col span={12}>
               <Group align="flex-start" position="apart" grow>
                 <TextInput
-                  label="Product Name"
-                  value={pname}
-                  onChange={(e) => setPname(e.target.value)}
-                  placeholder="Enter Product Name"
+                  label="Product Id"
+                  value={pid}
+                  onChange={(e) => setPid(e.target.value)}
+                  placeholder="Enter Product id"
+                  type="number"
                   required
                   style={{ flexGrow: 1 }}
                 />
               </Group>
             </Grid.Col>
 
-            {/* Price */}
+            {/* vendor */}
             <Grid.Col span={12}>
               <Group align="flex-start" position="apart" grow>
                 <TextInput
-                  label="Price"
-                  value={pprice}
-                  onChange={(e) => setPprice(e.target.value)}
-                  placeholder="Enter Price"
-                  type="number"
+                  label="Vendor"
+                  value={vendor}
+                  onChange={(e) => setVendor(e.target.value)}
+                  placeholder="Enter vendor"
                   required
                   style={{ flexGrow: 1 }}
                 />
@@ -94,7 +120,7 @@ function StockEntry() {
             <Grid.Col span={12}>
               <Group align="flex-start" position="apart" grow>
                 <TextInput
-                  label="Quantity"
+                  label="Current Quantity"
                   value={pquantity}
                   onChange={(e) => setPquantity(e.target.value)}
                   placeholder="Enter Quantity"
@@ -109,7 +135,7 @@ function StockEntry() {
             <Grid.Col span={12}>
               <Group align="flex-start" position="apart" grow>
                 <TextInput
-                  label="Category"
+                  label="location"
                   value={cat}
                   onChange={(e) => setCat(e.target.value)}
                   placeholder="Enter Category"
@@ -119,35 +145,14 @@ function StockEntry() {
               </Group>
             </Grid.Col>
 
-            {/* Department */}
+            {/* Received Date */}
             <Grid.Col span={12}>
               <Group align="flex-start" position="apart" grow>
-                <Select
-                  label="Department"
-                  value={dept}
-                  onChange={setDept}
-                  data={[
-                    { value: "cs", label: "CSE" },
-                    { value: "ec", label: "ECE" },
-                    { value: "me", label: "ME" },
-                    { value: "sm", label: "SM" },
-                    { value: "bdes", label: "BDES" },
-                  ]}
-                  placeholder="Select Department"
-                  required
-                  style={{ flexGrow: 1 }}
-                />
-              </Group>
-            </Grid.Col>
-
-            {/* Description */}
-            <Grid.Col span={12}>
-              <Group align="flex-start" position="apart" grow>
-                <Textarea
-                  label="Description"
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                  placeholder="Enter Description of Product"
+                <TextInput
+                  label="Received Date"
+                  value={receivedDate}
+                  onChange={(e) => setReceivedDate(e.target.value)}
+                  type="date" // Use date input
                   required
                   style={{ flexGrow: 1 }}
                 />
