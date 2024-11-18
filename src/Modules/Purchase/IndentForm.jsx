@@ -17,6 +17,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {
+  // createDraftRoute,
+  createProposalRoute,
+  getDesignationsRoute,
+} from "../../routes/purchaseRoutes";
 
 function IndentForm() {
   // const [file, setFile] = useState(null);
@@ -63,9 +68,7 @@ function IndentForm() {
   // eslint-disable-next-line no-shadow
   const fetchDesignations = async (receiverName) => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/filetracking/getdesignations/${receiverName}`,
-      );
+      const response = await axios.get(getDesignationsRoute(receiverName));
       console.log("Fetched designations:", response.data);
       setDesignations(response.data); // Set the fetched designations in state
     } catch (error) {
@@ -109,16 +112,12 @@ function IndentForm() {
 
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/?role=${role}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Token ${token}`,
-          },
+      const response = await axios.post(createProposalRoute(role), data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token}`,
         },
-      );
+      });
 
       console.log("Success:", response.data);
       navigate("/purchase/all_filed_indents");
@@ -151,12 +150,12 @@ function IndentForm() {
     data.append("forwardTo", values.forwardTo);
     data.append("receiverDesignation", values.receiverDesignation);
     data.append("receiverName", values.receiverName);
-    console.log("Form data:", data.get("receiverDesignation"));
+    // console.log("Form data:", data.get("receiverDesignation"));
 
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        "http://127.0.0.1:8000/purchase-and-store/api/create_draft/",
+        `http://127.0.0.1:8000/purchase-and-store/api/create_draft/`,
         data,
         {
           headers: {

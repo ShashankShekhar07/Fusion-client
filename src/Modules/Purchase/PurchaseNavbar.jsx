@@ -2,40 +2,41 @@ import React from "react";
 import { Tabs, Group, MantineProvider } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 
+const TabsModules = [
+  {
+    label: "File an Indent",
+    id: "file-indent",
+    url: "/purchase",
+  },
+  {
+    label: "Filed Indents",
+    id: "all-filed-indents",
+    url: "/purchase/all_filed_indents",
+  },
+  {
+    label: "Saved indents",
+    id: "saved-indents",
+    url: "/purchase/saved_indents",
+  },
+  {
+    label: "Inbox",
+    id: "inbox",
+    url: "/purchase/inbox",
+  },
+  { label: "Outbox", id: "outbox", url: "/purchase/outbox" },
+  {
+    label: "Archieved Indents",
+    id: "archieved-indents",
+    url: "/purchase/archieved_indents",
+  },
+  {
+    label: "Stock Entry",
+    id: "stock-entry",
+    url: "/purchase/stock_entry",
+  },
+];
+
 export default function PurchaseNavbar() {
-  const TabsModules = [
-    {
-      label: "File an Indent",
-      id: "file-indent",
-      url: "/purchase",
-    },
-    {
-      label: "Filed Indents",
-      id: "all-filed-indents",
-      url: "/purchase/all_filed_indents",
-    },
-    {
-      label: "Saved indents",
-      id: "saved-indents",
-      url: "/purchase/saved_indents",
-    },
-    {
-      label: "Inbox",
-      id: "inbox",
-      url: "/purchase/inbox",
-    },
-    { label: "Outbox", id: "outbox", url: "/purchase/outbox" },
-    {
-      label: "Archieved Indents",
-      id: "archieved-indents",
-      url: "/purchase/archieved_indents",
-    },
-    {
-      label: "Stock Entry",
-      id: "stock-entry",
-      url: "/purchase/stock_entry",
-    },
-  ];
   const [activeTab, setActiveTab] = React.useState("file-indent");
   const navigate = useNavigate();
 

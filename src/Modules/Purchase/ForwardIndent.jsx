@@ -17,6 +17,11 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import DataTable from "./Table";
+import {
+  forwardIndentRoute,
+  getDesignationsRoute,
+  viewIndentRoute,
+} from "../../routes/purchaseRoutes";
 // import DataTable2 from "./Table2";
 
 function ForwardIndent() {
@@ -39,7 +44,7 @@ function ForwardIndent() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        "http://127.0.0.1:8000/purchase-and-store/api/view_indent/",
+        viewIndentRoute,
         { file_id: indentID },
         {
           headers: {
@@ -96,9 +101,7 @@ function ForwardIndent() {
   // eslint-disable-next-line no-shadow
   const fetchDesignations = async (receiverName) => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/filetracking/getdesignations/${receiverName}`,
-      );
+      const response = await axios.get(getDesignationsRoute(receiverName));
       console.log("Fetched designations:", response.data);
       setDesignations(response.data); // Set the fetched designations in state
     } catch (error) {
@@ -149,16 +152,12 @@ function ForwardIndent() {
 
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/forward_indent/${indentID}/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Token ${token}`,
-          },
+      const response = await axios.post(forwardIndentRoute(indentID), data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token}`,
         },
-      );
+      });
 
       console.log("Success:", response.data);
       navigate("/purchase/all_filed_indents");

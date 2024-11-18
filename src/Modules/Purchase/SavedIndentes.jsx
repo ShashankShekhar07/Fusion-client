@@ -3,6 +3,7 @@ import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { deleteIndentRoute, draftViewRoute } from "../../routes/purchaseRoutes";
 
 function SavedIndentsTable() {
   const [indents, setIndents] = useState([]); // State for indents data
@@ -20,7 +21,7 @@ function SavedIndentsTable() {
       // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
 
       const response = await axios.get(
-        `http://127.0.0.1:8000/purchase-and-store/api/draftview/${username}`, // Use dynamic HoldsDesignation ID
+        draftViewRoute(username), // Use dynamic HoldsDesignation ID
         {
           headers: {
             Authorization: `Token ${token}`, // Add the token in Authorization header
@@ -46,7 +47,7 @@ function SavedIndentsTable() {
     try {
       const token = localStorage.getItem("authToken");
       await axios.post(
-        "http://127.0.0.1:8000/purchase-and-store/api/delete_indent/",
+        deleteIndentRoute,
         {
           file_id: id,
         },
@@ -79,16 +80,16 @@ function SavedIndentsTable() {
         mb="md"
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >
         <Text
-          size="xl"
+          size="26px"
           style={{
-            paddingBottom: 15,
             fontWeight: "bold",
-            m: "auto",
+            textAlign: "center",
+            color: "#1881d9",
           }}
         >
           All Saved Indents
@@ -104,91 +105,157 @@ function SavedIndentsTable() {
       >
         <thead>
           <tr>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Created By
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               File ID
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Subject
             </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
-              Date
-            </th>
-            <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>Date</th>
+            <th style={{ backgroundColor: "white", padding: "12px" }}>
               Features
             </th>
           </tr>
         </thead>
         <tbody>
-          {indents.map((booking) => (
-            <tr key={booking.id}>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                <Text weight={500}>{booking.name}</Text>
-                <Text size="sm">
-                  {booking.uploader} - {role}
-                </Text>
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                {department}&nbsp;#{booking.id}
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                {booking.subject ? booking.subject : "None"}
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                {booking.upload_date}
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                <Button
-                  color="green"
-                  style={{ marginRight: "8px" }}
-                  onClick={() =>
-                    navigate(`/purchase/viewsavedindent/${booking.id}`)
-                  }
+          {indents.map((booking, index) =>
+            index % 2 === 0 ? (
+              <tr key={booking.id} style={{ backgroundColor: "#f8fafb" }}>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
                 >
-                  View
-                </Button>
-                <Button
-                  variant="outline"
-                  color="red"
-                  onClick={() => remove_indent(booking.id)}
+                  <Text weight={500}>{booking.name}</Text>
+                  <Text size="sm">
+                    {booking.uploader} - {role}
+                  </Text>
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
                 >
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
+                  {department}&nbsp;#{booking.id}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {booking.subject ? booking.subject : "None"}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {booking.upload_date}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Button
+                    color="green"
+                    style={{ marginRight: "8px" }}
+                    onClick={() =>
+                      navigate(`/purchase/viewsavedindent/${booking.id}`)
+                    }
+                  >
+                    View
+                  </Button>
+                  <Button
+                    variant="outline"
+                    color="red"
+                    onClick={() => remove_indent(booking.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ) : (
+              <tr key={booking.id} style={{ backgroundColor: "white" }}>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Text weight={500}>{booking.name}</Text>
+                  <Text size="sm">
+                    {booking.uploader} - {role}
+                  </Text>
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {department}&nbsp;#{booking.id}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {booking.subject ? booking.subject : "None"}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {booking.upload_date}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Button
+                    color="green"
+                    style={{ marginRight: "8px" }}
+                    onClick={() =>
+                      navigate(`/purchase/viewsavedindent/${booking.id}`)
+                    }
+                  >
+                    View
+                  </Button>
+                  <Button
+                    variant="outline"
+                    color="red"
+                    onClick={() => remove_indent(booking.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ),
+          )}
         </tbody>
       </Table>
     </Box>

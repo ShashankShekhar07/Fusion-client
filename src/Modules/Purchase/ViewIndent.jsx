@@ -15,6 +15,11 @@ import {
 import axios from "axios";
 import { useSelector } from "react-redux";
 import DataTable from "./Table";
+import {
+  createProposalRoute,
+  getDesignationsRoute,
+  viewIndentRoute,
+} from "../../routes/purchaseRoutes";
 // import DataTable2 from "./Table2";
 
 function ViewIndent() {
@@ -39,7 +44,7 @@ function ViewIndent() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        "http://127.0.0.1:8000/purchase-and-store/api/view_indent/",
+        viewIndentRoute,
         { file_id: indentID },
         {
           headers: {
@@ -95,9 +100,7 @@ function ViewIndent() {
   // eslint-disable-next-line no-shadow
   const fetchDesignations = async (receiverName) => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/filetracking/getdesignations/${receiverName}`,
-      );
+      const response = await axios.get(getDesignationsRoute(receiverName));
       console.log("Fetched designations:", response.data);
       setDesignations(response.data); // Set the fetched designations in state
     } catch (error) {
@@ -150,7 +153,7 @@ function ViewIndent() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/create_proposal/?role=${role}`,
+        createProposalRoute(role),
 
         data,
         {

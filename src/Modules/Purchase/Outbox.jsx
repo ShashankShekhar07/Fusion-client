@@ -1,65 +1,69 @@
 import React, { useState, useEffect } from "react";
-import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
+import { MantineProvider, Table, Button, Text, Box, Flex } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { viewIndentByUsernameAndRoleRoute2 } from "../../routes/purchaseRoutes";
+import { outboxViewRoute2 } from "../../routes/purchaseRoutes";
 
-function InboxTable() {
-  const [inbox, setInbox] = useState([]); // State for indents data
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState(null); // State for error handling
+function OutboxTable() {
+  const [outbox, setOutbox] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const role = useSelector((state) => state.user.role);
-  const username = useSelector((state) => state.user.roll_no);
-  console.log(useSelector((state) => state.user));
-  // const [department, setDepartment] = useState("");
-  // console.log(useSelector((state) => state.user));
-  // const desigid = useSelector((state) => state.user.Holds_designation);
+  // const username = useSelector((state) => state.user.roll_no);
+  // const username = useSelector((state) => state.user.username);
+  console.log(role);
   useEffect(() => {
-    // Fetch indents from the server using HoldsDesignation ID from local storage
     const fetchIndents = async () => {
       try {
-        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
+        const token = localStorage.getItem("authToken");
         // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
-        // console.log("me");
-        console.log(username);
-        console.log(role);
-        const response = await axios.get(
-          viewIndentByUsernameAndRoleRoute2(username, role), // Use dynamic HoldsDesignation ID
-          {
-            headers: {
-              Authorization: `Token ${token}`, // Add the token in Authorization header
-            },
+        const response = await axios.get(outboxViewRoute2(role), {
+          headers: {
+            Authorization: `Token ${token}`,
           },
-        );
-        // const filteredData = response.data.in_file.filter(
-        //   (item) => item.receiver_designation_name === role,
-        // );
-        setInbox(response.data.in_file); // Set the fetched data to indents state
+        });
+        console.log(response.data.in_file);
+        setOutbox(response.data.in_file);
         // setDepartment(response.data.department);
-        setLoading(false); // Stop loading once data is fetched
+        setLoading(false);
       } catch (err) {
-        setError("Failed to fetch indents."); // Handle errors
+        setError("Failed to fetch indents.");
         setLoading(false);
       }
     };
 
-    fetchIndents(); // Call the function to fetch indents
-  }, [role]); // Empty dependency array to run effect on mount
+    fetchIndents();
+  }, []);
   if (loading) {
-    return <Text>Loading...</Text>; // Display loading state
+    return <Text>Loading...</Text>;
   }
 
   if (error) {
-    return <Text color="red">{error}</Text>; // Display error message
+    return <Text style={{ color: "red" }}>{error}</Text>; // Display error message
   }
-  // const navigate = useNavigate();
-  console.log(inbox);
   return (
     <Box p="md" style={{ margin: 0 }}>
       {" "}
-      {/* Removed margin-top completely */}
+      {/* <Box
+        mb="md"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text
+          size="xl"
+          style={{
+            paddingBottom: 15,
+            fontWeight: "bold",
+          }}
+        >
+          Outbox
+        </Text>
+      </Box> */}
       <Box
         mb="md"
         style={{
@@ -76,7 +80,7 @@ function InboxTable() {
             color: "#1881d9",
           }}
         >
-          Inbox
+          Outbox
         </Text>
       </Box>
       <Table
@@ -90,17 +94,17 @@ function InboxTable() {
         <thead>
           <tr>
             <th style={{ backgroundColor: "white", padding: "12px" }}>
-              Received as
+              Send By
             </th>
             <th style={{ backgroundColor: "white", padding: "12px" }}>
-              Send by
+              Send to
             </th>
             <th style={{ backgroundColor: "white", padding: "12px" }}>
               File Id
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            {/* <th style={{ backgroundColor: "#D9EAF7", padding: "12px" }}>
               Subject
-            </th>
+            </th> */}
             <th style={{ backgroundColor: "white", padding: "12px" }}>Date</th>
             <th style={{ backgroundColor: "white", padding: "12px" }}>
               Features
@@ -108,9 +112,9 @@ function InboxTable() {
           </tr>
         </thead>
         <tbody>
-          {inbox.map((booking, index) =>
+          {outbox.map((row, index) =>
             index % 2 === 0 ? (
-              <tr key={booking.id} style={{ backgroundColor: "#f8fafb" }}>
+              <tr key={row.id} style={{ backgroundColor: "#f8fafb" }}>
                 <td
                   style={{
                     padding: "12px",
@@ -118,10 +122,10 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  <Text weight={500}>{username}</Text>
-                  <Text size="sm" color="dimmed">
-                    {booking.email}-{role}
-                  </Text>
+                  <Text weight={500}>{row.uploader}</Text>
+                  {/* <Text syle={{ size: "sm", color: "dimmed" }}>
+                    {row.email}
+                  </Text> */}
                 </td>
                 <td
                   style={{
@@ -130,7 +134,10 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.uploader}
+                  <Text weight={500}>{row.designation}</Text>
+                  {/* <Text style={{ size: "sm", color: "dimmed" }}> */}
+                  {/* {row.receiver_email} */}
+                  {/* </Text> */}
                 </td>
                 <td
                   style={{
@@ -139,7 +146,25 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.id}
+                  {row.id}
+                </td>
+                {/* <td
+              style={{
+                padding: "12px",
+                borderBottom: "1px solid #E0E0E0",
+                textAlign: "center",
+              }}
+            >
+              {row.subject}
+            </td> */}
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {row.upload_date}
                 </td>
                 <td
                   style={{
@@ -148,40 +173,30 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.subject ? booking.subject : "None"}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  {booking.upload_date}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Button
-                    color="green"
-                    style={{ marginRight: "8px" }}
-                    onClick={() =>
-                      navigate(`/purchase/forward_indent/${booking.id}`)
-                    }
+                  <Flex
+                    direction="row"
+                    gap="md"
+                    justify="center"
+                    align="center"
+                    style={{ marginTop: "10px", marginBottom: "10px" }}
                   >
-                    View
-                  </Button>
-                  <Button variant="outline" color="red">
-                    Delete
-                  </Button>
+                    <Button
+                      color="green"
+                      style={{ marginRight: "8px" }}
+                      onClick={() =>
+                        navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
+                      }
+                    >
+                      View
+                    </Button>
+                    <Button variant="outline" color="red">
+                      Delete
+                    </Button>
+                  </Flex>
                 </td>
               </tr>
             ) : (
-              <tr key={booking.id} style={{ backgroundColor: "white" }}>
+              <tr key={row.id} style={{ backgroundColor: "white" }}>
                 <td
                   style={{
                     padding: "12px",
@@ -189,9 +204,9 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  <Text weight={500}>{username}</Text>
-                  <Text size="sm" color="dimmed">
-                    {booking.email}-{role}
+                  <Text weight={500}>{row.uploader}</Text>
+                  <Text syle={{ size: "sm", color: "dimmed" }}>
+                    {row.email}
                   </Text>
                 </td>
                 <td
@@ -201,7 +216,10 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.uploader}
+                  <Text weight={500}>{row.designation}</Text>
+                  <Text style={{ size: "sm", color: "dimmed" }}>
+                    {row.receiver_email}
+                  </Text>
                 </td>
                 <td
                   style={{
@@ -210,7 +228,25 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.id}
+                  {row.id}
+                </td>
+                {/* <td
+            style={{
+              padding: "12px",
+              borderBottom: "1px solid #E0E0E0",
+              textAlign: "center",
+            }}
+          >
+            {row.subject}
+          </td> */}
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {row.upload_date}
                 </td>
                 <td
                   style={{
@@ -219,36 +255,26 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.subject ? booking.subject : "None"}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  {booking.upload_date}
-                </td>
-                <td
-                  style={{
-                    padding: "12px",
-                    borderBottom: "1px solid #E0E0E0",
-                    textAlign: "center",
-                  }}
-                >
-                  <Button
-                    color="green"
-                    style={{ marginRight: "8px" }}
-                    onClick={() =>
-                      navigate(`/purchase/forward_indent/${booking.id}`)
-                    }
+                  <Flex
+                    direction="row"
+                    gap="md"
+                    justify="center"
+                    align="center"
+                    style={{ marginTop: "10px", marginBottom: "10px" }}
                   >
-                    View
-                  </Button>
-                  <Button variant="outline" color="red">
-                    Delete
-                  </Button>
+                    <Button
+                      color="green"
+                      style={{ marginRight: "8px" }}
+                      onClick={() =>
+                        navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
+                      }
+                    >
+                      View
+                    </Button>
+                    <Button variant="outline" color="red">
+                      Delete
+                    </Button>
+                  </Flex>
                 </td>
               </tr>
             ),
@@ -258,8 +284,7 @@ function InboxTable() {
     </Box>
   );
 }
-
-function Inbox() {
+function Outbox() {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
       <Box
@@ -284,11 +309,11 @@ function Inbox() {
             maxHeight: "80vh", // Limit height to 80% of the viewport
           }}
         >
-          <InboxTable />
+          <OutboxTable />
         </Box>
       </Box>
     </MantineProvider>
   );
 }
 
-export default Inbox;
+export default Outbox;
