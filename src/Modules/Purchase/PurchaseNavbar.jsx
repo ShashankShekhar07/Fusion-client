@@ -1,6 +1,8 @@
 import React from "react";
-import { Tabs, Group, MantineProvider } from "@mantine/core";
+import { Tabs, Group, MantineProvider, Button } from "@mantine/core";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
+import CustomBreadcrumbs from "./components/BreadCrumbs";
 
 const TabsModules = [
   {
@@ -48,16 +50,60 @@ export default function PurchaseNavbar() {
     }
   };
 
+  const filteredTabs = TabsModules.filter((tab) => {
+    return [
+      "file-indent",
+      "all-filed-indents",
+      "saved-indents",
+      "inbox",
+      "outbox",
+      "archieved-indents",
+      "stock-entry",
+    ].includes(tab.id);
+  });
+
+  const activeTabLabel = filteredTabs.find(
+    (tab) => tab.id === activeTab,
+  )?.label;
+  const activeTabIndex = filteredTabs.findIndex((tab) => tab.id === activeTab);
+  const handleNextTab = () => {
+    if (activeTabIndex < filteredTabs.length - 1) {
+      const nextTab = filteredTabs[activeTabIndex + 1];
+      handleTabChange(nextTab.id);
+    }
+  };
+
+  const handlePreviousTab = () => {
+    if (activeTabIndex > 0) {
+      const prevTab = filteredTabs[activeTabIndex - 1];
+      handleTabChange(prevTab.id);
+    }
+  };
+
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
+      <CustomBreadcrumbs activeTab={activeTabLabel} />
       <div className="booking-management">
         <Group position="apart" noWrap>
-          <Tabs onChange={handleTabChange} defaultValue="file-indent">
+          <Button
+            variant="subtle"
+            compact
+            onClick={handlePreviousTab}
+            disabled={activeTabIndex === 0}
+          >
+            <IconChevronLeft size={18} />
+          </Button>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            // defaultValue="file-indent"
+          >
             <Tabs.List>
-              {TabsModules.map((tab) => (
+              {filteredTabs.map((tab) => (
                 <Tabs.Tab
                   key={tab.id}
                   value={tab.id}
+                  onClick={() => handleTabChange(tab.id)} // Ensure clicking on the tab works
                   sx={() => ({
                     fontWeight: activeTab === tab.id ? "bold" : "normal",
                   })}
@@ -67,11 +113,18 @@ export default function PurchaseNavbar() {
               ))}
             </Tabs.List>
           </Tabs>
+          <Button
+            variant="subtle"
+            compact
+            onClick={handleNextTab}
+            disabled={activeTabIndex === filteredTabs.length - 1}
+          >
+            <IconChevronRight size={18} />
+          </Button>
         </Group>
       </div>
       <style>{`
         .booking-management {
-        //   max-width: 800px;
           margin: 0 auto;
           padding: 20px;
           font-family: Arial, sans-serif;
@@ -100,7 +153,6 @@ export default function PurchaseNavbar() {
           border-radius: 4px;
           padding: 10px;
         }
-          
       `}</style>
     </MantineProvider>
   );
