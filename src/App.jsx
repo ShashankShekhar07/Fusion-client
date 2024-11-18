@@ -70,7 +70,9 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <IndentForm />
+              <div style={{ margin: "32px" }}>
+                <IndentForm />
+              </div>
             </Layout>
           }
         />
@@ -79,7 +81,9 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <FiledIndents />
+              <div style={{ margin: "32px" }}>
+                <FiledIndents />
+              </div>
             </Layout>
           }
         />
@@ -88,7 +92,9 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <Inbox />
+              <div style={{ margin: "32px" }}>
+                <Inbox />
+              </div>
             </Layout>
           }
         />
@@ -106,7 +112,9 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <SavedIndents />
+              <div style={{ margin: "32px" }}>
+                <SavedIndents />
+              </div>
             </Layout>
           }
         />
@@ -115,7 +123,9 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <Archieved />
+              <div style={{ margin: "32px" }}>
+                <Archieved />
+              </div>
             </Layout>
           }
         />
@@ -133,7 +143,9 @@ export default function App() {
           element={
             <Layout>
               <PurchaseNavbar />
-              <Outbox />
+              <div style={{ margin: "32px" }}>
+                <Outbox />
+              </div>
             </Layout>
           }
         />

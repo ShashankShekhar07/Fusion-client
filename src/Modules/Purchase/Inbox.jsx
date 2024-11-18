@@ -57,7 +57,7 @@ function InboxTable() {
   // const navigate = useNavigate();
   console.log(inbox);
   return (
-    <Box p="md" style={{ margin: 0 }}>
+    <Box p="md">
       {" "}
       {/* Removed margin-top completely */}
       <Box
