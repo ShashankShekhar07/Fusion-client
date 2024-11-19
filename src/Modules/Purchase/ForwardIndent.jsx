@@ -88,6 +88,7 @@ function ForwardIndent() {
     remark: "",
     forwardTo: "",
     receiverDesignation: "",
+    role: "",
   });
 
   const handleInputChange = (field) => (event) => {
@@ -149,7 +150,7 @@ function ForwardIndent() {
     data.append("receiverName", receiverName);
     data.append("uploaderUsername", uploader_username);
     console.log("Form data:", data.get("receiverDesignation"));
-
+    data.append("role", role);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(forwardIndentRoute(indentID), data, {
@@ -243,14 +244,14 @@ function ForwardIndent() {
                   onChange={handleInputChange("remark")}
                 />
               </Grid.Col>
-              <Grid.Col sm={12}>
+              {/* <Grid.Col sm={12}>
                 <TextInput
                   label="Forward To"
                   placeholder="Enter forward to"
                   value={formValues.forwardTo}
                   onChange={handleInputChange("forwardTo")}
                 />
-              </Grid.Col>
+              </Grid.Col> */}
 
               <Grid.Col sm={12}>
                 <TextInput
