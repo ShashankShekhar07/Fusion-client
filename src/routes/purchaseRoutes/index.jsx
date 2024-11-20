@@ -6,8 +6,8 @@ export const viewIndentByUsernameAndRoleRoute = (username, role) =>
   `${host}/purchase-and-store/api/indentview/${username}?role=${role}`;
 export const viewIndentByUsernameAndRoleRoute2 = (username, role) =>
   `${host}/purchase-and-store/api/indentview2/${username}?role=${role}`;
-export const archiveViewRoute = (role) =>
-  `${host}/purchase-and-store/api/archieveview/4322?role=${role}`;
+export const archiveViewRoute = (username, role) =>
+  `${host}/purchase-and-store/api/archieveview/${username}?role=${role}`;
 export const forwardIndentRoute = (indentID) =>
   `${host}/purchase-and-store/api/forward_indent/${indentID}/`;
 export const getDesignationsRoute = (receiverName) =>
@@ -16,8 +16,8 @@ export const createProposalRoute = (role) =>
   `${host}/purchase-and-store/api/create_proposal/?role=${role}`;
 export const createDraftRoute = () =>
   `${host}/purchase-and-store/api/create_draft/`;
-export const outboxViewRoute2 = (role) =>
-  `${host}/purchase-and-store/api/outboxview2/4322?role=${role}`;
+export const outboxViewRoute2 = (username, role) =>
+  `${host}/purchase-and-store/api/outboxview2/${username}?role=${role}`;
 export const draftViewRoute = (username) =>
   `${host}/purchase-and-store/api/draftview/${username}`;
 export const forwardIndentFileRoute = (indentID) =>

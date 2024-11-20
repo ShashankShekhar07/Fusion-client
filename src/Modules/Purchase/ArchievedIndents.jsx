@@ -10,13 +10,14 @@ function ArchievedTable() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const username = useSelector((state) => state.user.roll_no);
   const role = useSelector((state) => state.user.role);
   console.log(role);
   useEffect(() => {
     const fetchIndents = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const response = await axios.get(archiveViewRoute(role), {
+        const response = await axios.get(archiveViewRoute(username, role), {
           headers: {
             Authorization: `Token ${token}`,
           },

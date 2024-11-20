@@ -13,6 +13,7 @@ import {
   Title,
   Grid,
   Flex,
+  Text,
   Group,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
@@ -28,8 +29,10 @@ function StockEntry() {
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
   const uploader_username = useSelector((state) => state.user);
-  // const username = useSelector((state) => state.user.roll_no);
+  const username = useSelector((state) => state.user.roll_no);
   const role = useSelector((state) => state.user.role);
+  const [loading, setLoading] = useState(false); // State for loading status
+  const [err, setErr] = useState(null); // State for error handling
   // console.log(uploader_username);
   const form = useForm({
     initialValues: {
@@ -122,7 +125,6 @@ function StockEntry() {
     data.append("role", role);
     console.log(data);
     // console.log("Form data:", data.get("receiverDesignation"));
-
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -223,11 +225,12 @@ function StockEntry() {
     formData.append("bill", files); // Ensure file is a File object
     formData.append("location", cat); // Assuming category is location
     formData.append("recieved_date", receivedDate);
-
+    formData.append("role", role);
+    setLoading(true);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/stockEntry/4322`,
+        `http://127.0.0.1:8000/purchase-and-store/api/stockEntry/${username}/`,
         formData,
         {
           headers: {
@@ -238,14 +241,23 @@ function StockEntry() {
       );
       // navigate("/purchase/");
       console.log("Success:", response.data);
+      setLoading(false);
     } catch (error) {
+      setErr(error);
       console.error(
         "Error:",
         error.response ? error.response.data : error.message,
       );
+      setLoading(false);
     }
   };
+  if (loading) {
+    return <Text>Loading...</Text>; // Display loading state
+  }
 
+  if (err) {
+    return <Text style={{ color: "red" }}>{err.message}</Text>; // Display error message
+  }
   return (
     <Center style={{ minHeight: "100vh" }}>
       <Paper
