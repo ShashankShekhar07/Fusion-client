@@ -11,7 +11,7 @@ function OutboxTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const role = useSelector((state) => state.user.role);
-  // const username = useSelector((state) => state.user.roll_no);
+  const username = useSelector((state) => state.user.roll_no);
   // const username = useSelector((state) => state.user.username);
   console.log(role);
   useEffect(() => {
@@ -19,7 +19,7 @@ function OutboxTable() {
       try {
         const token = localStorage.getItem("authToken");
         // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
-        const response = await axios.get(outboxViewRoute2(role), {
+        const response = await axios.get(outboxViewRoute2(username, role), {
           headers: {
             Authorization: `Token ${token}`,
           },

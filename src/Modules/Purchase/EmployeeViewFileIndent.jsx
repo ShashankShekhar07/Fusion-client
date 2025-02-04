@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   Container,
   Grid,
@@ -12,12 +12,40 @@ import {
 } from "@mantine/core";
 import axios from "axios";
 import DataTable from "./Table";
-import { viewIndentRoute } from "../../routes/purchaseRoutes";
+import {
+  archiveIndentRoute,
+  viewIndentRoute,
+} from "../../routes/purchaseRoutes";
 
 function EmployeeViewFileIndent() {
+  const navigate = useNavigate();
   const { indentID } = useParams();
   const handleSubmit = () => {
     alert("Submitted");
+  };
+  const role = useSelector((state) => state.user.role);
+  // const username = useSelector((state) => state.user.roll_no);
+  const [err, setErr] = useState("");
+  const archieveIndent = async (indent_id) => {
+    // Send POST request to archive the file
+    const id = indent_id;
+    try {
+      // setLoading(true);
+      const token = localStorage.getItem("authToken");
+      const response = await axios.get(archiveIndentRoute(role, id), {
+        headers: {
+          Authorization: `Token ${token}`, // Correct placement of headers
+        },
+      });
+
+      console.log(response);
+      navigate("/purchase/archieved_indents");
+      // setLoading(false);
+    } catch (error) {
+      setErr("Failed to archieve indent."); // Handle errors
+      console.log(err);
+      // setLoading(false);
+    }
   };
   const [indent, setIndent] = useState(null);
 
@@ -109,7 +137,14 @@ function EmployeeViewFileIndent() {
           </Grid>
           <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>
             <Group position="right" mt="lg" style={{ justifyContent: "end" }}>
-              <Button type="submit" variant="fill" color="blue">
+              <Button
+                type="submit"
+                variant="fill"
+                color="blue"
+                onClick={() => {
+                  archieveIndent(indentID);
+                }}
+              >
                 Archieve
               </Button>
             </Group>

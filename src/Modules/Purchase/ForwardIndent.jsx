@@ -9,7 +9,7 @@ import {
   Select,
   Group,
   Button,
-  TextInput,
+  // TextInput,
   Textarea,
   Title,
   FileInput,
@@ -29,12 +29,47 @@ function ForwardIndent() {
   // eslint-disable-next-line no-unused-vars
   const [file, setFile] = useState(null); // ignore
   // const [receiver, setReceiver] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [receiverName, setReceiverName] = useState("");
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
   const uploader_username = useSelector((state) => state.user.roll_no);
   console.log(uploader_username);
   const role = useSelector((state) => state.user.role);
+
+  const [users, setUsers] = useState([]); // Store all users data here
+  const [filteredUsers, setFilteredUsers] = useState([]); // Store filtered users
+  const [selectedUser, setSelectedUser] = useState(""); // Selected user from dropdown
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(
+        " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+      );
+      setUsers(response.data.users); // Save all users data to state
+      setFilteredUsers(response.data.users); // Initially, show all users
+    } catch (error) {
+      console.error("Error fetching all users", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllUsers(); // Fetch all users on mount
+  }, []);
+  // console.log("Users:", users);
+  // Handle search input change
+
+  // Filter users based on the query
+  const filterUsers = (searchQuery) => {
+    if (searchQuery === "") {
+      setFilteredUsers(users); // If query is empty, show all users
+    } else {
+      const filtered = users.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setFilteredUsers(filtered); // Set the filtered users
+    }
+  };
   const { indentID } = useParams();
 
   const [indent, setIndent] = useState(null);
@@ -88,6 +123,7 @@ function ForwardIndent() {
     remark: "",
     forwardTo: "",
     receiverDesignation: "",
+    role: "",
   });
 
   const handleInputChange = (field) => (event) => {
@@ -114,11 +150,14 @@ function ForwardIndent() {
     }
   };
 
-  const handleReceiverChange = (value) => {
-    setReceiverName(value);
+  // const handleReceiverChange = (value) => {
+  //   setReceiverName(value);
+  //   fetchDesignations(value);
+  // };
+  const handleSearchChange = (value) => {
+    filterUsers(value);
     fetchDesignations(value);
   };
-
   const handleDesignationChange = (value) => {
     setFormValues((prevValues) => ({
       ...prevValues,
@@ -144,12 +183,12 @@ function ForwardIndent() {
     data.append("sources_of_supply", indent.sources_of_supply);
     data.append("file", file);
     data.append("remark", formValues.remark);
-    data.append("forwardTo", formValues.forwardTo);
+    data.append("forwardTo", selectedUser);
     data.append("receiverDesignation", formValues.receiverDesignation);
     data.append("receiverName", receiverName);
     data.append("uploaderUsername", uploader_username);
     console.log("Form data:", data.get("receiverDesignation"));
-
+    data.append("role", role);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(forwardIndentRoute(indentID), data, {
@@ -243,23 +282,28 @@ function ForwardIndent() {
                   onChange={handleInputChange("remark")}
                 />
               </Grid.Col>
-              <Grid.Col sm={12}>
+              {/* <Grid.Col sm={12}>
                 <TextInput
                   label="Forward To"
                   placeholder="Enter forward to"
                   value={formValues.forwardTo}
                   onChange={handleInputChange("forwardTo")}
                 />
-              </Grid.Col>
+              </Grid.Col> */}
 
-              <Grid.Col sm={12}>
-                <TextInput
-                  label="Receiver Name"
-                  placeholder="Enter receiver name"
-                  value={receiverName}
-                  onChange={(event) =>
-                    handleReceiverChange(event.currentTarget.value)
-                  } // Manual input for receiver name
+              <Grid.Col xs={12} sm={6}>
+                <Select
+                  label="Forward To"
+                  placeholder="Select receiver"
+                  value={selectedUser}
+                  onChange={setSelectedUser}
+                  data={filteredUsers.map((user) => ({
+                    value: user.username,
+                    label: user.username,
+                  }))}
+                  onSearchChange={handleSearchChange} // Trigger when user types
+                  searchable
+                  clearable
                 />
               </Grid.Col>
 
@@ -286,7 +330,7 @@ function ForwardIndent() {
                 />
               </Grid.Col>
               <Grid.Col sm={12}>
-                <Button type="submit" fullWidth>
+                <Button type="submit" color="green" style={{ float: "right" }}>
                   Submit Indent
                 </Button>
               </Grid.Col>

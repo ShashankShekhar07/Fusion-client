@@ -1,47 +1,45 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { archiveViewRoute } from "../../routes/purchaseRoutes";
 
 function ArchievedTable() {
-  // const [indents, setIndents] = useState([]);
+  const [indents, setIndents] = useState([]);
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  const indents = [
-    {
-      id: 1,
-      intender: "Atul-professor",
-      email: "atul@iiitdmj.ac.in",
-      fileId: "CSE-2024-9-#616",
-      subject: "Furniture requirements",
-      date: "Sept 3, 2024",
-    },
-    {
-      id: 2,
-      intender: "Atul-professor",
-      email: "atul@iiitdmj.ac.in",
-      fileId: "CSE-2024-9-#616",
-      subject: "Furniture Requirements",
-      date: "Sept 3, 2024",
-    },
-    {
-      id: 3,
-      intender: "Atul-professor",
-      email: "atul@iiitdmj.ac.in",
-      fileId: "CSE-2024-9-#616",
-      subject: "Furniture requirements",
-      date: "Sept 3, 2024",
-    },
-    {
-      id: 4,
-      intender: "Atul-professor",
-      email: "atul@iiitdmj.ac.in",
-      fileId: "CSE-2024-9-#616",
-      subject: "Furniture requirements",
-      date: "Sept 3, 2024",
-    },
-  ];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const username = useSelector((state) => state.user.roll_no);
+  const role = useSelector((state) => state.user.role);
+  console.log(role);
+  useEffect(() => {
+    const fetchIndents = async () => {
+      try {
+        const token = localStorage.getItem("authToken");
+        const response = await axios.get(archiveViewRoute(username, role), {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        });
+        console.log(response.data.archieves);
+        setIndents(response.data.archieves);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to fetch indents.");
+        setLoading(false);
+      }
+    };
 
+    fetchIndents();
+  }, []);
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text style={{ color: "red" }}>{error}</Text>;
+  }
   return (
     <Box p="md" style={{ margin: 0 }}>
       {" "}
