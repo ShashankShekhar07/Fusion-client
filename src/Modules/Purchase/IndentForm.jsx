@@ -23,6 +23,7 @@ import { IconPlus, IconTrash, IconUpload } from "@tabler/icons-react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { createProposalRoute } from "../../routes/purchaseRoutes";
+import "@mantine/dates/styles.css";
 
 const ITEM_TYPES = ["Equipment", "Consumable", "Furniture", "Books"];
 
