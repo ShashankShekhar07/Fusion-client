@@ -1,60 +1,125 @@
+import { useState, useEffect } from "react";
 import {
-  TextInput,
-  Select,
-  Button,
-  FileInput,
-  Textarea,
-  Center,
   Paper,
-  Box,
-  Text,
+  Title,
+  Button,
+  Group,
+  Stack,
+  TextInput,
+  NumberInput,
+  Select,
+  Textarea,
+  FileInput,
+  ActionIcon,
+  Card,
+  Container,
   Grid,
-  Flex,
 } from "@mantine/core";
-import "@mantine/dates/styles.css";
-import { useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "@mantine/form";
+import { IconPlus, IconTrash, IconUpload } from "@tabler/icons-react";
 import axios from "axios";
-import {
-  // createDraftRoute,
-  createProposalRoute,
-  getDesignationsRoute,
-} from "../../routes/purchaseRoutes";
+import { useSelector } from "react-redux";
+import { createProposalRoute } from "../../routes/purchaseRoutes";
+import "@mantine/dates/styles.css";
 
-function IndentForm() {
-  // const [file, setFile] = useState(null);
-  // const [receiverName, setReceiverName] = useState("");
+const ITEM_TYPES = ["Equipment", "Consumable", "Furniture", "Books"];
+
+const emptyItem = {
+  itemName: "",
+  quantity: 0,
+  cost: 0,
+  itemType: "",
+  presentStock: 0,
+  purpose: "",
+  specification: "",
+  itemSubtype: "",
+  budgetaryHead: "",
+  expectedDelivery: null,
+  sourceOfSupply: "",
+  remark: "",
+  file: null,
+};
+
+export function IndentForm() {
+  const [submitting, setSubmitting] = useState(false);
   const [designations, setDesignations] = useState([]);
-  const navigate = useNavigate();
-  const uploader_username = useSelector((state) => state.user);
-  // const username = useSelector((state) => state.user.roll_no);
+  const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [activeTab, setActiveTab] = useState("0");
   const role = useSelector((state) => state.user.role);
-  // console.log(uploader_username);
+  const uploaderUsername = useSelector((state) => state.user.username);
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+      );
+      setUsers(response.data.users);
+      setFilteredUsers(response.data.users);
+    } catch (error) {
+      console.error("Error fetching users", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+
   const form = useForm({
     initialValues: {
       title: "",
       description: "",
-      itemName: "",
-      quantity: 0,
-      cost: 0,
-      itemType: "",
-      presentStock: 0,
-      purpose: "",
-      specification: "",
-      itemSubtype: "",
-      budgetaryHead: "",
-      expectedDelivery: null,
-      sourceOfSupply: "",
-      remark: "",
       forwardTo: "",
       receiverDesignation: "",
-      receiverName: "",
-      file: null,
+      items: [{ ...emptyItem }],
+    },
+    validate: {
+      title: (value) => (!value ? "Title is required" : null),
+      forwardTo: (value) => (!value ? "Forward to is required" : null),
+      receiverDesignation: (value) =>
+        !value ? "Receiver designation is required" : null,
+      items: {
+        itemName: (value) => (!value ? "Item name is required" : null),
+        quantity: (value) =>
+          value <= 0 ? "Quantity must be greater than 0" : null,
+        itemType: (value) => (!value ? "Item type is required" : null),
+      },
     },
   });
+
+  const addItem = () => {
+    if (form.values.items.length < 20) {
+      const newIndex = form.values.items.length;
+      form.insertListItem("items", { ...emptyItem });
+      setTimeout(() => {
+        setActiveTab(String(newIndex));
+      }, 50);
+    } else {
+      alert("Maximum of 20 items allowed");
+    }
+  };
+
+  const removeItem = (index) => {
+    if (form.values.items.length > 1) {
+      let newActiveTab;
+      if (parseInt(activeTab, 10) === index) {
+        if (index === form.values.items.length - 1) {
+          newActiveTab = String(index - 1);
+        } else {
+          newActiveTab = activeTab;
+        }
+      } else if (parseInt(activeTab, 10) > index) {
+        newActiveTab = String(parseInt(activeTab, 10) - 1);
+      } else {
+        newActiveTab = activeTab;
+      }
+      form.removeListItem("items", index);
+      setTimeout(() => {
+        setActiveTab(newActiveTab);
+      }, 50);
+    }
+  };
 
   const formatDate = (date) => {
     if (!date) return null;
@@ -65,421 +130,488 @@ function IndentForm() {
     return `${year}-${month}-${day}`;
   };
 
-  // Fetch designations based on the entered receiver name
-  // eslint-disable-next-line no-shadow
-  const fetchDesignations = async (receiverName) => {
-    try {
-      const response = await axios.get(getDesignationsRoute(receiverName));
-      console.log("Fetched designations:", response.data);
-      setDesignations(response.data); // Set the fetched designations in state
-    } catch (error) {
-      console.error("Error fetching designations:", error);
-      // setErrorMessage(
-      //   error.response
-      //     ? error.response.data
-      //     : "An error occurred while fetching designations",
-      // );
+  const filterUsers = (searchQuery) => {
+    if (searchQuery === "") {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setFilteredUsers(filtered);
     }
   };
 
-  const handleReceiverChange = (value) => {
-    form.setFieldValue("receiverName", value);
-    // setReceiverName(value);
+  const fetchDesignations = async (receiverName) => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/filetracking/getdesignations/${receiverName}/`,
+      );
+      setDesignations(response.data);
+    } catch (error) {
+      console.error("Error fetching designations:", error);
+    }
+  };
+
+  const handleSearchChange = (value) => {
+    filterUsers(value);
     fetchDesignations(value);
   };
 
   const handleSubmit = async (values) => {
-    const data = new FormData();
-    data.append("title", values.title);
-    data.append("description", values.description);
-    data.append("item_name", values.itemName);
-    data.append("quantity", values.quantity);
-    data.append("estimated_cost", values.cost);
-    data.append("item_type", values.itemType);
-    data.append("present_stock", values.presentStock);
-    data.append("purpose", values.purpose);
-    data.append("specification", values.specification);
-    data.append("itemSubtype", values.itemSubtype);
-    data.append("budgetary_head", values.budgetaryHead);
-    data.append("expected_delivery", formatDate(values.expectedDelivery));
-    data.append("sources_of_supply", values.sourceOfSupply);
-    data.append("file", values.file);
-    data.append("remark", values.remark);
-    data.append("forwardTo", values.forwardTo);
-    data.append("receiverDesignation", values.receiverDesignation);
-    data.append("receiverName", values.receiverName);
-    data.append("uploaderUsername", uploader_username);
-    // console.log("Form data:", data.get("receiverDesignation"));
-
     try {
+      setSubmitting(true);
       const token = localStorage.getItem("authToken");
-      const response = await axios.post(createProposalRoute(role), data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Token ${token}`,
-        },
-      });
 
-      console.log("Success:", response.data);
-      navigate("/purchase/all_filed_indents");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      // setErrorMessage(
-      //   error.response
-      //     ? error.response.data
-      //     : "An error occurred during submission",
-      // );
-    }
-  };
-  const handleDraft = async (values) => {
-    const data = new FormData();
-    data.append("title", values.title);
-    data.append("description", values.description);
-    data.append("item_name", values.itemName);
-    data.append("quantity", values.quantity);
-    data.append("estimated_cost", values.cost);
-    data.append("item_type", values.itemType);
-    data.append("present_stock", values.presentStock);
-    data.append("purpose", values.purpose);
-    data.append("specification", values.specification);
-    data.append("itemSubtype", values.itemSubtype);
-    data.append("budgetary_head", values.budgetaryHead);
-    data.append("expected_delivery", formatDate(values.expectedDelivery));
-    data.append("sources_of_supply", values.sourceOfSupply);
-    data.append("file", values.file);
-    data.append("remark", values.remark);
-    data.append("forwardTo", values.forwardTo);
-    data.append("receiverDesignation", values.receiverDesignation);
-    data.append("receiverName", values.receiverName);
-    // console.log("Form data:", data.get("receiverDesignation"));
+      const requests = values.items.map((item) => {
+        const data = new FormData();
+        data.append("title", values.title);
+        data.append("description", values.description);
+        data.append("forwardTo", values.forwardTo);
+        data.append("receiverDesignation", values.receiverDesignation);
+        data.append("uploaderUsername", uploaderUsername);
+        data.append("item_name", item.itemName);
+        data.append("quantity", item.quantity);
+        data.append("estimated_cost", item.cost);
+        data.append("item_type", item.itemType);
+        data.append("present_stock", item.presentStock);
+        data.append("purpose", item.purpose);
+        data.append("specification", item.specification);
+        data.append("itemSubtype", item.itemSubtype);
+        data.append("budgetary_head", item.budgetaryHead);
+        data.append("expected_delivery", formatDate(item.expectedDelivery));
+        data.append("sources_of_supply", item.sourceOfSupply);
+        data.append("remark", item.remark);
 
-    try {
-      const token = localStorage.getItem("authToken");
-      const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/create_draft/`,
-        data,
-        {
+        if (item.file) {
+          data.append("file", item.file);
+        } else {
+          data.append("file", "null");
+        }
+
+        return axios.post(createProposalRoute(role), data, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Token ${token}`,
           },
-        },
-      );
+        });
+      });
 
-      console.log("Success:", response.data);
-      navigate("/purchase/saved_indents");
-      // navigate("/purchase/saved_indents");
+      await Promise.all(requests);
+      alert("Indent submitted successfully!");
+      form.reset();
+
+      setTimeout(() => {
+        window.location.href = "/purchase/outbox";
+      }, 100);
     } catch (error) {
-      console.error("Error submitting form:", error);
-      // setErrorMessage(
-      //   error.response
-      //     ? error.response.data
-      //     : "An error occurred during submission",
-      // );
+      console.error("Error submitting indent:", error);
+      alert("Failed to submit indent. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <Center style={{ minHeight: "100vh" }}>
-      <Paper
-        shadow="md"
-        radius="md"
-        p="lg"
-        withBorder
-        style={{
-          maxWidth: "1000px",
-          width: "100%",
-        }}
-      >
-        <Box
-          mb="md"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            size="26px"
-            style={{
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#1881d9",
-            }}
-          >
-            Indent Form
-          </Text>
-        </Box>
-        {/* {errorMessage && (
-          <div
-            style={{ color: "red", textAlign: "center", marginBottom: "20px" }}
-          >
-            {errorMessage}
-          </div>
-        )} */}
+    <Container size="xl">
+      <Paper p="md" radius="md" withBorder>
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack spacing="md">
+            <Title order={2} align="center">
+              Create New Indent
+            </Title>
 
-        <form
-          onSubmit={form.onSubmit(handleSubmit)}
-          style={{ marginRight: "50px", marginLeft: "100px" }}
-        >
-          <Grid>
-            <Grid.Col span={{ base: 16, md: 6, lg: 5 }}>
-              <Flex gap="80px">
-                <Grid.Col sm={6} xs={12}>
-                  <TextInput
-                    label="Title of Indent File"
-                    placeholder="Enter title"
-                    value={form.values.title}
-                    onChange={(event) =>
-                      form.setFieldValue("title", event.currentTarget.value)
-                    }
-                  />
-                </Grid.Col>
+            <Card withBorder shadow="sm" p="md">
+              <Stack spacing="md">
+                <Title order={3}>General Information</Title>
+                <Grid>
+                  <Grid.Col span={12}>
+                    <TextInput
+                      label="Title"
+                      required
+                      value={form.values.title}
+                      onChange={(event) =>
+                        form.setFieldValue("title", event.currentTarget.value)
+                      }
+                      error={form.errors.title}
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Textarea
+                      label="Description"
+                      minRows={3}
+                      value={form.values.description}
+                      onChange={(event) =>
+                        form.setFieldValue(
+                          "description",
+                          event.currentTarget.value,
+                        )
+                      }
+                      error={form.errors.description}
+                    />
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            </Card>
 
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Description"
-                    placeholder="Enter description"
-                    value={form.values.description}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        "description",
-                        event.currentTarget.value,
-                      )
-                    }
-                  />
-                </Grid.Col>
-              </Flex>
-              <Flex gap="80px">
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Item Name"
-                    placeholder="Enter item name"
-                    value={form.values.itemName}
-                    onChange={(event) =>
-                      form.setFieldValue("itemName", event.currentTarget.value)
-                    }
-                  />
-                </Grid.Col>
+            <Card withBorder shadow="sm" p="md">
+              <Stack spacing="md">
+                <Title order={3}>Items</Title>
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: "16px",
+                      position: "relative",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        borderBottom: "1px solid #dee2e6",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          overflowX: "auto",
+                          paddingBottom: "8px",
+                          scrollbarWidth: "thin",
+                          scrollbarColor: "#74c0fc #f8f9fa",
+                        }}
+                        className="custom-scrollbar"
+                      >
+                        {form.values.items.map((_, index) => (
+                          <div
+                            key={index}
+                            onClick={() => setActiveTab(String(index))}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                setActiveTab(String(index));
+                              }
+                            }}
+                            role="tab"
+                            tabIndex={0}
+                            style={{
+                              padding: "8px 16px",
+                              cursor: "pointer",
+                              backgroundColor:
+                                activeTab === String(index)
+                                  ? "#f1f3f5"
+                                  : "transparent",
+                              borderBottom:
+                                activeTab === String(index)
+                                  ? "2px solid #228be6"
+                                  : "none",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              whiteSpace: "nowrap",
+                              width: "fit-content",
+                            }}
+                          >
+                            <span>Item {index + 1}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div
+                        style={{
+                          width: "1px",
+                          backgroundColor: "#dee2e6",
+                          margin: "0 12px",
+                          alignSelf: "stretch",
+                        }}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {form.values.items.length < 20 && (
+                          <ActionIcon
+                            variant="light"
+                            color="blue"
+                            onClick={addItem}
+                            size="md"
+                            title="Add new item"
+                            style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
+                          >
+                            <IconPlus size={18} />
+                          </ActionIcon>
+                        )}
+                        {form.values.items.length > 1 && (
+                          <ActionIcon
+                            color="red"
+                            variant="light"
+                            onClick={() => removeItem(parseInt(activeTab, 10))}
+                            size="md"
+                            title="Delete current item"
+                            style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
+                          >
+                            <IconTrash size={18} />
+                          </ActionIcon>
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    type="number"
-                    label="Quantity"
-                    placeholder="Enter quantity"
-                    value={form.values.quantity}
-                    onChange={(event) =>
-                      form.setFieldValue("quantity", event.currentTarget.value)
+                  <style>{`
+                    .custom-scrollbar::-webkit-scrollbar {
+                      height: 4px;
                     }
-                  />
-                </Grid.Col>
-              </Flex>
-              <Flex gap="80px">
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    type="number"
-                    label="Estimated Cost Per Price"
-                    placeholder="Enter estimated cost"
-                    value={form.values.cost}
-                    onChange={(event) =>
-                      form.setFieldValue("cost", event.currentTarget.value)
+                    .custom-scrollbar::-webkit-scrollbar-track {
+                      background: #f8f9fa;
+                      border-radius: 10px;
                     }
-                  />
-                </Grid.Col>
-
-                <Grid.Col xs={12} sm={6}>
-                  <Select
-                    label="Item Type"
-                    placeholder="Select item type"
-                    data={[
-                      { value: "Equipment", label: "Equipment" },
-                      { value: "Consumable", label: "Consumable" },
-                    ]}
-                    value={form.values.itemType}
-                    onChange={(value) => form.setFieldValue("itemType", value)}
-                  />
-                </Grid.Col>
-              </Flex>
-              <Flex gap="80px">
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    type="number"
-                    label="Present Stock"
-                    placeholder="Enter present stock"
-                    value={form.values.presentStock}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        "presentStock",
-                        event.currentTarget.value,
-                      )
+                    .custom-scrollbar::-webkit-scrollbar-thumb {
+                      background: #74c0fc;
+                      border-radius: 10px;
+                      opacity: 0.7;
                     }
-                  />
-                </Grid.Col>
-
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Purpose"
-                    placeholder="Enter purpose"
-                    value={form.values.purpose}
-                    onChange={(event) =>
-                      form.setFieldValue("purpose", event.currentTarget.value)
+                    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                      background: #4dabf7;
+                      opacity: 1;
                     }
-                  />
-                </Grid.Col>
-              </Flex>
-              <Flex gap="80px">
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Specification"
-                    placeholder="Enter specification"
-                    value={form.values.specification}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        "specification",
-                        event.currentTarget.value,
-                      )
-                    }
-                  />
-                </Grid.Col>
+                  `}</style>
 
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Item Subtype"
-                    placeholder="Enter item subtype"
-                    value={form.values.itemSubtype}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        "itemSubtype",
-                        event.currentTarget.value,
-                      )
-                    }
-                  />
-                </Grid.Col>
-              </Flex>
-              <Flex gap="80px">
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Budgetary Head"
-                    placeholder="Enter budgetary head"
-                    value={form.values.budgetaryHead}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        "budgetaryHead",
-                        event.currentTarget.value,
-                      )
-                    }
-                  />
-                </Grid.Col>
+                  {form.values.items.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: activeTab === String(index) ? "block" : "none",
+                      }}
+                    >
+                      <Grid>
+                        <Grid.Col span={6}>
+                          <TextInput
+                            label="Item Name *"
+                            required
+                            value={item.itemName}
+                            onChange={(event) =>
+                              form.setFieldValue(
+                                `items.${index}.itemName`,
+                                event.currentTarget.value,
+                              )
+                            }
+                            error={form.errors.items?.[index]?.itemName}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                          <NumberInput
+                            label="Quantity *"
+                            required
+                            min={1}
+                            value={item.quantity}
+                            onChange={(value) =>
+                              form.setFieldValue(
+                                `items.${index}.quantity`,
+                                value,
+                              )
+                            }
+                            error={form.errors.items?.[index]?.quantity}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={3}>
+                          <NumberInput
+                            label="Cost (₹) *"
+                            required
+                            min={0}
+                            value={item.cost}
+                            onChange={(value) =>
+                              form.setFieldValue(`items.${index}.cost`, value)
+                            }
+                            error={form.errors.items?.[index]?.cost}
+                          />
+                        </Grid.Col>
+                      </Grid>
 
-                <Grid.Col xs={12} sm={6}>
-                  <DateInput
-                    label="Expected Delivery"
-                    placeholder="Pick a date"
-                    value={form.values.expectedDelivery}
-                    onChange={(date) =>
-                      form.setFieldValue("expectedDelivery", date)
-                    }
-                  />
-                </Grid.Col>
-              </Flex>
-              <Flex gap="80px">
-                <Grid.Col xs={12} sm={6}>
-                  <TextInput
-                    label="Source of Supply"
-                    placeholder="Enter source of supply"
-                    value={form.values.sourceOfSupply}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        "sourceOfSupply",
-                        event.currentTarget.value,
-                      )
-                    }
-                  />
-                </Grid.Col>
+                      <Grid>
+                        <Grid.Col span={6}>
+                          <Select
+                            label="Item Type *"
+                            required
+                            data={ITEM_TYPES}
+                            value={item.itemType}
+                            onChange={(value) =>
+                              form.setFieldValue(
+                                `items.${index}.itemType`,
+                                value,
+                              )
+                            }
+                            error={form.errors.items?.[index]?.itemType}
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                          <TextInput
+                            label="Item Subtype"
+                            value={item.itemSubtype}
+                            onChange={(event) =>
+                              form.setFieldValue(
+                                `items.${index}.itemSubtype`,
+                                event.currentTarget.value,
+                              )
+                            }
+                          />
+                        </Grid.Col>
+                      </Grid>
 
-                <Grid.Col xs={12} sm={6}>
-                  <Textarea
-                    label="Remark"
-                    placeholder="Enter remark"
-                    value={form.values.remark}
-                    onChange={(event) =>
-                      form.setFieldValue("remark", event.currentTarget.value)
-                    }
-                  />
-                </Grid.Col>
-              </Flex>
-            </Grid.Col>
-            <Grid.Col xs={12}>
-              {/* <Grid.Col sm={6}> */}
-              <FileInput
-                label="File Upload"
-                placeholder="Upload file"
-                value={form.values.file}
-                onChange={(file) => form.setFieldValue("file", file)}
-                accept="application/pdf,image/jpeg,image/png"
-              />
-            </Grid.Col>
+                      <Grid>
+                        <Grid.Col span={6}>
+                          <NumberInput
+                            label="Present Stock"
+                            min={0}
+                            value={item.presentStock}
+                            onChange={(value) =>
+                              form.setFieldValue(
+                                `items.${index}.presentStock`,
+                                value,
+                              )
+                            }
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                          <TextInput
+                            label="Budgetary Head"
+                            value={item.budgetaryHead}
+                            onChange={(event) =>
+                              form.setFieldValue(
+                                `items.${index}.budgetaryHead`,
+                                event.currentTarget.value,
+                              )
+                            }
+                          />
+                        </Grid.Col>
+                      </Grid>
 
-            <Grid.Col xs={12} sm={6}>
-              <Button
-                type="button"
-                color="green"
-                onClick={form.onSubmit(handleDraft)}
-                style={{ float: "right" }}
-              >
-                Save Draft
-              </Button>
-            </Grid.Col>
+                      <TextInput
+                        label="Purpose"
+                        value={item.purpose}
+                        onChange={(event) =>
+                          form.setFieldValue(
+                            `items.${index}.purpose`,
+                            event.currentTarget.value,
+                          )
+                        }
+                      />
+                      <TextInput
+                        label="Specification"
+                        value={item.specification}
+                        onChange={(event) =>
+                          form.setFieldValue(
+                            `items.${index}.specification`,
+                            event.currentTarget.value,
+                          )
+                        }
+                      />
 
-            <Grid.Col xs={12} sm={6}>
-              <TextInput
-                label="Forward To"
-                placeholder="Enter forward to"
-                value={form.values.forwardTo}
-                onChange={(event) =>
-                  form.setFieldValue("forwardTo", event.currentTarget.value)
-                }
-              />
-            </Grid.Col>
+                      <Grid>
+                        <Grid.Col span={6}>
+                          <DateInput
+                            label="Expected Delivery"
+                            value={item.expectedDelivery}
+                            onChange={(value) =>
+                              form.setFieldValue(
+                                `items.${index}.expectedDelivery`,
+                                value,
+                              )
+                            }
+                          />
+                        </Grid.Col>
+                        <Grid.Col span={6}>
+                          <TextInput
+                            label="Source of Supply"
+                            value={item.sourceOfSupply}
+                            onChange={(event) =>
+                              form.setFieldValue(
+                                `items.${index}.sourceOfSupply`,
+                                event.currentTarget.value,
+                              )
+                            }
+                          />
+                        </Grid.Col>
+                      </Grid>
 
-            <Grid.Col xs={12} sm={6}>
-              <TextInput
-                label="Receiver Name"
-                placeholder="Enter receiver name"
-                value={form.values.receiverName}
-                onChange={(event) =>
-                  handleReceiverChange(event.currentTarget.value)
-                }
-              />
-            </Grid.Col>
+                      <TextInput
+                        label="Remarks"
+                        value={item.remark}
+                        onChange={(event) =>
+                          form.setFieldValue(
+                            `items.${index}.remark`,
+                            event.currentTarget.value,
+                          )
+                        }
+                      />
 
-            <Grid.Col xs={12} sm={6}>
-              <Select
-                label="Receiver Designation"
-                placeholder="Select designation"
-                data={designations.map((designation) => ({
-                  value: designation,
-                  label: designation,
-                }))}
-                value={form.values.receiverDesignation}
-                onChange={(value) =>
-                  form.setFieldValue("receiverDesignation", value)
-                }
-                searchable
-                clearable
-              />
-            </Grid.Col>
+                      <FileInput
+                        label="Attachment"
+                        placeholder="Upload file"
+                        icon={<IconUpload size={14} />}
+                        value={item.file}
+                        onChange={(file) =>
+                          form.setFieldValue(`items.${index}.file`, file)
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </Stack>
+            </Card>
 
-            <Grid.Col xs={12} sm={6}>
-              <Button type="submit" color="green" style={{ float: "right" }}>
-                Submit Indent
-              </Button>
-            </Grid.Col>
-          </Grid>
+            <Card withBorder shadow="sm" p="md">
+              <Stack spacing="md">
+                <Title order={3}>Forward Information</Title>
+                <Grid>
+                  <Grid.Col xs={12} md={6}>
+                    <Select
+                      label="Forward To"
+                      placeholder="Select receiver"
+                      value={form.values.forwardTo}
+                      onChange={(value) =>
+                        form.setFieldValue("forwardTo", value)
+                      }
+                      data={filteredUsers.map((user) => ({
+                        value: user.username,
+                        label: user.username,
+                      }))}
+                      onSearchChange={handleSearchChange}
+                      searchable
+                      clearable
+                      error={form.errors.forwardTo}
+                    />
+                  </Grid.Col>
+                  <Grid.Col xs={12} md={6}>
+                    <Select
+                      label="Receiver Designation"
+                      placeholder="Select designation"
+                      data={designations.map((designation) => ({
+                        value: designation,
+                        label: designation,
+                      }))}
+                      value={form.values.receiverDesignation}
+                      onChange={(value) =>
+                        form.setFieldValue("receiverDesignation", value)
+                      }
+                      searchable
+                      clearable
+                      error={form.errors.receiverDesignation}
+                    />
+                  </Grid.Col>
+                </Grid>
+              </Stack>
+            </Card>
+          </Stack>
+
+          <Group position="center" spacing="md">
+            <Button type="submit" loading={submitting}>
+              Submit Indent
+            </Button>
+          </Group>
         </form>
       </Paper>
-    </Center>
+    </Container>
   );
 }
-
-export default IndentForm;
