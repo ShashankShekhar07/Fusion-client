@@ -650,6 +650,7 @@ import {
   createProposalRoute,
   getDesignationsRoute,
 } from "../../routes/purchaseRoutes";
+import { host } from "../../routes/globalRoutes";
 
 function StockEntry() {
   const [designations, setDesignations] = useState([]);
@@ -704,7 +705,7 @@ function StockEntry() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users); // Save all users data to state
       setFilteredUsers(response.data.users); // Initially, show all users
@@ -857,7 +858,7 @@ function StockEntry() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `127.0.0.1:8000/purchase-and-store/api/stockEntry/4322`,
+        `${host}/purchase-and-store/api/stockEntry/4322`,
         data,
         {
           headers: {
@@ -960,7 +961,7 @@ function StockEntry() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/stockEntry/${username}/`,
+        `${host}/purchase-and-store/api/stockEntry/${username}/`,
         formData,
         {
           headers: {

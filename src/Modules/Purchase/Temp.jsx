@@ -23,6 +23,7 @@ import {
   // createProposalRoute,
   getDesignationsRoute,
 } from "../../routes/purchaseRoutes";
+import { host } from "../../routes/globalRoutes";
 
 function MultiItemIndentForm() {
   const [step, setStep] = useState(1); // Tracks current step
@@ -60,7 +61,7 @@ function MultiItemIndentForm() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users); // Save all users data to state
       setFilteredUsers(response.data.users); // Initially, show all users
@@ -302,7 +303,7 @@ function MultiItemIndentForm() {
         // Return the axios POST request promise
         console.log(data);
         return axios.post(
-          `http://127.0.0.1:8000/purchase-and-store/api/create_draft/`,
+          `${host}/purchase-and-store/api/create_draft/`,
           data,
           {
             headers: {

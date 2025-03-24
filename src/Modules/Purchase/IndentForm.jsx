@@ -23,6 +23,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { createProposalRoute } from "../../routes/purchaseRoutes";
 import "@mantine/dates/styles.css";
+import { host } from "../../routes/globalRoutes";
 
 const ITEM_TYPES = ["Equipment", "Consumable", "Furniture", "Books"];
 
@@ -56,7 +57,7 @@ export function IndentForm() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users);
       setFilteredUsers(response.data.users);
@@ -149,7 +150,7 @@ export function IndentForm() {
   const fetchDesignations = async (receiverName) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/filetracking/getdesignations/${receiverName}/`,
+        `${host}/filetracking/getdesignations/${receiverName}/`,
       );
       setDesignations(response.data);
     } catch (error) {

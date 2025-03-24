@@ -823,6 +823,7 @@ import {
 import dayjs from "dayjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { host } from "../../routes/globalRoutes";
 import {
   forwardIndentRoute,
   getDesignationsRoute,
@@ -869,7 +870,7 @@ export default function NewForwardIndent() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users);
       setFilteredUsers(response.data.users);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import SpecialTable from "./SpecialTable.jsx"; // Import your SpecialTable component
+import { host } from "../../../routes/globalRoutes";
 
 const columns = [
   {
@@ -24,14 +25,11 @@ export default function ViewFeedback({ branch }) {
   useEffect(() => {
     const fetchFeedback = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/dep/api/feedback/",
-          {
-            headers: {
-              Authorization: `Token ${authToken}`, // Include the token in the headers
-            },
+        const response = await axios.get(`${host}/dep/api/feedback/`, {
+          headers: {
+            Authorization: `Token ${authToken}`, // Include the token in the headers
           },
-        );
+        });
         // Filter feedback based on the branch
         const filteredFeedback = response.data.filter(
           (item) => item.department === branch,

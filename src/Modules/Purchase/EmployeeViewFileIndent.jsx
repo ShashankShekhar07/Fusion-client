@@ -34,6 +34,7 @@ import {
 } from "@tabler/icons-react";
 import axios from "axios";
 import dayjs from "dayjs";
+import { host } from "../../routes/globalRoutes";
 import {
   archiveIndentRoute,
   viewIndentRoute,
@@ -84,7 +85,7 @@ function EmployeeViewFileIndent() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users);
       setFilteredUsers(response.data.users);
