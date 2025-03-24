@@ -1,0 +1,108 @@
+/* Container styling */
+.container {
+  width: 100%;
+  padding-left: 1rem;
+}
+
+/* Heading styling */
+.heading {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: 24px;
+}
+
+/* Member cards container */
+.membersContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  border-top: 2px solid #17ABFF;
+  padding-top: 1rem;
+}
+
+/* Individual member card */
+.memberCard {
+  border: 1px solid black;
+  border-radius: 0.375rem;
+  padding: 0.9rem;
+  width: 80%;
+  text-align: left; /* Ensures all content is left-aligned */
+}
+
+/* Card heading */
+.cardHeading {
+  margin-bottom: 0.5rem;
+  font-size: 24px;
+}
+
+/* Member image */
+.memb {
+  width: 80%; /* Reduced width */
+  height: 12rem;
+  padding: 1px;
+  border-radius: 0.375rem;
+  font-size: 14px;
+  display: block; /* Ensures block-level alignment */
+}
+
+/* Name and role section */
+.nameRole {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-size: 14px;
+}
+
+.name {
+  font-weight: normal;
+  margin: 0;
+  font-size: 14px;
+}
+
+.role {
+  font-weight: lighter;
+  color: #555;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Contact info */
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 14px;
+}
+
+.icon {
+  color: #17ABFF;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1440px) {
+  .memb {
+    height: 10rem; /* Reduce image height for laptop views */
+  }
+}
+
+@media (max-width: 1024px) {
+  .membersContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .memb {
+    height: 9rem; /* Further reduce image height for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .membersContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .memb {
+    height: 8rem; /* Adjust image size for small screens */
+  }
+}

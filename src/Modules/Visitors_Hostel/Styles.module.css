@@ -1,0 +1,48 @@
+.table {
+  margin: 20px;
+  border-collapse: collapse;
+  width: 100%;
+  backdrop-filter: blur(10px); /* Light blur effect */
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+}
+
+.heading {
+  background-color: #003366; /* Darker blue background */
+  color: white;
+  border-radius: 8px; /* Rounded corners for headings */
+  padding: 10px; /* Add some padding */
+}
+
+.headingStatus {
+  background-color: #003366; /* Same background for status */
+  color: white;
+  border-radius: 8px; /* Rounded corners for status heading */
+  padding: 10px; /* Add some padding */
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  border-radius: 8px; /* Rounded corners for heading cells */
+}
+
+.status {
+  border-radius: 8px; /* Rounded corners for status cells */
+  padding: 8px; /* Add some padding */
+}
+.button {
+  margin-top: 1rem;
+  color: red;
+  border: 1px solid red;
+  margin-left: auto;
+}
+.container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}

@@ -1,0 +1,185 @@
+/* Global styles */
+body, html {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+
+}
+
+/* Container to align the card to the left */
+.full-width-container {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 2vw;
+  
+
+}
+
+/* Main card styling */
+.main-card-container {
+  border-left: 29px solid #15ABFF; /* Blue border on the left */
+  width: 100vw; /* Maximum width for larger screens */
+  
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1240px; /* Ensure a maximum width constraint */
+  min-height: 45vh;
+  /* Minimum height to handle small complaint lists */
+  padding-bottom: 20px; /* Add space at the bottom */
+  overflow: visible; /* Adjusts height based on content */
+  margin-top: 10px; /* Add margin from the top for symmetry */
+  /*margin-top: -10vh;*/
+}
+
+#main-card{
+  border-left: 14px solid #15ABFF;
+  max-height: 900px; 
+  overflow: scroll;
+  
+}
+
+#main-card::-webkit-scrollbar {
+  width: 0;  /* For vertical scroll */
+  height: 0; /* For horizontal scroll */
+}
+
+/* Tab menu container */
+.tab-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+  
+
+}
+
+/* Individual tab item styles */
+.tab-item {
+  position: relative;
+  padding: 6px 2vw;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  color: #026298;
+  border: none;
+  display: inline-block;
+  border-radius: 30px;
+  background-color: #e3f4fe;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Active tab style */
+.active-tab {
+  background: #14abff;
+  color: #ffffff;
+  border: none;
+}
+
+/* Hover effect on tabs */
+.tab-item:hover {
+  background-color: #14abff;
+  color: #ffffff;
+}
+
+/* Inner card content area */
+.inner-card-content {
+  width: 95%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Individual complaint subcard styling */
+.complaint-subcard {
+  margin-bottom: 1rem;
+  margin-right: 75px;
+
+  
+  padding-bottom: 10px; /* Extra padding for spacing */
+}
+
+/* Complaint header text */
+.complaint-header {
+  font-weight: bold;
+  font-size: 19px;
+  color: #000000;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  display: inline-flex;
+  flex-direction: row;
+  /*align-items: center;*/
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  margin-right: 0vw;
+}
+
+/* Complaint type badge */
+.complaint-type-badge {
+  background-color: #14abff;
+  color: hsl(0, 0%, 100%);
+  padding: 15px 25px;
+  border-radius: 50px;
+  font-size: 10px;
+  font-weight: bold;
+  width: 11vw;
+  margin-right: 20px;
+}
+#content{
+  font-size: 13px;
+  color: #6a6868;
+  margin-bottom: -1.5vh;
+}
+
+/* Complaint details */
+.complaint-detail b{
+  font-size: 15px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #333;
+  margin: -2px 0;
+
+}
+
+.complaint-detail{
+  margin-bottom: -12px;
+}
+
+/* Status icon styling */
+.status-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+#hr{
+  width: 100%;
+  margin-bottom: -10px;
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-card-container {
+    width: 95vw;
+    margin: 10px auto;
+  }
+
+  .tab-item {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .complaint-header {
+    font-size: 14px;
+  }
+
+  .complaint-type-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+  }
+
+  .status-icon {
+    width: 18px;
+    height: 18px;
+  }
+}

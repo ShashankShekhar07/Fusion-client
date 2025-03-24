@@ -39,126 +39,152 @@ import { useSelector, useDispatch } from "react-redux";
 import IIITLOGO from "../assets/IIITJ_logo.webp";
 import { setCurrentModule } from "../redux/moduleslice";
 
-const Modules = [
-  {
-    label: "Home",
-    id: "home",
-    icon: <HomeIcon size={18} />,
-    url: "/dashboard",
-  },
-  // { label: "Course Management", id:"course_management", icon: <OtherIcon size={18} />, url: "/" },
-  {
-    label: "Academics",
-    id: "course_registration",
-    icon: <AcademicsIcon size={18} />,
-    url: "/academics",
-  },
-  {
-    label: "Program & Curriculum",
-    id: "program_and_curriculum",
-    icon: <CurriculumIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Mess Management",
-    id: "mess_management",
-    icon: <MessIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Visitor's Hostel",
-    id: "visitor_hostel",
-    icon: <GuestIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "HealthCare Center",
-    id: "phc",
-    icon: <HealthIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "File Tracking",
-    id: "fts",
-    icon: <FileTrackingIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Scholarship Portal",
-    id: "spacs",
-    icon: <ScholarshipIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Complaint System",
-    id: "complaint_management",
-    icon: <ComplaintIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Placement Cell",
-    id: "placement_cell",
-    icon: <PlacementIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Department Portal",
-    id: "department",
-    icon: <DepartmentIcon size={18} />,
-    url: "/",
-  },
-  { label: "Research", id: "rspc", icon: <ResearchIcon size={18} />, url: "/" },
-  {
-    label: "Purchase and Store",
-    id: "purchase_and_store",
-    icon: <StoreIcon size={18} />,
-    url: "/purchase",
-  },
-  {
-    label: "Human Resource",
-    id: "hr",
-    icon: <HumanResourceIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Examination",
-    id: "examinations",
-    icon: <ExamIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Gymkhana",
-    id: "gymkhana",
-    icon: <GymkhanaIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Institute Work Departments",
-    id: "iwd",
-    icon: <IWDIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Hostel Management",
-    id: "hostel_management",
-    icon: <HostelIcon size={18} />,
-    url: "/",
-  },
-  {
-    label: "Other Academic Procedure",
-    id: "other_academics",
-    icon: <OtherAcademicIcon size={18} />,
-    url: "/",
-  },
-];
-
-const otherItems = [
-  { label: "Profile", icon: <ProfileIcon size={18} /> },
-  { label: "Settings", icon: <SettingsIcon size={18} /> },
-  { label: "Help", icon: <HelpIcon size={18} /> },
-];
-
 function SidebarContent({ isCollapsed, toggleSidebar }) {
+  const role = useSelector((state) => state.user.role);
+
+  const deployedModules = [
+    "home",
+    "fts",
+    "complaint_management",
+    "mess_management",
+    "visitor_hostel",
+    "department",
+    "gymkhana",
+    "iwd",
+    "phc",
+    "spacs",
+    "purchase_and_store",
+  ];
+
+  const Modules = [
+    {
+      label: "Home",
+      id: "home",
+      icon: <HomeIcon size={18} />,
+      url: "/dashboard",
+    },
+    // { label: "Course Management", id:"course_management", icon: <OtherIcon size={18} />, url: "/" },
+    {
+      label: "Academics",
+      id: "course_registration",
+      icon: <AcademicsIcon size={18} />,
+      url: "/academics",
+    },
+    {
+      label: "Program & Curriculum",
+      id: "program_and_curriculum",
+      icon: <CurriculumIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Mess Management",
+      id: "mess_management",
+      icon: <MessIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Visitor's Hostel",
+      id: "visitor_hostel",
+      icon: <GuestIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "HealthCare Center",
+      id: "phc",
+      icon: <HealthIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "File Tracking",
+      id: "fts",
+      icon: <FileTrackingIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Scholarship Portal",
+      id: "spacs",
+      icon: <ScholarshipIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Complaint System",
+      id: "complaint_management",
+      icon: <ComplaintIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Placement Cell",
+      id: "placement_cell",
+      icon: <PlacementIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Department Portal",
+      id: "department",
+      icon: <DepartmentIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Research",
+      id: "rspc",
+      icon: <ResearchIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Purchase and Store",
+      id: "purchase_and_store",
+      icon: <StoreIcon size={18} />,
+      url: "/purchase",
+    },
+    {
+      label: "Human Resource",
+      id: "hr",
+      icon: <HumanResourceIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Examination",
+      id: "examinations",
+      icon: <ExamIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Gymkhana",
+      id: "gymkhana",
+      icon: <GymkhanaIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Institute Work Departments",
+      id: "iwd",
+      icon: <IWDIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Hostel Management",
+      id: "hostel_management",
+      icon: <HostelIcon size={18} />,
+      url: "/",
+    },
+    {
+      label: "Other Academic Procedure",
+      id: "other_academics",
+      icon: <OtherAcademicIcon size={18} />,
+      url: "/",
+    },
+  ];
+
+  const otherItems = [
+    {
+      label: "Profile",
+      id: "profile",
+      icon: <ProfileIcon size={18} />,
+      url: role === "student" ? "/profile" : "/facultyprofessionalprofile",
+    },
+    { label: "Settings", icon: <SettingsIcon size={18} /> },
+    { label: "Help", icon: <HelpIcon size={18} /> },
+  ];
+
   const dispatch = useDispatch();
   const [hover, setHover] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -172,19 +198,37 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
     const filterModules = Modules.filter(
       (module) => accessibleModules[module.id] || module.id === "home",
     );
+
     setFilteredModules(filterModules);
   }, [accessibleModules]);
 
   const handleModuleClick = (item) => {
+    let path = item.url;
+
+    // HealthCare Center icon clicked navigation
+    if (item.id === "phc") {
+      if (role === "Compounder") {
+        path = "/healthcenter/compounder/patient-log";
+      } else if (role === "student" || role === "Professor") {
+        path = "/healthcenter/student/history";
+      }
+    }
+
     setSelected(item.label);
     toggleSidebar();
     dispatch(setCurrentModule(item.label));
-    navigate(item.url);
+    navigate(path);
   };
 
   return (
     <>
-      <Flex gap={32} align="center" h={64} justify="center">
+      <Flex
+        gap={32}
+        align="center"
+        h={64}
+        justify="center"
+        w={{ xxs: "300px" }}
+      >
         {!isCollapsed && (
           <img src={IIITLOGO} alt="IIIT Logo" style={{ maxWidth: "150px" }} />
         )}
@@ -221,6 +265,7 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
               >
                 <Button
                   key={item.label}
+                  disabled={!deployedModules.includes(item.id)}
                   variant={
                     hover === item.label
                       ? "subtle"
@@ -265,6 +310,7 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
               }
               onMouseEnter={() => setHover(item.label)}
               onMouseLeave={() => setHover(null)}
+              onClick={() => handleModuleClick(item)}
             >
               {!isCollapsed && item.label}
             </Button>

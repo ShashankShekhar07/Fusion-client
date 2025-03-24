@@ -1,0 +1,102 @@
+.container {
+  padding-right: 500px;
+  margin: 0 34px;
+  font-family: Arial, sans-serif;
+  text-align: left;
+  width: 90vw;
+  background-color: white;
+  border: 1px solid #C9EBFF;
+  border-radius: 0.375rem;
+}
+
+.tabs {
+  padding-top: 5%;
+  margin-left: 10%;
+  width: 80vw;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.activeTab {
+  border-bottom: solid #C9EBFF;
+  color: #2196f3;
+  font-weight: bold;
+}
+
+.form {
+  background-color: #fff;
+  padding: 70px;
+  margin-left: 10%;
+  border-radius: 4px;
+  width: 80vw;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-direction: row;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.inputGroup:last-child {
+  margin-right: 0;
+}
+
+.submitButton {
+  background-color: #2196f3;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submitButton:hover {
+  background-color: #1976d2;
+}
+
+/* Media Query for Phone View */
+@media (max-width: 768px) {
+  .container {
+    padding-right: 20px;
+    margin: 0 10px;
+    width: 100%;
+  }
+
+  .tabs {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 10px;
+    text-align: center;
+  }
+
+  .form {
+    padding: 20px;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .inputGroup {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .submitButton {
+    width: 100%;
+    margin-top: 20px;
+  }
+}

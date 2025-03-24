@@ -1,0 +1,78 @@
+.wrapper {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  gap: 1rem; /* Add spacing between the list and content */
+}
+
+.listContainer {
+  width: 12rem; /* Set the desired width for the list container */
+  padding: 1rem;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
+.listItem {
+  cursor: pointer;
+  color: gray;
+  padding: 0.5rem;
+  white-space: nowrap; /* Prevent text wrapping */
+  position: relative; /* For the active indicator */
+}
+
+.activeItem {
+  color: black;
+  font-weight: bold;
+}
+
+.contentContainer {
+  flex-grow: 1; /* Take up remaining space */
+  padding: 1rem;
+  max-height: 60vh; /* Limit height */
+  overflow: auto; /* Allow scrolling */
+  word-break: break-word; /* Handle long words */
+  background-color: #fff; /* Optional: Background */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+}
+
+.editButton {
+  background-color: red; /* Set the button background to red */
+  color: white; /* Set the text color to white */
+  border: none; /* Remove border */
+  padding: 0.5rem 1rem; /* Add padding */
+  cursor: pointer; /* Change cursor to pointer */
+  display: flex;
+  align-items: center;
+  border-radius: 4px; /* Add rounded corners */
+  transition: background-color 0.3s; /* Add transition effect */
+}
+
+.editButton:hover {
+  background-color: darkred; /* Darken the button on hover */
+}
+
+.editTextarea {
+  width: 100%; /* Full width */
+  height: 100px; /* Set height as needed */
+  resize: none; /* Prevent resizing */
+}
+
+.pencilIcon {
+  margin-left: 0.5rem; /* Add space between text and icon */
+}
+
+/* Style for point-wise text with filled bullets */
+.catalogList {
+  list-style-type: disc; /* Round filled bullets */
+  padding-left: 1.5rem; /* Indent the points */
+}
+
+.catalogList li {
+  font-size: 14px; /* Adjust font size */
+  color: black;
+  margin-bottom: 0.5rem; /* Spacing between points */
+}

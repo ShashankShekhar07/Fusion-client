@@ -1,0 +1,22 @@
+import { host } from "../globalRoutes";
+
+export const showAwardRoute = `${host}/spacs/create-award/`;
+export const getPreviousWinnersRoute = `${host}/spacs/get-winners/`;
+export const showDirectorGoldSubmitRoute = `${host}/spacs/directorgold_update/`;
+export const showMcmStatusRoute = `${host}/spacs/mcm_show/`;
+export const showGoldStatusRoute = `${host}/spacs/directorgold_show/`;
+export const showSilverStatusRoute = `${host}/spacs/directorsilver_show/`;
+export const showPdmStatusRoute = `${host}/spacs/proficiencydm_show/`;
+export const submitSilverRoute = `${host}/spacs/directorsilver_update/`;
+export const submitPdmRoute = `${host}/spacs/proficiencydm_update/`;
+export const updateCatalogRoute = `${host}/spacs/award/`;
+export const getDirectorGoldApplicationsRoute = `${host}/spacs/director_gold_list/`;
+export const getDirectorSilverApplicationsRoute = `${host}/spacs/director-silver/`;
+export const getProficiencyDMApplicationsRoute = `${host}/spacs/dm-proficiency-list/`;
+export const getMCMApplicationsRoute = `${host}/spacs/scholarship-details/`;
+export const updateMCMStatusRoute = `${host}/spacs/mcm/status-update/`;
+export const updateDirectorGoldStatusRoute = `${host}/spacs/director-gold/accept-reject/`;
+export const updateDirectorSilverStatusRoute = `${host}/spacs/api/director_silver/decision/`;
+export const updateProficiencyDMStatusRoute = `${host}/spacs/api/dm-proficiency/decsion/`;
+export const inviteApplicationsRoute = `${host}/spacs/release`;
+export const submitMCMApplicationsRoute = `${host}/spacs/mcm_update/`;

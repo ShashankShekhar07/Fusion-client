@@ -1,0 +1,1563 @@
+[33mcommit 5b5b11e29ce002c42990155d9a4626e4fd7eab31[m[33m ([m[1;36mHEAD -> [m[1;32mgad-5[m[33m)[m
+Merge: 4a9613d b7e35ea
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Thu Mar 6 12:10:06 2025 +0530
+
+    Merge branch 'main' of https://github.com/FusionIIIT/Fusion-client into gad-5
+
+[33mcommit b7e35ea1e8a3343b14b8c9a66842457c6e8a3fdd[m[33m ([m[1;31mupstream/main[m[33m)[m
+Author: Aditya Kumar Gupta <116958420+Adi8712@users.noreply.github.com>
+Date:   Tue Mar 4 17:17:38 2025 +0530
+
+    SA-2 New UI deployment (#28)
+    
+    * added pages and setup template
+    
+    * Caretaker pages and template fixes
+    
+    * fix(ui): ui and code fixes
+    
+    * fix(ui): optimization and fixes
+    
+    * Added components for Update Payments for Student actor
+    
+    * feat(ui): added pages for Caretaker
+    
+    * Feat: Added Component for Registration and Deregistration for students
+    
+    * Implemented UpdateMenu and ViewMenu for caretaker
+    
+    * added messregistrations, viewstudentbills, viewregistrations
+    
+    * Feature Enhancements: View Menu Pages, Student Registration/DeRegistrations , Feedback System, and Bug Fixes . (#20)
+    
+    * feat[frontend]: Added two feedback and one update sem-date component.
+    
+    * Removed unnecessary comments !
+    
+    * added caretaker pages and set up the student template
+    
+    * removed unnecessary dependencies
+    
+    * fixed ViewSpecialFoodRequest
+    
+    * fixed templates and added registration deregistration and view menu pages
+    
+    * StudentFeedback page and fixed issue with addorrem.jsx
+    
+    * feat: Added Routes and Backend Integration for Update Balance
+    
+    * Add Applications and ViewBillAndPayments page For Student (#26)
+    
+    Co-authored-by: bhumikamathankar <narendramathankar7@gmail.com>
+    
+    * feat[ui]: Added two feedback and one update sem-date component.
+    
+    * Removed unnecessary comments !
+    
+    * added caretaker pages and set up the student template
+    
+    * removed unnecessary dependencies
+    
+    * fixed ViewSpecialFoodRequest
+    
+    * fixed templates and added registration deregistration and view menu pages
+    
+    * StudentFeedback page and fixed issue with addorrem.jsx
+    
+    * backend integration and UI Fix
+    
+    * API Integration for student and caretaker
+    
+    * Done API integartion in MessFeedback,StudentFeedback,RespondRebate,ViewFeedback pages
+    
+    * Done API integartion in RespondRebate,SpecialFoodStatus,ViewBill,PaymentHistory,RebateStatus
+    
+    * Feature Enhancement: Integrated Update Sem Dates and View Registrations pages with Backend and Added Routes (#30)
+    
+    * Feat: Added components for Update Payments for Student actor
+    
+    * Added routes folder and integrated backend in update payment pages
+    
+    * Added all routes in the route folder
+    
+    * Minor UI fixes
+    
+    * student UI updates
+    
+    * Add Applications and ViewBillAndPayments page For Student
+    
+    * feat: Added Routes and Backend Integration for Update Balance
+    
+    * feat[ui]: Added two feedback and one update sem-date component.
+    
+    * Removed unnecessary comments !
+    
+    * added caretaker pages and set up the student template
+    
+    * removed unnecessary dependencies
+    
+    * fixed ViewSpecialFoodRequest
+    
+    * fixed templates and added registration deregistration and view menu pages
+    
+    * StudentFeedback page and fixed issue with addorrem.jsx
+    
+    * backend integration and UI Fix
+    
+    * API Integration for student and caretaker
+    
+    * Done API integartion in MessFeedback,StudentFeedback,RespondRebate,ViewFeedback pages
+    
+    * Done API integartion in RespondRebate,SpecialFoodStatus,ViewBill,PaymentHistory,RebateStatus
+    
+    * Update the UI in Student
+    
+    * Fixed the ui of student pages
+    
+    * Made changes for student and add previous feedback page for student
+    
+    * update student feedback
+    
+    ---------
+    
+    Co-authored-by: bhumikamathankar <narendramathankar7@gmail.com>
+    Co-authored-by: Agrim2112 <agrimgupta2112@gmail.com>
+    Co-authored-by: Utkarsh-Purohit <129503848+Utkarsh-Purohit@users.noreply.github.com>
+    Co-authored-by: S-tej <132924903+S-tej@users.noreply.github.com>
+    
+    * made changes for pages deregistration, MessActivities, WardenIndex (#33)
+    
+    * Fix: fixed routing issues (#35)
+    
+    * Changes in MessActivities,UpdateBalanceRequest,deregistration pages (#34)
+    
+    * fix: merge conflicts
+    
+    * Update package.json
+    
+    ---------
+    
+    Co-authored-by: S-tej <132924903+S-tej@users.noreply.github.com>
+    Co-authored-by: Utkarsh-Purohit <129503848+Utkarsh-Purohit@users.noreply.github.com>
+    Co-authored-by: Agrim2112 <agrimgupta2112@gmail.com>
+    Co-authored-by: AjayPuma <142252693+AjayPuma@users.noreply.github.com>
+    Co-authored-by: Green Mansion <90859709+PrinceBujethia@users.noreply.github.com>
+    Co-authored-by: Nandini Amaravadi <128562497+Nandinics04@users.noreply.github.com>
+    Co-authored-by: Padarthi Karthik <133255355+karthikpadarthi@users.noreply.github.com>
+    Co-authored-by: bhumika066 <167196139+bhumika066@users.noreply.github.com>
+    Co-authored-by: bhumikamathankar <narendramathankar7@gmail.com>
+    Co-authored-by: Divyansh Bisht <115489768+dcoder13@users.noreply.github.com>
+
+[33mcommit 59bd853e9b9ee6f15dbcaa342acf168838e68f81[m
+Author: Ramesh Babu <srameshbabu2004@gmail.com>
+Date:   Tue Mar 4 16:21:53 2025 +0530
+
+    UI Layout changed (#25)
+
+[33mcommit 9173e072b2313c56ff1513b8820d07ca11553072[m
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Mon Mar 3 18:12:46 2025 +0530
+
+    Fixed profile Page navigation error, Added  notif_count on bell icon & disabled navigation of undeployed modules.  (#27)
+    
+    This commit fixes the profile page navigation error from the sidebar and also adds a total notifications count in the bell icon. It also disables the navigation of those modules that have not yet been deployed.
+
+[33mcommit 4a9613d38cb5a8a7effe919400c0847cc9e8055b[m[33m ([m[1;31morigin/gad-5[m[33m)[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Mon Mar 3 17:22:47 2025 +0530
+
+    fix: fixed prof err + noti_count & disable nav.
+    
+    This commit fixes the profile page navigation error from sidebar and
+    also adds a total notifications count in bell icon. It also disables the
+    navigation of those modules which has not been deployed yet.
+    
+    Note: Each time new module get deployed, we will have to update the
+    deployedModules variable in order to allow navigation of that module
+    from sidebar.
+
+[33mcommit c0e1ce7bc01ee03704ec83a49669a4fd077f1e68[m
+Merge: 05631d0 5594248
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Mon Mar 3 17:21:32 2025 +0530
+
+    Merge branch 'main' of https://github.com/FusionIIIT/Fusion-client into gad-5
+
+[33mcommit 5594248cbcd4c59bf3764ecf8493275bb55d3b66[m
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Thu Feb 20 00:13:31 2025 +0530
+
+    [Dashboard] Added profile pages for students along with various other functionalities. (#22)
+
+[33mcommit 05631d0bb9e6d4a0efad93873e807283fcdd9157[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Wed Feb 19 08:36:03 2025 +0530
+
+    fix: Clear token whenever token expires causing redirect to login properly now
+
+[33mcommit b99792675897680ffe67b0340c4b415023f29da1[m
+Merge: f89e9ed a579c5c
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Wed Feb 19 08:17:07 2025 +0530
+
+    Merge branch 'main' of https://github.com/FusionIIIT/Fusion-client into gad-5
+
+[33mcommit f89e9ed3cf912848199d7970ac04e10dfc5f1885[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Wed Feb 19 08:09:34 2025 +0530
+
+    feat: Added Student Profile Page and its functionalities
+
+[33mcommit 7016492c87becf3f71f36b8486fe522e0852ff63[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Tue Feb 18 20:26:02 2025 +0530
+
+    fix: Fixed redirect issue on invalid token.
+
+[33mcommit a579c5c981090fd3a4ae2d9e189bba6d85c8175b[m
+Author: Anand Jaiswal <anand230703@gmail.com>
+Date:   Tue Feb 18 12:42:55 2025 +0530
+
+    Feat: Gad-4-Merging File tracking system (#20)
+    
+    * compose componments changes
+    
+    * create file tracking module added components (#2)
+    
+    * outbox (#3)
+    
+    * added Archive.jsx (#5)
+    
+    * Added ViewFile. (#6)
+    
+    * Revert "Added ViewFile. (#6)" (#7)
+    
+    This reverts commit 3b62df8f057e05376b35ab8210071bcd965d74cd.
+    
+    * Revert "added Archive.jsx (#5)" (#8)
+    
+    This reverts commit b1ffc7c493e16e73c8734fba7e9d2584c134a676.
+    
+    * Changed drafts and archive (#9)
+    
+    * Pred695/gad 4 (#10)
+    
+    * compose componments changes
+    
+    * create file tracking module added components (#2)
+    
+    * outbox (#3)
+    
+    * added Archive.jsx (#5)
+    
+    * Added ViewFile. (#6)
+    
+    * Revert "Added ViewFile. (#6)" (#7)
+    
+    This reverts commit 3b62df8f057e05376b35ab8210071bcd965d74cd.
+    
+    * Revert "added Archive.jsx (#5)" (#8)
+    
+    This reverts commit b1ffc7c493e16e73c8734fba7e9d2584c134a676.
+    
+    * Changed drafts and archive (#9)
+    
+    * add: notifications on actions
+    
+    ---------
+    
+    Co-authored-by: alok410kr <alok410kr@gmail.com>
+    Co-authored-by: Fahad Sheik Abdullah <119167516+fahadsheik@users.noreply.github.com>
+    Co-authored-by: alok410kr <119100864+alok410kr@users.noreply.github.com>
+    Co-authored-by: Sadvika <128731424+sadvika05@users.noreply.github.com>
+    Co-authored-by: sunilroat-code <146645681+sunilroat-code@users.noreply.github.com>
+    Co-authored-by: Kshitizverma1234 <128520639+Kshitizverma1234@users.noreply.github.com>
+    Co-authored-by: Madhumita2005 <146762719+Madhumita2005@users.noreply.github.com>
+    
+    * add: notifications on actions (#12)
+    
+    * made changes (#13)
+    
+    * Changes in ViewDraft and few other changes (#14)
+    
+    * Changed drafts and archive
+    
+    * Made changes in EditDraft file and few other small changes
+    
+    * added forward file section in outbox.jsx to designated person (#15)
+    
+    * Integrated some backend funcitonality
+    
+    * fix: Added Breadcrumbs
+    
+    * add: fetch params from global state in inbox page
+    
+    * add: fetched params from the global state in Drafts and Archive Page
+    
+    * Integrated some backend funcitonality (#17)
+    
+    * fix: Fixed breadcrumbs behaviour
+    
+    * fix: changes for UI consistency in Tabs
+    
+    * Enhanced table layout and design in all pages
+    
+    * Revert "Enhanced table layout and design in all pages"
+    
+    * fix: fixed viewFile functionality
+    
+    * add: added dynamic designation fetching
+    
+    * minor fixes
+    
+    * minor fixes
+    
+    * add: fixed file upload
+    
+    * Updated Inbox.jsx with new padding and font size changes
+    
+    * made ui changes in inbox and outbox
+    
+    * made changes in archive and drafts
+    
+    * add: fixed tracking integration
+    
+    * add: fixed ui consistency
+    
+    * add: added separate routes file
+    
+    * fix: multiple file uploads and also ajax name suggestion dropdown
+    
+    * Made track page responsive
+    
+    * made compose file responsive
+    
+    * made compose file responsive
+    
+    * Made inbox page responsive
+    
+    * changes in receiver designation  and forward to section
+    
+    * Fix: Made UI changes in multiple pages
+    
+    ---------
+    
+    Co-authored-by: alok410kr <alok410kr@gmail.com>
+    Co-authored-by: Fahad Sheik Abdullah <119167516+fahadsheik@users.noreply.github.com>
+    Co-authored-by: alok410kr <119100864+alok410kr@users.noreply.github.com>
+    Co-authored-by: Sadvika <128731424+sadvika05@users.noreply.github.com>
+    Co-authored-by: sunilroat-code <146645681+sunilroat-code@users.noreply.github.com>
+    Co-authored-by: Kshitizverma1234 <128520639+Kshitizverma1234@users.noreply.github.com>
+    Co-authored-by: Madhumita2005 <146762719+Madhumita2005@users.noreply.github.com>
+    Co-authored-by: Zaid Alam <113824146+pred695@users.noreply.github.com>
+    Co-authored-by: fahadsheik <fahad96644@gmail.com>
+    Co-authored-by: harshk-89 <133699216+harshk-89@users.noreply.github.com>
+    Co-authored-by: Zaid Alam <predcodes695@gmail.com>
+    Co-authored-by: sadvika <sadvikachitteti@gmail.com>
+    Co-authored-by: harshk-89 <harshkajalkhane774105@gmail.com>
+
+[33mcommit 18051cef90b39f33dac0ce035300b22d70163df5[m
+Author: Vithesh Krishna <133671028+Vithesh2215@users.noreply.github.com>
+Date:   Mon Feb 17 17:54:53 2025 +0530
+
+    Department Module version 1 (#19)
+    
+    All changes of Department module V1.0
+    
+    ---------
+    
+    Co-authored-by: aadityaverma2011 <112503547+aadityaverma2011@users.noreply.github.com>
+    Co-authored-by: owaish7 <lightningowais@gmail.com>
+    Co-authored-by: pant5803 <121814461+pant5803@users.noreply.github.com>
+
+[33mcommit 4990605c339416b986b4a0ff136e9ed02852bf23[m
+Author: SHRAMAN PAUL <pkpaulpostdn@gmail.com>
+Date:   Mon Feb 17 11:33:41 2025 +0530
+
+    Visitors Hostel  (#21)
+    
+    * add:Routes to Visitors Hostel main page
+    
+    * add: visitors navbar and managed routes
+    
+    * add: cancellation request
+    
+    * add: updated cancellation request
+    
+    * add: Booking Form
+    
+    * add: active bookings and completed bookings (#4)
+    
+    * add: bookings page and  place request
+    
+    * Vk (#5)
+    
+    * add: active bookings and completed bookings
+    
+    * resolve conflicts in App.jsx
+    
+    * Revert "resolve conflicts in App.jsx"
+    
+    This reverts commit 1e8a205e7ea671a7e7c76794e36fd25192db589c.
+    
+    * add: room avalibility visitors details and responsiveness for medium screens
+    
+    * added the pages for inventory and vhguidelines (#7)
+    
+    * add: active bookings and completed bookings
+    
+    * resolve conflicts in App.jsx
+    
+    * Revert "resolve conflicts in App.jsx"
+    
+    This reverts commit 1e8a205e7ea671a7e7c76794e36fd25192db589c.
+    
+    * add: inventory and vhguidelines pages
+    
+    ---------
+    
+    Co-authored-by: SHRAMAN PAUL <pkpaulpostdn@gmail.com>
+    
+    * Added api fetch of booking requests (#8)
+    
+    * bug: fixed conditional rendering of Visitor's Hostel Naavbar
+    
+    * add:account statement page
+    
+    * add: forwardBooking confirmBooking
+    
+    * fetching api for completed, cancelled, active bookings (#9)
+    
+    * Added api fetch of booking requests
+    
+    * activeBooking api fetched
+    
+    * changed pages for fetching data from active, completed, cancelled request api
+    
+    * cancellation request action done
+    
+    * reject request works
+    
+    * add: room availibility
+    
+    * Add items functionality (#10)
+    
+    * add: table content
+    
+    * Add items functionality
+    
+    * fix: Inventory
+    
+    * add: accountStatement (#11)
+    
+    * fix: calculation in account statements
+    
+    * fix: partial booking feature
+    
+    * Page Refresh after updation added (#12)
+    
+    * Added api fetch of booking requests
+    
+    * activeBooking api fetched
+    
+    * changed pages for fetching data from active, completed, cancelled request api
+    
+    * cancellation request action done
+    
+    * reject request works
+    
+    * Forward Booking refreshing added
+    
+    * Cancel update in active booking
+    
+    * fix: completed bookings
+    
+    * fix: UI of rooms availibilty and account statement
+    
+    * feat: add export to excel functionality
+    
+    * feat: add PDF generation and view functionality
+    
+    * fix: bugs and BreadCrumbs
+    
+    * fix: alignment and color (#14)
+    
+    * Merged Vh module with Complaint Management (#15)
+    
+    * Complaint management configs
+    
+    * Created Feedback tab, list, item, and minor changes in index.jsx file to align all tabs
+    
+    * generate report and complaint history pages
+    
+    * Done changes in Complaint Form and correct module name to ComplaintManagement from Complaint Management
+    
+    * Minor changes done in Form Page and romoved scroll bar in Feedback page
+    
+    * generate report and complaint history
+    
+    * add UnresolvedComplaints page and all associated components to the components dir
+    
+    * UI and Functional Improvements
+    
+    * added validation in complaint feedback form
+    
+    * added resolved complaints page
+    
+    * applied fontFamily to  all the complaint pages from index.jsx file
+    
+    * fixed all the linting errors
+    
+    * fixed linting errors
+    
+    * modified generate report and complaint history files
+    
+    * fixed the dependencies error
+    
+    * ..
+    
+    * ...
+    
+    * Added unresolved complaints pages
+    
+    * added unresolved complaint in index.jsx file
+    
+    * modified generate-report.jsx and integrated with backend
+    
+    * integrated complaint form, feedback and resolved complaints pages
+    
+    * minor change in lodge a complaint page
+    
+    * corrected the positions of the paper element.
+    
+    * added Redirected Complaints page.
+    
+    * Complaint History and Unresolved Complaint page integrated with backend
+    
+    * merge solve
+    
+    * navbar updated
+    
+    * Changes made in home page and css adjusted
+    
+    * integrated unresolved complaint pages
+    
+    * integrated resolved complaints
+    
+    * integrated redirected complaints
+    
+    * Changes for displaying errors or empty lists and minor UI changes
+    
+    * added regex expression to get the user role
+    
+    * generate remote page updated
+    
+    * Added ComplaintDetails file for reusability and made UI consistent over Complaint History, FeedbackForm, RedirectedComplaints, Resolved Complaints and Unresolved Complaints pages
+    
+    * Updated navbar
+    
+    * Added Download as CSV functionality in Generate Report page and minor UI changes
+    
+    * implemented lazy loading
+    
+    * removed unwanted codes
+    
+    * Fixed width and font sizes in complaint history page
+    
+    * Fixed width and font sizes in feedback pages
+    
+    * Fixed width and font sizes in complaint form
+    
+    * fixed bugs and adjusted buttons in complaintHistory page
+    
+    * Fixed width and font sizes in redirected complaints page
+    
+    * Minor UI fixes in complaint history, redirected complaints, feedback pages
+    
+    * modified resolved and unresolved page
+    
+    * Resolved Problem of displaying declined complaints in unresolved complaints even after marking them as declined by caretaker
+    
+    * Removed div and used mantine components grid and paper
+    
+    * add a file and layout for api routes.Implemented for lodge complaint.
+    
+    * Alignment changes
+    
+    * created seperate api routes for student/faculty pages
+    
+    * Changes in Scroll
+    
+    * improved generate report UI
+    
+    * fixed all the minor changes
+    
+    * added api routes of unresolved , resolved complaints and generate report
+    
+    * Minor UI fixes in complaint history, redirected complaints, feedback, resolved and unresolved pages
+    
+    * corrected file opening(minor change)
+    
+    * added api routes of feedbackForm , redirected complaints , redirected Complaints Change  UnresComp_ChangeStatus and UnresComp_Reddirect
+    
+    * Added lodge a complaint page and complaint history page for caretaker
+    
+    * Fixed ui and date format in complaint history and generate report pages
+    
+    ---------
+    
+    Co-authored-by: Prit Bhanushali <pritbhanushali012@gmail.com>
+    Co-authored-by: jyotiduhan2004 <jyotiduhan482@gmail.com>
+    Co-authored-by: Sujit <sujittayade2040@gmail.com>
+    Co-authored-by: shivamsk2004 <shivamkumbhakarna2004@gmail.com>
+    Co-authored-by: akeshari986 <22bcs055@iiitdmj.ac.in>
+    Co-authored-by: shreySaxena <shreyyerhs07@gmail.com>
+    Co-authored-by: Chaitanya-Musale <cmusale3@gmail.com>
+    
+    * fix: responsive navabar
+    
+    * fix active booking responsive
+    
+    * fix: bugs
+    
+    * bugs: fixed data format in calender
+    
+    ---------
+    
+    Co-authored-by: Vishal-Github-21 <vishalmukkannavar690@gmail.com>
+    Co-authored-by: Vishal-Github-21 <116187488+Vishal-Github-21@users.noreply.github.com>
+    Co-authored-by: Hardik Vardaan <37293677+AtOM18@users.noreply.github.com>
+    Co-authored-by: ompandey0703 <142932201+ompandey0703@users.noreply.github.com>
+    Co-authored-by: K.Charan Teja Reddy <129493881+Charan2437@users.noreply.github.com>
+    Co-authored-by: Prit Bhanushali <pritbhanushali012@gmail.com>
+    Co-authored-by: jyotiduhan2004 <jyotiduhan482@gmail.com>
+    Co-authored-by: Sujit <sujittayade2040@gmail.com>
+    Co-authored-by: shivamsk2004 <shivamkumbhakarna2004@gmail.com>
+    Co-authored-by: akeshari986 <22bcs055@iiitdmj.ac.in>
+    Co-authored-by: shreySaxena <shreyyerhs07@gmail.com>
+    Co-authored-by: Chaitanya-Musale <cmusale3@gmail.com>
+
+[33mcommit 1d3f7ab0e1e9f67b0b9488ae2c76180f63b5295c[m
+Author: SHRAMAN PAUL <pkpaulpostdn@gmail.com>
+Date:   Sun Feb 16 14:47:28 2025 +0530
+
+    Visitors Hostel (#17)
+    
+    * add:Routes to Visitors Hostel main page
+    
+    * add: visitors navbar and managed routes
+    
+    * add: cancellation request
+    
+    * add: updated cancellation request
+    
+    * add: Booking Form
+    
+    * add: active bookings and completed bookings (#4)
+    
+    * add: bookings page and  place request
+    
+    * Vk (#5)
+    
+    * add: active bookings and completed bookings
+    
+    * resolve conflicts in App.jsx
+    
+    * Revert "resolve conflicts in App.jsx"
+    
+    This reverts commit 1e8a205e7ea671a7e7c76794e36fd25192db589c.
+    
+    * add: room avalibility visitors details and responsiveness for medium screens
+    
+    * added the pages for inventory and vhguidelines (#7)
+    
+    * add: active bookings and completed bookings
+    
+    * resolve conflicts in App.jsx
+    
+    * Revert "resolve conflicts in App.jsx"
+    
+    This reverts commit 1e8a205e7ea671a7e7c76794e36fd25192db589c.
+    
+    * add: inventory and vhguidelines pages
+    
+    ---------
+    
+    Co-authored-by: SHRAMAN PAUL <pkpaulpostdn@gmail.com>
+    
+    * Added api fetch of booking requests (#8)
+    
+    * bug: fixed conditional rendering of Visitor's Hostel Naavbar
+    
+    * add:account statement page
+    
+    * add: forwardBooking confirmBooking
+    
+    * fetching api for completed, cancelled, active bookings (#9)
+    
+    * Added api fetch of booking requests
+    
+    * activeBooking api fetched
+    
+    * changed pages for fetching data from active, completed, cancelled request api
+    
+    * cancellation request action done
+    
+    * reject request works
+    
+    * add: room availibility
+    
+    * Add items functionality (#10)
+    
+    * add: table content
+    
+    * Add items functionality
+    
+    * fix: Inventory
+    
+    * add: accountStatement (#11)
+    
+    * fix: calculation in account statements
+    
+    * fix: partial booking feature
+    
+    * Page Refresh after updation added (#12)
+    
+    * Added api fetch of booking requests
+    
+    * activeBooking api fetched
+    
+    * changed pages for fetching data from active, completed, cancelled request api
+    
+    * cancellation request action done
+    
+    * reject request works
+    
+    * Forward Booking refreshing added
+    
+    * Cancel update in active booking
+    
+    * fix: completed bookings
+    
+    * fix: UI of rooms availibilty and account statement
+    
+    * feat: add export to excel functionality
+    
+    * feat: add PDF generation and view functionality
+    
+    * fix: bugs and BreadCrumbs
+    
+    * fix: alignment and color (#14)
+    
+    * Merged Vh module with Complaint Management (#15)
+    
+    * Complaint management configs
+    
+    * Created Feedback tab, list, item, and minor changes in index.jsx file to align all tabs
+    
+    * generate report and complaint history pages
+    
+    * Done changes in Complaint Form and correct module name to ComplaintManagement from Complaint Management
+    
+    * Minor changes done in Form Page and romoved scroll bar in Feedback page
+    
+    * generate report and complaint history
+    
+    * add UnresolvedComplaints page and all associated components to the components dir
+    
+    * UI and Functional Improvements
+    
+    * added validation in complaint feedback form
+    
+    * added resolved complaints page
+    
+    * applied fontFamily to  all the complaint pages from index.jsx file
+    
+    * fixed all the linting errors
+    
+    * fixed linting errors
+    
+    * modified generate report and complaint history files
+    
+    * fixed the dependencies error
+    
+    * ..
+    
+    * ...
+    
+    * Added unresolved complaints pages
+    
+    * added unresolved complaint in index.jsx file
+    
+    * modified generate-report.jsx and integrated with backend
+    
+    * integrated complaint form, feedback and resolved complaints pages
+    
+    * minor change in lodge a complaint page
+    
+    * corrected the positions of the paper element.
+    
+    * added Redirected Complaints page.
+    
+    * Complaint History and Unresolved Complaint page integrated with backend
+    
+    * merge solve
+    
+    * navbar updated
+    
+    * Changes made in home page and css adjusted
+    
+    * integrated unresolved complaint pages
+    
+    * integrated resolved complaints
+    
+    * integrated redirected complaints
+    
+    * Changes for displaying errors or empty lists and minor UI changes
+    
+    * added regex expression to get the user role
+    
+    * generate remote page updated
+    
+    * Added ComplaintDetails file for reusability and made UI consistent over Complaint History, FeedbackForm, RedirectedComplaints, Resolved Complaints and Unresolved Complaints pages
+    
+    * Updated navbar
+    
+    * Added Download as CSV functionality in Generate Report page and minor UI changes
+    
+    * implemented lazy loading
+    
+    * removed unwanted codes
+    
+    * Fixed width and font sizes in complaint history page
+    
+    * Fixed width and font sizes in feedback pages
+    
+    * Fixed width and font sizes in complaint form
+    
+    * fixed bugs and adjusted buttons in complaintHistory page
+    
+    * Fixed width and font sizes in redirected complaints page
+    
+    * Minor UI fixes in complaint history, redirected complaints, feedback pages
+    
+    * modified resolved and unresolved page
+    
+    * Resolved Problem of displaying declined complaints in unresolved complaints even after marking them as declined by caretaker
+    
+    * Removed div and used mantine components grid and paper
+    
+    * add a file and layout for api routes.Implemented for lodge complaint.
+    
+    * Alignment changes
+    
+    * created seperate api routes for student/faculty pages
+    
+    * Changes in Scroll
+    
+    * improved generate report UI
+    
+    * fixed all the minor changes
+    
+    * added api routes of unresolved , resolved complaints and generate report
+    
+    * Minor UI fixes in complaint history, redirected complaints, feedback, resolved and unresolved pages
+    
+    * corrected file opening(minor change)
+    
+    * added api routes of feedbackForm , redirected complaints , redirected Complaints Change  UnresComp_ChangeStatus and UnresComp_Reddirect
+    
+    * Added lodge a complaint page and complaint history page for caretaker
+    
+    * Fixed ui and date format in complaint history and generate report pages
+    
+    ---------
+    
+    Co-authored-by: Prit Bhanushali <pritbhanushali012@gmail.com>
+    Co-authored-by: jyotiduhan2004 <jyotiduhan482@gmail.com>
+    Co-authored-by: Sujit <sujittayade2040@gmail.com>
+    Co-authored-by: shivamsk2004 <shivamkumbhakarna2004@gmail.com>
+    Co-authored-by: akeshari986 <22bcs055@iiitdmj.ac.in>
+    Co-authored-by: shreySaxena <shreyyerhs07@gmail.com>
+    Co-authored-by: Chaitanya-Musale <cmusale3@gmail.com>
+    
+    * fix: responsive navabar
+    
+    * fix active booking responsive
+    
+    * fix: bugs
+    
+    ---------
+    
+    Co-authored-by: Vishal-Github-21 <vishalmukkannavar690@gmail.com>
+    Co-authored-by: Vishal-Github-21 <116187488+Vishal-Github-21@users.noreply.github.com>
+    Co-authored-by: Hardik Vardaan <37293677+AtOM18@users.noreply.github.com>
+    Co-authored-by: ompandey0703 <142932201+ompandey0703@users.noreply.github.com>
+    Co-authored-by: K.Charan Teja Reddy <129493881+Charan2437@users.noreply.github.com>
+    Co-authored-by: Prit Bhanushali <pritbhanushali012@gmail.com>
+    Co-authored-by: jyotiduhan2004 <jyotiduhan482@gmail.com>
+    Co-authored-by: Sujit <sujittayade2040@gmail.com>
+    Co-authored-by: shivamsk2004 <shivamkumbhakarna2004@gmail.com>
+    Co-authored-by: akeshari986 <22bcs055@iiitdmj.ac.in>
+    Co-authored-by: shreySaxena <shreyyerhs07@gmail.com>
+    Co-authored-by: Chaitanya-Musale <cmusale3@gmail.com>
+
+[33mcommit 2260dbf5bdb0afc2c6a3f98d70fd4f34f1158252[m
+Merge: dfbe22e b6ba607
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sat Feb 15 19:57:02 2025 +0530
+
+    Merge branch 'gad-5' of https://github.com/Pratik2026/Fusion-client into gad-5
+
+[33mcommit b6ba607cac62f9bb083d98dc09d59145327560ac[m
+Author: Vedant Jain <129421822+jainvedant392@users.noreply.github.com>
+Date:   Mon Feb 10 16:42:25 2025 +0530
+
+    Created Profile Page (#5)
+    
+    Created Profile Page
+
+[33mcommit dfbe22e9ae8868a4d2475bd50768fc520870c6c7[m
+Merge: 3030ea2 4c9d806
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Mon Feb 10 16:37:52 2025 +0530
+
+    Merge branch 'main' of https://github.com/FusionIIIT/Fusion-client into gad-5
+
+[33mcommit 4c9d8067b917d48669fd0bdd5da8dadd3c9bdb1d[m
+Author: Ramesh Babu <srameshbabu2004@gmail.com>
+Date:   Wed Feb 5 00:50:54 2025 +0530
+
+    EIS module version 1 (#16)
+    
+    * Added App.jsx
+    
+    * added folders
+    
+    * Added Projects and Thesis Supervision
+    
+    * Added conference
+    
+    * Added Folders
+    
+    * Added Myprofile files
+    
+    * added myprofile files
+    
+    * Added BreadCrumbs
+    
+    * Made a Saperate Routes file and also Added AboutMe secton
+    
+    * removed extra unnecessary file
+    
+    * Corrected some UI
+    
+    * Corrected Journals
+    
+    * Added Dynamic Fetching
+    
+    * Added Dynamic Fetching
+    
+    * Final Update
+    
+    * Removed Linting Errors
+    
+    * Update sidebarContent.jsx
+    
+    * Update App.jsx
+    
+    * fix: complaint-eis stashed
+    
+    * Added administrative forms
+    
+    * fix small correction
+    
+    * Made The Pages Responsive
+    
+    * Made changes responsive
+    
+    * added pfNo for all forms
+    
+    ---------
+    
+    Co-authored-by: abhishek-singh0710 <126397507+abhishek-singh0710@users.noreply.github.com>
+    Co-authored-by: Gautam Saraya <sarayagautam9@gmail.com>
+    Co-authored-by: Pkjha9903 <22bcs193@iiitdmj.ac.in>
+    Co-authored-by: Parzigit <sumedhatreya007@gmail.com>
+    Co-authored-by: Sathwik <sathwik2625@gmail.com>
+
+[33mcommit 58920cd6c32a5d4f136da3b09ff459d38d903a63[m
+Author: K.Charan Teja Reddy <129493881+Charan2437@users.noreply.github.com>
+Date:   Tue Feb 4 15:42:38 2025 +0530
+
+    Complaint management version 1 (#14)
+    
+    * Complaint management configs
+    
+    * Created Feedback tab, list, item, and minor changes in index.jsx file to align all tabs
+    
+    * generate report and complaint history pages
+    
+    * Done changes in Complaint Form and correct module name to ComplaintManagement from Complaint Management
+    
+    * Minor changes done in Form Page and romoved scroll bar in Feedback page
+    
+    * generate report and complaint history
+    
+    * add UnresolvedComplaints page and all associated components to the components dir
+    
+    * UI and Functional Improvements
+    
+    * added validation in complaint feedback form
+    
+    * added resolved complaints page
+    
+    * applied fontFamily to  all the complaint pages from index.jsx file
+    
+    * fixed all the linting errors
+    
+    * fixed linting errors
+    
+    * modified generate report and complaint history files
+    
+    * fixed the dependencies error
+    
+    * ..
+    
+    * ...
+    
+    * Added unresolved complaints pages
+    
+    * added unresolved complaint in index.jsx file
+    
+    * modified generate-report.jsx and integrated with backend
+    
+    * integrated complaint form, feedback and resolved complaints pages
+    
+    * minor change in lodge a complaint page
+    
+    * corrected the positions of the paper element.
+    
+    * added Redirected Complaints page.
+    
+    * Complaint History and Unresolved Complaint page integrated with backend
+    
+    * merge solve
+    
+    * navbar updated
+    
+    * Changes made in home page and css adjusted
+    
+    * integrated unresolved complaint pages
+    
+    * integrated resolved complaints
+    
+    * integrated redirected complaints
+    
+    * Changes for displaying errors or empty lists and minor UI changes
+    
+    * added regex expression to get the user role
+    
+    * generate remote page updated
+    
+    * Added ComplaintDetails file for reusability and made UI consistent over Complaint History, FeedbackForm, RedirectedComplaints, Resolved Complaints and Unresolved Complaints pages
+    
+    * Updated navbar
+    
+    * Added Download as CSV functionality in Generate Report page and minor UI changes
+    
+    * implemented lazy loading
+    
+    * removed unwanted codes
+    
+    * Fixed width and font sizes in complaint history page
+    
+    * Fixed width and font sizes in feedback pages
+    
+    * Fixed width and font sizes in complaint form
+    
+    * fixed bugs and adjusted buttons in complaintHistory page
+    
+    * Fixed width and font sizes in redirected complaints page
+    
+    * Minor UI fixes in complaint history, redirected complaints, feedback pages
+    
+    * modified resolved and unresolved page
+    
+    * Resolved Problem of displaying declined complaints in unresolved complaints even after marking them as declined by caretaker
+    
+    * Removed div and used mantine components grid and paper
+    
+    * add a file and layout for api routes.Implemented for lodge complaint.
+    
+    * Alignment changes
+    
+    * created seperate api routes for student/faculty pages
+    
+    * Changes in Scroll
+    
+    * improved generate report UI
+    
+    * fixed all the minor changes
+    
+    * added api routes of unresolved , resolved complaints and generate report
+    
+    * Minor UI fixes in complaint history, redirected complaints, feedback, resolved and unresolved pages
+    
+    * corrected file opening(minor change)
+    
+    * added api routes of feedbackForm , redirected complaints , redirected Complaints Change  UnresComp_ChangeStatus and UnresComp_Reddirect
+    
+    * Added lodge a complaint page and complaint history page for caretaker
+    
+    * Fixed ui and date format in complaint history and generate report pages
+    
+    ---------
+    
+    Co-authored-by: Prit Bhanushali <pritbhanushali012@gmail.com>
+    Co-authored-by: jyotiduhan2004 <jyotiduhan482@gmail.com>
+    Co-authored-by: Sujit <sujittayade2040@gmail.com>
+    Co-authored-by: shivamsk2004 <shivamkumbhakarna2004@gmail.com>
+    Co-authored-by: akeshari986 <22bcs055@iiitdmj.ac.in>
+    Co-authored-by: shreySaxena <shreyyerhs07@gmail.com>
+    Co-authored-by: Chaitanya-Musale <cmusale3@gmail.com>
+
+[33mcommit eddb69654ba1baf2a7790c6f9dfe63aee2970c1a[m
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Mon Jan 27 16:48:18 2025 +0530
+
+    Made the header responsive (#12)
+    
+    Made the header responsive
+
+[33mcommit 3030ea28abdb1a5dc7b286f350a6e8f09dd32ff0[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Mon Jan 27 11:11:16 2025 +0530
+
+    Made the header responsive
+
+[33mcommit 5695e14b9d96d0ebeb8c1d49f1f2cd07fe46d9ec[m[33m ([m[1;32mmain[m[33m)[m
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sun Nov 17 06:38:24 2024 +0530
+
+    Implemented Automatic logout feature. (#8)
+    
+    feat: Added automatic logout feature.
+
+[33mcommit 52a522ca52ce3d3b84a67f53dbb18f0a341cbfd0[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Nov 17 06:25:28 2024 +0530
+
+    feat: Added automatic logout feature.
+
+[33mcommit 00d67ea8ae71f76643a3cce4ed89cbc3edea3e0e[m
+Merge: 38f1e6a d731c1a
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Nov 17 06:23:47 2024 +0530
+
+    Merge branch 'main' of https://github.com/FusionIIIT/Fusion-client into gad-5
+
+[33mcommit d731c1a9afb706124609a2e5de29370cddf175f3[m
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Tue Oct 22 23:07:30 2024 +0530
+
+    Added necessary fields and made some components customizable for global usage. (#4)
+    
+    * feat: Made the tabs and breadcrumb components reusable and customizable.
+    
+    * feat(ui): Added fusionTable component (#2)
+    
+    Added fusionTable component which can be easily customized and reused by other modules.
+    
+    * chore: removed unnecessary default props.
+    
+    * Table (#3)
+    
+    feat: Introduced react-mantine table library for table components.
+    
+    * feat: Added roll_no field in global states.
+    
+    ---------
+    
+    Co-authored-by: Vedant Jain <129421822+jainvedant392@users.noreply.github.com>
+    Co-authored-by: Akash Paloju <119884665+AkashPaloju@users.noreply.github.com>
+
+[33mcommit 38f1e6a494b1ce92691c1334244dd1dfd28c00c7[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Tue Oct 22 22:33:43 2024 +0530
+
+    feat: Added roll_no field in global states.
+
+[33mcommit 55b4cf14674c219dbd6512ad7452c401eb580a80[m
+Author: Akash Paloju <119884665+AkashPaloju@users.noreply.github.com>
+Date:   Mon Oct 21 14:34:04 2024 +0530
+
+    Table (#3)
+    
+    feat: Introduced react-mantine table library for table components.
+
+[33mcommit 937db6a0c5091bfc49b6691d58b020cd6c665c68[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Fri Oct 18 12:01:49 2024 +0530
+
+    chore: removed unnecessary default props.
+
+[33mcommit eca55a79705b83287057b76e3df12ef7de62c8df[m
+Author: Akash Paloju <119884665+AkashPaloju@users.noreply.github.com>
+Date:   Thu Oct 17 23:16:46 2024 +0530
+
+    feat(ui): Added fusionTable component (#2)
+    
+    Added fusionTable component which can be easily customized and reused by other modules.
+
+[33mcommit 4b0fdf5038b306dc061e82781312797377fa31d3[m
+Author: Vedant Jain <129421822+jainvedant392@users.noreply.github.com>
+Date:   Thu Oct 17 23:13:33 2024 +0530
+
+    feat: Made the tabs and breadcrumb components reusable and customizable.
+
+[33mcommit 5cf86e3fc525b3b734449ee66aea88b2d05ae6a8[m[33m ([m[1;31mupstream/sa-4[m[33m, [m[1;31mupstream/sa-3[m[33m, [m[1;31mupstream/sa-2[m[33m, [m[1;31mupstream/sa-1[m[33m, [m[1;31mupstream/os-3[m[33m, [m[1;31mupstream/os-2[m[33m, [m[1;31mupstream/os-1[m[33m, [m[1;31mupstream/gad-7[m[33m, [m[1;31mupstream/gad-6[m[33m, [m[1;31mupstream/gad-5[m[33m, [m[1;31mupstream/gad-4[m[33m, [m[1;31mupstream/gad-3[m[33m, [m[1;31mupstream/gad-2[m[33m, [m[1;31mupstream/gad-1[m[33m, [m[1;31mupstream/ac-7[m[33m, [m[1;31mupstream/ac-6[m[33m, [m[1;31mupstream/ac-4[m[33m, [m[1;31mupstream/ac-3[m[33m, [m[1;31mupstream/ac-2[m[33m, [m[1;31mupstream/ac-1[m[33m, [m[1;31morigin/sa-4[m[33m, [m[1;31morigin/sa-3[m[33m, [m[1;31morigin/sa-2[m[33m, [m[1;31morigin/sa-1[m[33m, [m[1;31morigin/os-3[m[33m, [m[1;31morigin/os-2[m[33m, [m[1;31morigin/os-1[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/gad-7[m[33m, [m[1;31morigin/gad-6[m[33m, [m[1;31morigin/gad-4[m[33m, [m[1;31morigin/gad-3[m[33m, [m[1;31morigin/gad-2[m[33m, [m[1;31morigin/gad-1[m[33m, [m[1;31morigin/ac-7[m[33m, [m[1;31morigin/ac-6[m[33m, [m[1;31morigin/ac-4[m[33m, [m[1;31morigin/ac-3[m[33m, [m[1;31morigin/ac-2[m[33m, [m[1;31morigin/ac-1[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/Dashboard-GAD-5[m[33m)[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Tue Oct 8 01:13:02 2024 +0530
+
+    updated readme
+
+[33mcommit 25d45257dbb174afce5292c38a3dac6261e5f7e7[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Tue Oct 8 00:03:44 2024 +0530
+
+    updated routes folders
+
+[33mcommit d4e1018f0988947b18cd82d2d3c4434a8f93d541[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Mon Oct 7 23:35:39 2024 +0530
+
+    updated the contribution.md
+
+[33mcommit 27139521b6fb947739727a4cd6a6b7bc76c2f419[m
+Merge: 3c8811c 534597f
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Mon Oct 7 23:22:23 2024 +0530
+
+    Merge pull request #15 from AkashPaloju/Dashboard-GAD-5
+    
+    ci:Add other file extensions under eslint
+
+[33mcommit 3c8811c524560de4e1e99c449791719073b8e760[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Mon Oct 7 22:17:20 2024 +0530
+
+    Fixed roles_reset bug by adding new api calls
+
+[33mcommit 534597fecc94d8386b5d518b56b78786659417e3[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Mon Oct 7 10:08:23 2024 +0530
+
+    docs: add guidelines about accessing user's role
+
+[33mcommit ed8708e2ae9136ff77fb87f64bde9d70219d2978[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Mon Oct 7 10:05:44 2024 +0530
+
+    ci:change sequence of executing linters
+
+[33mcommit 57614d496ef802068a2cea733dc7c22fb8f4a92c[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Sun Oct 6 23:53:17 2024 +0530
+
+    ci:Add other file extensions under eslint
+
+[33mcommit 1fd9c230bd61d1b17396f11e8763a1d79a9e6ce2[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 23:36:44 2024 +0530
+
+    minor changes
+
+[33mcommit 548f81f66e6307049f6414f93315a82655ca8f7b[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 23:21:12 2024 +0530
+
+    fixed endofline issue
+
+[33mcommit 6ffaed981d9b8db00eb2c097bc1f58132f5f8b9c[m
+Merge: d47f6b9 2d8de51
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sun Oct 6 22:42:47 2024 +0530
+
+    Merge pull request #13 from AkashPaloju/Dashboard-GAD-5
+    
+    Add contributing.md file
+
+[33mcommit d47f6b98a8941e120e02674c9645aaa7520d31fa[m
+Merge: 8272d1f b0d9f37
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sun Oct 6 22:41:53 2024 +0530
+
+    Merge pull request #14 from AkashPaloju/husky
+    
+    ci: fix prettier and husky in pre-commit hook
+
+[33mcommit 8272d1f443b715613e99f6d507de2ae87237f915[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 22:38:55 2024 +0530
+
+    minor bug fix
+
+[33mcommit b0d9f370c26c3f280b89ee2321113ec122e9cf3b[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Sun Oct 6 19:19:59 2024 +0530
+
+    ci: fix prettier and husky in pre-commit hook
+
+[33mcommit b3433063091d7719c1ada93608aece3e722f3880[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 18:33:30 2024 +0530
+
+    Made validateAuth component to make state persistent by adding new auth_view api and remove dashboard api
+
+[33mcommit 2d8de5145d3abe0bd2bf0b16727356aeac779948[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Sun Oct 6 18:11:34 2024 +0530
+
+    minor change
+
+[33mcommit ce1ebd0d8d4cdaf2db6dbe3e4fb01a178485019d[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Sun Oct 6 18:05:25 2024 +0530
+
+    docs:add contributing.md file
+
+[33mcommit 78df1869bc738f207984c4411f93a0809e3e639c[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 05:53:42 2024 +0530
+
+    Implemented loader for toggle read state
+
+[33mcommit d4da8086c64daa65e2e8903d86745ff4a2eb2fbe[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 03:50:17 2024 +0530
+
+    Minor bug fixes
+
+[33mcommit cb9212b6ef6445478f1d05e09e02cb217f4c3d36[m
+Merge: 80be0fb eeec75f
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sun Oct 6 03:28:20 2024 +0530
+
+    Merge pull request #12 from jainvedant392/test
+    
+    Husky ESLint Prettier Setup
+
+[33mcommit eeec75fef525a887317d6eb3ff6d8a5354872dec[m
+Author: jainvedant392 <jainvedant392@gmail.com>
+Date:   Sun Oct 6 02:33:03 2024 +0530
+
+    Husky ESLint Prettier Setup
+
+[33mcommit 80be0fb5b32768592d0b8117b106dea4919acf40[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Oct 6 00:30:24 2024 +0530
+
+    fixed sortby tags issue
+
+[33mcommit f540086bcee0d7b432adf41a5a99255c091caa3f[m
+Merge: 3b01202 06f0797
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sat Oct 5 23:57:48 2024 +0530
+
+    Merge pull request #11 from jainvedant392/test
+    
+    Added Loader in Notifications
+
+[33mcommit 06f0797dac34588a8f67d6d1249d106ec974c0fe[m
+Author: jainvedant392 <jainvedant392@gmail.com>
+Date:   Sat Oct 5 22:31:23 2024 +0530
+
+    Added Loader in Notifications
+
+[33mcommit 3b01202bfbc73c8101efaa61c2835fc5ec1596e7[m
+Merge: b9de192 f3dff32
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sat Oct 5 22:00:25 2024 +0530
+
+    Merge pull request #10 from AkashPaloju/Dashboard-GAD-5
+    
+    Add role switching functionality, change notifcations' columns
+
+[33mcommit f3dff32b86fb8824ab746cea09e4339cdb076881[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Sat Oct 5 20:58:32 2024 +0530
+
+    Add role switching functionality
+
+[33mcommit b9de1922f475b47cfe68ecc4c7a03e02c8eaf626[m
+Merge: be3981f d2162dd
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sat Oct 5 20:47:13 2024 +0530
+
+    Merge pull request #9 from uphadeharsh45/Dashboard-GAD-5
+    
+    implemented mark as unread and  delete notification successfully
+
+[33mcommit d2162dd90ab710df2a07c0c47c266772bb1b40a5[m
+Author: uphadeharsh45 <128834201+uphadeharsh45@users.noreply.github.com>
+Date:   Sat Oct 5 19:40:03 2024 +0530
+
+    implemented mark as unread and  delete notification successfully
+
+[33mcommit be3981f0cef40d69aac0f607a72cdbd54f001fa6[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sat Oct 5 13:15:26 2024 +0530
+
+    bug fixing and breadcrumbs implementation in-progress
+
+[33mcommit b4bc871f1ef5c9d99fb1acebf30c762c4ab3c6e0[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sat Oct 5 08:29:08 2024 +0530
+
+    minor changes
+
+[33mcommit 79d4e2eadfc94baceec7e1f0dda5234954625e23[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sat Oct 5 01:56:30 2024 +0530
+
+    integrate the mark as read feature and some minor bug fixing
+
+[33mcommit 985d9d36b74fd559e3ace9a04ae7bc97de9739f9[m
+Merge: 630a9fb 23eadda
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Fri Oct 4 14:40:34 2024 +0530
+
+    Merge pull request #7 from AkashPaloju/Dashboard-GAD-5
+    
+    show only accessible modules
+
+[33mcommit 23eadda51fe6c54fe7bcd6eb371be03e350dc977[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Fri Oct 4 14:06:48 2024 +0530
+
+    show only accessible modules
+
+[33mcommit 630a9fb7211403adfdfa206cf528a88be11216bf[m
+Merge: e4ae8d7 d1e50ba
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Fri Oct 4 12:35:39 2024 +0530
+
+    Merge pull request #6 from uphadeharsh45/Dashboard-GAD-5
+    
+    implemented mark as read functionality
+
+[33mcommit d1e50ba42305f521497979129005657bb3a6b7f6[m
+Author: uphadeharsh45 <128834201+uphadeharsh45@users.noreply.github.com>
+Date:   Fri Oct 4 12:28:06 2024 +0530
+
+    implemented mark as read functionality
+
+[33mcommit e4ae8d7946bda29f2cc7ba3e5d289e4ecaf2599b[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Fri Oct 4 12:03:51 2024 +0530
+
+    name is now being retrived from dashboard view
+
+[33mcommit 508c6f1ebdc2b09a058f04cb7b99904337d26dda[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Fri Oct 4 00:19:02 2024 +0530
+
+    Made the notifications and user info functionable.
+
+[33mcommit ec0bdd142a20f127ad76302dd37177a05da2b5d0[m
+Merge: 4fdfc67 7fb36a1
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Thu Oct 3 15:31:42 2024 +0530
+
+    Merge pull request #5 from uphadeharsh45/Dashboard-GAD-5
+    
+    fetched user roles, notifications and announcements
+
+[33mcommit 7fb36a17b61bed3491c972bc840425af6618c6b3[m
+Author: uphadeharsh45 <128834201+uphadeharsh45@users.noreply.github.com>
+Date:   Thu Oct 3 15:15:48 2024 +0530
+
+    fetched user roles, notifications and announcements
+
+[33mcommit 4fdfc6743324785a64579c6f418b3a48fe5fc6b0[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Thu Oct 3 06:16:23 2024 +0530
+
+    Made the login and logout functionble
+
+[33mcommit fceb849f4477790606d94ba6fa143617474dc418[m
+Merge: ab7f2c9 7545b9f
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Thu Oct 3 01:55:45 2024 +0530
+
+    Merge pull request #4 from jainvedant392/test
+    
+    Created Login Page and Forgot Password Page
+
+[33mcommit 7545b9f9bf3e9e278e590511cc385f3631b34134[m
+Author: jainvedant392 <jainvedant392@gmail.com>
+Date:   Thu Oct 3 01:30:00 2024 +0530
+
+    Created Login Page and Forgot Password Page
+
+[33mcommit ab7f2c9f8b72ad084047ac4ced56b1d456bedd44[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Fri Sep 13 07:53:30 2024 +0530
+
+    Changed sidebar behaviour, improved sidebar and some minor structure changes
+
+[33mcommit 80956301845b21f930a36f3f12aae1b2e81e9f35[m
+Merge: b706578 c034004
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Fri Sep 13 03:42:48 2024 +0530
+
+    Merge pull request #3 from AkashPaloju/responsiveness
+    
+    Added responsiveness & implemented sortBy functionality
+
+[33mcommit c034004a335e19bb615ff8b693eda6f1523b1ca7[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Fri Sep 13 02:50:06 2024 +0530
+
+    Add sortby functionality
+
+[33mcommit f124fb84f7673e6bc30ffda923b13586568d6700[m
+Author: Akash Paloju <akashpaloju@gmail.com>
+Date:   Thu Sep 12 21:18:20 2024 +0530
+
+    fixed sidebar and added responsiveness
+
+[33mcommit b70657802dcd03b133ef7f7f2666ecfef5bf5ba4[m
+Merge: 194f963 f31621d
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Wed Sep 11 04:47:02 2024 +0530
+
+    Merge pull request #2 from jainvedant392/test
+    
+    Implemented Dashboard Content Section
+
+[33mcommit f31621d41d230ab8b93c0f1d58e0a8bfa1eef576[m
+Author: jainvedant392 <jainvedant392@gmail.com>
+Date:   Wed Sep 11 00:51:38 2024 +0530
+
+    Created Dashboard
+
+[33mcommit 194f96379bb41487bf278d3755c4c675835432a8[m[33m ([m[1;31mupstream/Dashboard-GAD-5[m[33m)[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Tue Sep 10 04:57:18 2024 +0530
+
+    Implemented general layout
+
+[33mcommit 2241916b9cb3dc4985f267093b98c37bbd084ec0[m
+Author: Pratik <pratiksolanki2026@gmail.com>
+Date:   Sun Sep 8 17:14:27 2024 +0530
+
+    mantine and react setup
+
+[33mcommit 28e48113d365a0cad83646d3efe03abc1499e032[m
+Author: Pratik Solanki <128511266+Pratik2026@users.noreply.github.com>
+Date:   Sun Sep 8 15:40:43 2024 +0530
+
+    Initial commit

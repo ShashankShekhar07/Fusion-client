@@ -1,0 +1,49 @@
+.pageContainer {
+  width: 90vw;
+  margin-left: 32px;
+  margin-top: 20px;
+  padding: 4rem;
+
+  /* New Black Box Styling */
+  border: 0.5mm solid #C9EBFF; /* 1mm thick black border */
+  border-radius: 0.5rem; /* Optional: Rounded corners */
+  background-color: white; /* Optional: Background inside the box */
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; /* Add spacing between grid items */
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 0.25rem;
+  background-color: #b3cde0;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.progressButton {
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: #b3cde0;
+  border: none; /* Remove button border */
+}
+
+.active {
+  background-color: #17ABFF; /* Active progress bar color */
+}
+
+.inactive {
+  background-color: #b3cde0; /* Inactive progress bar color */
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
