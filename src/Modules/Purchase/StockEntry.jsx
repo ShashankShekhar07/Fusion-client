@@ -759,7 +759,7 @@ function StockEntry() {
       quantity: indentData.item.quantity || "",
       cost: indentData.item.estimated_cost || "",
       itemType: indentData.item.item_type || "",
-      presentStock: indentData.item.present_stock || "",
+      presentStock: indentData.item.presentStock || "",
       purpose: indentData.item.purpose || "",
       specification: indentData.item.specification || "",
       itemSubtype: indentData.item.item_subtype || "",
@@ -837,7 +837,7 @@ function StockEntry() {
     data.append("quantity", values.quantity);
     data.append("estimated_cost", values.cost);
     data.append("item_type", values.itemType);
-    data.append("current_stock", pquantity);
+    data.append("current_stock", values.presentStock);
     data.append("purpose", values.purpose);
     data.append("specification", values.specification);
     data.append("itemSubtype", values.itemSubtype);
@@ -950,7 +950,7 @@ function StockEntry() {
 
     formData.append("id", pid); // Assuming pname represents id
     formData.append("vendor", vendor); // Replace with actual vendor input
-    formData.append("current_stock", indentData.item.presentStock);
+    formData.append("current_stock", pquantity);
     formData.append("bill", files); // Ensure file is a File object
     formData.append("location", cat); // Assuming category is location
     formData.append("received_date", receivedDate);
@@ -1183,7 +1183,7 @@ function StockEntry() {
 
                 <Grid.Col sm={6}>
                   <DateInput
-                    label="Delivery Date"
+                    label="Expected Delivery Date"
                     placeholder="Pick a date"
                     value={form.values.expectedDelivery}
                     onChange={(date) =>
