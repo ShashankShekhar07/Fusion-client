@@ -692,7 +692,7 @@ function StockEntry() {
   });
   const [pid, setPid] = useState("");
   const [vendor, setVendor] = useState("");
-  const [pquantity, setPquantity] = useState("");
+  const [pquantity, setPquantity] = useState(0);
   const [cat, setCat] = useState("");
   const [receivedDate, setReceivedDate] = useState("");
   const [files, setFiles] = useState("");
@@ -717,6 +717,69 @@ function StockEntry() {
     console.log(indentData);
     fetchAllUsers(); // Fetch all users on mount
   }, []);
+
+  useEffect(() => {
+    if (location.state) {
+      console.log("Received Item:", location.state.item); // Debugging
+      form.setValues({
+        title: "",
+        description: "",
+        itemName: location.state.item.item_name || "",
+        quantity: location.state.item.quantity || "",
+        cost: location.state.item.estimated_cost || "",
+        itemType: location.state.item.item_type || "",
+        presentStock: location.state.item.present_stock || "",
+        purpose: location.state.item.purpose || "",
+        specification: location.state.item.specification || "",
+        itemSubtype: location.state.item.item_subtype || "",
+        budgetaryHead: location.state.item.budgetary_head || "",
+        expectedDelivery: "",
+        sourceOfSupply: location.state.item.sources_of_supply || "",
+        remark: "",
+        forwardTo: "",
+        receiverDesignation: "",
+        receiverName: "",
+        file: null,
+        item_id: location.state.item.id || "",
+        vendor: "",
+        recieved_date: "",
+        bill: "",
+        dealing_assistant_id: "",
+        location: "",
+      });
+    }
+  }, [location.state]); // ✅ Runs when location.state changes
+
+  useEffect(() => {
+    // if (formData) {
+    form.setValues({
+      title: "",
+      description: "",
+      itemName: indentData.item.item_name || "",
+      quantity: indentData.item.quantity || "",
+      cost: indentData.item.estimated_cost || "",
+      itemType: indentData.item.item_type || "",
+      presentStock: indentData.item.present_stock || "",
+      purpose: indentData.item.purpose || "",
+      specification: indentData.item.specification || "",
+      itemSubtype: indentData.item.item_subtype || "",
+      budgetaryHead: indentData.item.budgetary_head || "",
+      expectedDelivery: "",
+      sourceOfSupply: indentData.item.sources_of_supply || "",
+      remark: "",
+      forwardTo: "",
+      receiverDesignation: "",
+      receiverName: "",
+      file: null,
+      item_id: indentData.item.item_id || "",
+      vendor: "",
+      recieved_date: "",
+      bill: "",
+      dealing_assistant_id: "",
+      location: "",
+    });
+    // }
+  }, [indentData]);
   // console.log("Users:", users);
   // Handle search input change
 
@@ -774,7 +837,7 @@ function StockEntry() {
     data.append("quantity", values.quantity);
     data.append("estimated_cost", values.cost);
     data.append("item_type", values.itemType);
-    data.append("present_stock", pquantity);
+    data.append("current_stock", pquantity);
     data.append("purpose", values.purpose);
     data.append("specification", values.specification);
     data.append("itemSubtype", values.itemSubtype);
@@ -887,7 +950,7 @@ function StockEntry() {
 
     formData.append("id", pid); // Assuming pname represents id
     formData.append("vendor", vendor); // Replace with actual vendor input
-    formData.append("current_stock", pquantity);
+    formData.append("current_stock", indentData.item.presentStock);
     formData.append("bill", files); // Ensure file is a File object
     formData.append("location", cat); // Assuming category is location
     formData.append("received_date", receivedDate);

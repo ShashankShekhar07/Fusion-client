@@ -43,20 +43,6 @@ function OutboxTable() {
   if (error) {
     return <Text style={{ color: "red" }}>{error}</Text>; // Display error message
   }
-
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true, // Optional: Change to 24-hour format if needed
-    });
-  };
-
   return (
     <Box p="md" style={{ margin: 0 }}>
       {" "}
@@ -178,7 +164,7 @@ function OutboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {formatDate(row.upload_date)}
+                  {row.upload_date}
                 </td>
                 <td
                   style={{
@@ -261,7 +247,7 @@ function OutboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {formatDate(row.upload_date)}
+                  {row.upload_date}
                 </td>
                 <td
                   style={{

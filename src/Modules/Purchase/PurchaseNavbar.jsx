@@ -31,11 +31,11 @@ const TabsModules = [
     id: "archieved-indents",
     url: "/purchase/archieved_indents",
   },
-  {
-    label: "Stock Entry",
-    id: "stock-entry",
-    url: "/purchase/stock_entry",
-  },
+  // {
+  //   label: "Stock Entry",
+  //   id: "stock-entry",
+  //   url: "/purchase/stock_entry",
+  // },
 ];
 
 export default function PurchaseNavbar() {

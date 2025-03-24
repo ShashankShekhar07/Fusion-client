@@ -831,10 +831,10 @@ import {
 
 export default function NewForwardIndent() {
   const [file, setFile] = useState(null);
-  const [receiverName] = useState("");
+  // const [receiverName] = useState("");
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
-  const uploader_username = useSelector((state) => state.user.roll_no);
+  // const uploader_username = useSelector((state) => state.user.roll_no);
   const role = useSelector((state) => state.user.role);
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -842,9 +842,10 @@ export default function NewForwardIndent() {
 
   const { indentID } = useParams();
   const [indent, setIndent] = useState(null);
-  // const [fileInfo, setFileInfo] = useState(null);
-  // const [department, setDepartment] = useState("");
-
+  const [fileInfo, setFileInfo] = useState(null);
+  const [department, setDepartment] = useState("");
+  console.log(fileInfo);
+  console.log(department);
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
@@ -894,9 +895,10 @@ export default function NewForwardIndent() {
           },
         },
       );
-      setIndent(response.data.indent);
-      // setFileInfo(response.data.file);
-      // setDepartment(response.data.department);
+      setIndent(response.data);
+      console.log(response.data);
+      setFileInfo(response.data.file);
+      setDepartment(response.data.department);
       console.log(response.data.indent);
     } catch (error) {
       console.error("Error fetching indents:", error);
@@ -920,9 +922,9 @@ export default function NewForwardIndent() {
     }
   };
 
-  const fetchDesignations = async (x) => {
+  const fetchDesignations = async (receiverName) => {
     try {
-      const response = await axios.get(getDesignationsRoute(x));
+      const response = await axios.get(getDesignationsRoute(receiverName));
       setDesignations(response.data);
     } catch (error) {
       console.error("Error fetching designations:", error);
@@ -959,25 +961,25 @@ export default function NewForwardIndent() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append("title", indent.item_name);
-    data.append("description", indent.item_name);
-    data.append("item_name", indent.item_name);
-    data.append("quantity", indent.quantity);
-    data.append("estimated_cost", indent.estimated_cost);
-    data.append("item_type", indent.item_type);
-    data.append("present_stock", indent.present_stock);
-    data.append("purpose", indent.purpose);
-    data.append("specification", indent.specification);
-    data.append("itemSubtype", indent.item_subtype);
-    data.append("budgetary_head", indent.budgetary_head);
-    data.append("expected_delivery", indent.expected_delivery);
-    data.append("sources_of_supply", indent.sources_of_supply);
+    // data.append("title", indent.indent.item_name);
+    // data.append("description", indent.item_name);
+    // data.append("item_name", indent.item_name);
+    // data.append("quantity", indent.quantity);
+    // data.append("estimated_cost", indent.estimated_cost);
+    // data.append("item_type", indent.item_type);
+    // data.append("present_stock", indent.present_stock);
+    // data.append("purpose", indent.purpose);
+    // data.append("specification", indent.specification);
+    // data.append("itemSubtype", indent.item_subtype);
+    // data.append("budgetary_head", indent.budgetary_head);
+    // data.append("expected_delivery", indent.expected_delivery);
+    // data.append("sources_of_supply", indent.sources_of_supply);
     data.append("file", file);
-    data.append("remark", formValues.remark);
+    data.append("remarks", formValues.remark);
     data.append("forwardTo", selectedUser);
     data.append("receiverDesignation", formValues.receiverDesignation);
-    data.append("receiverName", receiverName);
-    data.append("uploaderUsername", uploader_username);
+    // data.append("receiverName", receiverName);
+    // data.append("uploaderUsername", uploader_username);
     data.append("role", role);
 
     try {
@@ -1011,7 +1013,7 @@ export default function NewForwardIndent() {
           <Group>
             <IconFileDescription size={32} />
             <div>
-              <Title order={2}>Indent #{indent.file_info}</Title>
+              <Title order={2}>Indent #{indent.indent.indent_name}</Title>
               <Text color="dimmed">
                 Filed on {dayjs().format("MMMM D, YYYY")}
               </Text>
@@ -1019,9 +1021,9 @@ export default function NewForwardIndent() {
           </Group>
           <Group>
             <Badge size="lg" color={indent.purchased ? "green" : "blue"}>
-              {indent.purchased ? "Purchased" : "In Progress"}
+              {indent.indent.purchased ? "Purchased" : "In Progress"}
             </Badge>
-            {indent.revised && (
+            {indent.indent.revised && (
               <Badge size="lg" color="yellow">
                 Revised
               </Badge>
@@ -1042,7 +1044,7 @@ export default function NewForwardIndent() {
         <Timeline active={1} bulletSize={24} lineWidth={2}>
           <Timeline.Item
             bullet={
-              indent.head_approval ? (
+              indent.indent.head_approval ? (
                 <IconCheck size={12} />
               ) : (
                 <IconClock size={12} />
@@ -1056,7 +1058,7 @@ export default function NewForwardIndent() {
           </Timeline.Item>
           <Timeline.Item
             bullet={
-              indent?.director_approval ? (
+              indent.indent.director_approval ? (
                 <IconCheck size={12} />
               ) : (
                 <IconClock size={12} />
@@ -1070,8 +1072,8 @@ export default function NewForwardIndent() {
           </Timeline.Item>
           <Timeline.Item
             bullet={
-              indent?.financial_approval ? (
-                <IconCheck size={12} color="blue" />
+              indent.indent.financial_approval ? (
+                <IconCheck size={12} />
               ) : (
                 <IconClock size={12} />
               )
@@ -1088,7 +1090,7 @@ export default function NewForwardIndent() {
       <Title order={3} mb="md">
         Indent Items
       </Title>
-      <Accordion variant="contained" radius="md" mb="xl">
+      {/* <Accordion variant="contained" radius="md" mb="xl">
         <Accordion.Item value={indent.file_info.toString()}>
           <Accordion.Control>
             <Group position="apart">
@@ -1190,6 +1192,111 @@ export default function NewForwardIndent() {
             </Grid>
           </Accordion.Panel>
         </Accordion.Item>
+      </Accordion> */}
+      <Accordion variant="contained" radius="md" mb="xl">
+        {indent.items.map((item) => (
+          <Accordion.Item key={item.id} value={item.id.toString()}>
+            <Accordion.Control>
+              <Group position="apart">
+                <Group>
+                  <Text weight={500}>{item.item_name}</Text>
+                  <Badge>Qty: {item.quantity}</Badge>
+                </Group>
+                <Text weight={500} color="blue">
+                  ₹{item.estimated_cost.toLocaleString()}
+                </Text>
+              </Group>
+            </Accordion.Control>
+            <Accordion.Panel>
+              <Grid>
+                <Grid.Col span={6}>
+                  <Card withBorder p="md">
+                    <Text weight={500} mb="xs">
+                      Specifications
+                    </Text>
+                    <Text size="sm">{item.specification}</Text>
+                  </Card>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                  <Card withBorder p="md">
+                    <Text weight={500} mb="xs">
+                      Purpose
+                    </Text>
+                    <Text size="sm">{item.purpose}</Text>
+                  </Card>
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <Grid>
+                    <Grid.Col span={3}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Item Nature</Text>
+                        <Badge color={item.nature ? "green" : "red"}>
+                          {item.nature ? "Yes" : "No"}
+                        </Badge>
+                      </Card>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Replaced</Text>
+                        <Badge color={item.replaced ? "green" : "red"}>
+                          {item.replaced ? "Yes" : "No"}
+                        </Badge>
+                      </Card>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Indigenous</Text>
+                        <Badge color={item.indigenous ? "green" : "red"}>
+                          {item.indigenous ? "Yes" : "No"}
+                        </Badge>
+                      </Card>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Present Stock</Text>
+                        <Text size="sm">{item.present_stock}</Text>
+                      </Card>
+                    </Grid.Col>
+                  </Grid>
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <Grid>
+                    <Grid.Col span={4}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Type</Text>
+                        <Text size="sm">
+                          {item.item_type} - {item.item_subtype}
+                        </Text>
+                      </Card>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Budgetary Head</Text>
+                        <Text size="sm">{item.budgetary_head}</Text>
+                      </Card>
+                    </Grid.Col>
+                    <Grid.Col span={4}>
+                      <Card withBorder p="md">
+                        <Text weight={500}>Expected Delivery</Text>
+                        <Text size="sm">
+                          {dayjs(item.expected_delivery).format("MMM D, YYYY")}
+                        </Text>
+                      </Card>
+                    </Grid.Col>
+                  </Grid>
+                </Grid.Col>
+                <Grid.Col span={12}>
+                  <Card withBorder p="md">
+                    <Text weight={500} mb="xs">
+                      Sources of Supply
+                    </Text>
+                    <Text size="sm">{item.sources_of_supply}</Text>
+                  </Card>
+                </Grid.Col>
+              </Grid>
+            </Accordion.Panel>
+          </Accordion.Item>
+        ))}
       </Accordion>
 
       <Paper shadow="sm" p="lg" radius="md">

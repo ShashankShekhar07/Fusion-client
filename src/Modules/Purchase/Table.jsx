@@ -3,7 +3,7 @@ import { Table, Grid } from "@mantine/core";
 import PropTypes from "prop-types";
 
 function DataTable({ indent }) {
-  console.log(indent);
+  console.log("here", indent);
   const leftData = [
     { label: "Description:", value: indent?.item_subtype || " " },
     { label: "Quantity:", value: indent?.quantity || "Zero" },
