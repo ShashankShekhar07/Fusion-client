@@ -122,22 +122,13 @@ function Dashboard() {
 
       try {
         setLoading(true);
-
         const { data } = await axios.get(getNotificationsRoute, {
           headers: { Authorization: `Token ${token}` },
         });
-
         const { notifications } = data;
-
         const notificationsData = notifications.map((item) => ({
           ...item,
-          data: (function () {
-            let newData = "";
-            for (let i = 0; i < item.data.length; i += 1) {
-              newData += item.data[i] === "'" ? '"' : item.data[i];
-            }
-            return JSON.parse(newData);
-          })(),
+          data: JSON.parse(item.data.replace(/'/g, '"')),
         }));
 
         setNotificationsList(
@@ -159,42 +150,6 @@ function Dashboard() {
 
     fetchDashboardData();
   }, [dispatch]);
-  // useEffect(() => {
-  //   const fetchDashboardData = async () => {
-  //     const token = localStorage.getItem("authToken");
-  //     if (!token) return console.error("No authentication token found!");
-
-  //     try {
-  //       setLoading(true);
-  //       const { data } = await axios.get(getNotificationsRoute, {
-  //         headers: { Authorization: `Token ${token}` },
-  //       });
-  //       const { notifications } = data;
-  //       const notificationsData = notifications.map((item) => ({
-  //         ...item,
-  //         data: JSON.parse(item.data.replace(/'/g, '"')),
-  //         // data: JSON.parse(item.data.replace(/'/g, '"')),
-  //       }));
-
-  //       setNotificationsList(
-  //         notificationsData.filter(
-  //           (item) => item.data?.flag !== "announcement",
-  //         ),
-  //       );
-  //       setAnnouncementsList(
-  //         notificationsData.filter(
-  //           (item) => item.data?.flag === "announcement",
-  //         ),
-  //       );
-  //     } catch (error) {
-  //       console.error("Error fetching dashboard data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchDashboardData();
-  // }, [dispatch]);
 
   // const handleTabChange = (direction) => {
   //   const newIndex =
