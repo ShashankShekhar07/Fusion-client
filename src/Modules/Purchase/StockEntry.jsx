@@ -642,7 +642,7 @@ import {
   Text,
   Group,
 } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import { useSelector } from "react-redux";
@@ -660,21 +660,23 @@ function StockEntry() {
   const [loading, setLoading] = useState(false); // State for loading status
   const [err, setErr] = useState(null);
   // console.log(uploader_username);
+  const location = useLocation();
+  const indentData = location.state || {};
   const form = useForm({
     initialValues: {
       title: "",
       description: "",
-      itemName: "",
-      quantity: 0,
-      cost: 0,
-      itemType: "",
-      presentStock: 0,
-      purpose: "",
-      specification: "",
-      itemSubtype: "",
-      budgetaryHead: "",
-      expectedDelivery: null,
-      sourceOfSupply: "",
+      itemName: indentData.item_name || "",
+      quantity: indentData.quantity || "",
+      cost: indentData.estimated_cost || "",
+      itemType: indentData.item_type || "",
+      presentStock: indentData.present_stock || "",
+      purpose: indentData.purpose || "",
+      specification: indentData.specification || "",
+      itemSubtype: indentData.item_subtype || "",
+      budgetaryHead: indentData.budgetary_head || "",
+      expectedDelivery: "",
+      sourceOfSupply: indentData.sources_of_supply || "",
       remark: "",
       forwardTo: "",
       receiverDesignation: "",
@@ -712,6 +714,7 @@ function StockEntry() {
   };
 
   useEffect(() => {
+    console.log(indentData);
     fetchAllUsers(); // Fetch all users on mount
   }, []);
   // console.log("Users:", users);
@@ -771,7 +774,7 @@ function StockEntry() {
     data.append("quantity", values.quantity);
     data.append("estimated_cost", values.cost);
     data.append("item_type", values.itemType);
-    data.append("present_stock", values.presentStock);
+    data.append("present_stock", pquantity);
     data.append("purpose", values.purpose);
     data.append("specification", values.specification);
     data.append("itemSubtype", values.itemSubtype);
@@ -887,10 +890,10 @@ function StockEntry() {
     formData.append("current_stock", pquantity);
     formData.append("bill", files); // Ensure file is a File object
     formData.append("location", cat); // Assuming category is location
-    formData.append("recieved_date", receivedDate);
+    formData.append("received_date", receivedDate);
     formData.append("role", role);
     setLoading(true);
-
+    console.log(formData);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -1117,7 +1120,7 @@ function StockEntry() {
 
                 <Grid.Col sm={6}>
                   <DateInput
-                    label="Expected Delivery"
+                    label="Delivery Date"
                     placeholder="Pick a date"
                     value={form.values.expectedDelivery}
                     onChange={(date) =>

@@ -80,3 +80,198 @@ DataTable.propTypes = {
 };
 
 export default DataTable;
+
+// import React from "react";
+// import PropTypes from "prop-types";
+// import {
+//   Accordion,
+//   Badge,
+//   Group,
+//   Paper,
+//   Text,
+//   Grid,
+//   Stack,
+// } from "@mantine/core";
+
+// function DetailRow({ label, value }) {
+//   return (
+//     <Group position="apart" spacing="xs">
+//       <Text size="sm" weight={500} color="gray.7">
+//         {label}:
+//       </Text>
+//       <Text size="sm">
+//         {typeof value === "boolean" ? (value ? "Yes" : "No") : value.toString()}
+//       </Text>
+//     </Group>
+//   );
+// }
+
+// DetailRow.propTypes = {
+//   label: PropTypes.string.isRequired,
+//   value: PropTypes.oneOfType([
+//     PropTypes.string,
+//     PropTypes.number,
+//     PropTypes.bool,
+//   ]).isRequired,
+// };
+
+// function ItemDetailsGrid({ item }) {
+//   return (
+//     <Grid grow gutter="md">
+//       <Grid.Col span={6}>
+//         <Stack spacing="xs">
+//           <DetailRow label="Item Name" value={item.item_name} />
+//           <DetailRow label="Quantity" value={item.quantity} />
+//           <DetailRow label="Estimated Cost" value={item.estimated_cost} />
+//           <DetailRow label="Purpose" value={item.purpose} />
+//           <DetailRow label="Item Type" value={item.item_type} />
+//           <DetailRow label="Expected Delivery" value={item.expected_delivery} />
+//         </Stack>
+//       </Grid.Col>
+
+//       <Grid.Col span={6}>
+//         <Stack spacing="xs">
+//           <DetailRow label="Specification" value={item.specification} />
+//           <DetailRow label="Budgetary Head" value={item.budgetary_head} />
+//           <DetailRow label="Sources of Supply" value={item.sources_of_supply} />
+//           <DetailRow label="Indigenous" value={item.indigenous} />
+//           <DetailRow label="Nature" value={item.nature} />
+//           <DetailRow label="Replaced" value={item.replaced} />
+//         </Stack>
+//       </Grid.Col>
+//     </Grid>
+//   );
+// }
+
+// ItemDetailsGrid.propTypes = {
+//   item: PropTypes.shape({
+//     item_name: PropTypes.string,
+//     quantity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//     estimated_cost: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//     purpose: PropTypes.string,
+//     item_type: PropTypes.string,
+//     expected_delivery: PropTypes.string,
+//     specification: PropTypes.string,
+//     budgetary_head: PropTypes.string,
+//     sources_of_supply: PropTypes.string,
+//     indigenous: PropTypes.bool,
+//     nature: PropTypes.bool,
+//     replaced: PropTypes.bool,
+//   }).isRequired,
+// };
+
+// function ApprovalStatus({ item }) {
+//   return (
+//     <Group position="center" spacing="md" mt="md">
+//       <Badge
+//         color={item.financial_approval ? "green" : "red"}
+//         variant="filled"
+//         size="lg"
+//       >
+//         Financial: {item.financial_approval ? "Approved" : "Pending"}
+//       </Badge>
+//       <Badge
+//         color={item.head_approval ? "green" : "red"}
+//         variant="filled"
+//         size="lg"
+//       >
+//         Head: {item.head_approval ? "Approved" : "Pending"}
+//       </Badge>
+//       <Badge
+//         color={item.director_approval ? "green" : "red"}
+//         variant="filled"
+//         size="lg"
+//       >
+//         Director: {item.director_approval ? "Approved" : "Pending"}
+//       </Badge>
+//     </Group>
+//   );
+// }
+
+// ApprovalStatus.propTypes = {
+//   item: PropTypes.shape({
+//     financial_approval: PropTypes.bool,
+//     head_approval: PropTypes.bool,
+//     director_approval: PropTypes.bool,
+//   }).isRequired,
+// };
+
+// function DataTable({ indent }) {
+//   if (!indent) return null;
+//   console.log(indent);
+//   const items = Array.isArray(indent) ? indent : [indent];
+
+//   return (
+//     <Accordion variant="contained">
+//       {items.map((item, index) => (
+//         <Accordion.Item key={index} value={`item-${index}`}>
+//           <Accordion.Control>
+//             <Group position="apart">
+//               <Group>
+//                 <Text weight={500}>Item {index + 1}:</Text>
+//                 <Text>{item.item_name}</Text>
+//               </Group>
+//               <Group spacing="xs">
+//                 <Badge color="blue">₹{item.estimated_cost}</Badge>
+//                 <Badge color="teal">Qty: {item.quantity}</Badge>
+//               </Group>
+//             </Group>
+//           </Accordion.Control>
+
+//           <Accordion.Panel>
+//             <Paper p="md" radius="sm">
+//               <ItemDetailsGrid item={item} />
+//               <ApprovalStatus item={item} />
+//             </Paper>
+//           </Accordion.Panel>
+//         </Accordion.Item>
+//       ))}
+//     </Accordion>
+//   );
+// }
+
+// DataTable.propTypes = {
+//   indent: PropTypes.oneOfType([
+//     PropTypes.shape({
+//       item_name: PropTypes.string,
+//       quantity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//       estimated_cost: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//       specification: PropTypes.string,
+//       purpose: PropTypes.string,
+//       item_type: PropTypes.string,
+//       nature: PropTypes.bool,
+//       replaced: PropTypes.bool,
+//       indigenous: PropTypes.bool,
+//       expected_delivery: PropTypes.string,
+//       budgetary_head: PropTypes.string,
+//       sources_of_supply: PropTypes.string,
+//       financial_approval: PropTypes.bool,
+//       head_approval: PropTypes.bool,
+//       director_approval: PropTypes.bool,
+//     }),
+//     PropTypes.arrayOf(
+//       PropTypes.shape({
+//         item_name: PropTypes.string,
+//         quantity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+//         estimated_cost: PropTypes.oneOfType([
+//           PropTypes.string,
+//           PropTypes.number,
+//         ]),
+//         specification: PropTypes.string,
+//         purpose: PropTypes.string,
+//         item_type: PropTypes.string,
+//         nature: PropTypes.bool,
+//         replaced: PropTypes.bool,
+//         indigenous: PropTypes.bool,
+//         expected_delivery: PropTypes.string,
+//         budgetary_head: PropTypes.string,
+//         sources_of_supply: PropTypes.string,
+//         financial_approval: PropTypes.bool,
+//         head_approval: PropTypes.bool,
+//         director_approval: PropTypes.bool,
+//       }),
+//     ),
+//   ]),
+// };
+
+// export default DataTable;
