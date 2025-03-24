@@ -1,617 +1,344 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+// import { PiPrinter } from "react-icons/pi";
 import {
-  Paper,
-  Title,
-  Button,
-  Group,
-  Stack,
-  TextInput,
-  NumberInput,
-  Select,
-  Textarea,
-  FileInput,
-  ActionIcon,
-  Card,
   Container,
   Grid,
+  Paper,
+  Text,
+  Select,
+  Group,
+  Button,
+  // TextInput,
+  Textarea,
+  Title,
+  FileInput,
 } from "@mantine/core";
-import { DateInput } from "@mantine/dates";
-import { useForm } from "@mantine/form";
-import { IconPlus, IconTrash, IconUpload } from "@tabler/icons-react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { createProposalRoute } from "../../routes/purchaseRoutes";
-import "@mantine/dates/styles.css";
+import DataTable from "./Table";
+import {
+  forwardIndentRoute,
+  getDesignationsRoute,
+  viewIndentRoute,
+} from "../../routes/purchaseRoutes";
+// import DataTable2 from "./Table2";
 
-const ITEM_TYPES = ["Equipment", "Consumable", "Furniture", "Books"];
-
-const emptyItem = {
-  itemName: "",
-  quantity: 0,
-  cost: 0,
-  itemType: "",
-  presentStock: 0,
-  purpose: "",
-  specification: "",
-  itemSubtype: "",
-  budgetaryHead: "",
-  expectedDelivery: null,
-  sourceOfSupply: "",
-  remark: "",
-  file: null,
-};
-
-export function IndentForm() {
-  const [submitting, setSubmitting] = useState(false);
+function ForwardIndent() {
+  // const [remarks, setRemarks] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [file, setFile] = useState(null); // ignore
+  // const [receiver, setReceiver] = useState("");
+  // eslint-disable-next-line no-unused-vars
+  const [receiverName, setReceiverName] = useState("");
   const [designations, setDesignations] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [activeTab, setActiveTab] = useState("0");
+  const navigate = useNavigate();
+  const uploader_username = useSelector((state) => state.user.roll_no);
+  console.log(uploader_username);
   const role = useSelector((state) => state.user.role);
-  const uploaderUsername = useSelector((state) => state.user.username);
+
+  const [users, setUsers] = useState([]); // Store all users data here
+  const [filteredUsers, setFilteredUsers] = useState([]); // Store filtered users
+  const [selectedUser, setSelectedUser] = useState(""); // Selected user from dropdown
 
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
       );
-      setUsers(response.data.users);
-      setFilteredUsers(response.data.users);
+      setUsers(response.data.users); // Save all users data to state
+      setFilteredUsers(response.data.users); // Initially, show all users
     } catch (error) {
-      console.error("Error fetching users", error);
+      console.error("Error fetching all users", error);
     }
   };
 
   useEffect(() => {
-    fetchAllUsers();
+    fetchAllUsers(); // Fetch all users on mount
   }, []);
-
-  const form = useForm({
-    initialValues: {
-      title: "",
-      description: "",
-      forwardTo: "",
-      receiverDesignation: "",
-      items: [{ ...emptyItem }],
-    },
-    validate: {
-      title: (value) => (!value ? "Title is required" : null),
-      forwardTo: (value) => (!value ? "Forward to is required" : null),
-      receiverDesignation: (value) =>
-        !value ? "Receiver designation is required" : null,
-      items: {
-        itemName: (value) => (!value ? "Item name is required" : null),
-        quantity: (value) =>
-          value <= 0 ? "Quantity must be greater than 0" : null,
-        itemType: (value) => (!value ? "Item type is required" : null),
-      },
-    },
-  });
-
-  const addItem = () => {
-    if (form.values.items.length < 20) {
-      const newIndex = form.values.items.length;
-      form.insertListItem("items", { ...emptyItem });
-      setTimeout(() => {
-        setActiveTab(String(newIndex));
-      }, 50);
-    } else {
-      alert("Maximum of 20 items allowed");
-    }
-  };
-
-  const removeItem = (index) => {
-    if (form.values.items.length > 1) {
-      let newActiveTab;
-      if (parseInt(activeTab, 10) === index) {
-        if (index === form.values.items.length - 1) {
-          newActiveTab = String(index - 1);
-        } else {
-          newActiveTab = activeTab;
-        }
-      } else if (parseInt(activeTab, 10) > index) {
-        newActiveTab = String(parseInt(activeTab, 10) - 1);
-      } else {
-        newActiveTab = activeTab;
-      }
-      form.removeListItem("items", index);
-      setTimeout(() => {
-        setActiveTab(newActiveTab);
-      }, 50);
-    }
-  };
-
-  const formatDate = (date) => {
-    if (!date) return null;
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
 
   const filterUsers = (searchQuery) => {
     if (searchQuery === "") {
-      setFilteredUsers(users);
+      setFilteredUsers(users); // If query is empty, show all users
     } else {
       const filtered = users.filter((user) =>
         user.username.toLowerCase().includes(searchQuery.toLowerCase()),
       );
-      setFilteredUsers(filtered);
+      setFilteredUsers(filtered); // Set the filtered users
+    }
+  };
+  const { indentID } = useParams();
+
+  const [indent, setIndent] = useState(null);
+  const [fileInfo, setFileInfo] = useState(null);
+  const [department, setDepartment] = useState("");
+  const fetchIndentDetails = async () => {
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(
+        viewIndentRoute,
+        { file_id: indentID },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      setIndent(response.data.indent);
+      setFileInfo(response.data.file);
+      setDepartment(response.data.department);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching indents:", error);
     }
   };
 
+  useEffect(() => {
+    if (indentID) {
+      console.log(indentID);
+      fetchIndentDetails(indentID);
+    }
+  }, []);
+  console.log(indent);
+  const year = fileInfo ? fileInfo.upload_date.slice(0, 4) : "";
+  const month = fileInfo ? fileInfo.upload_date.slice(5, 7) : "";
+  const [formValues, setFormValues] = useState({
+    title: "",
+    description: "",
+    itemName: "",
+    quantity: 0,
+    cost: 0,
+    itemType: "",
+    presentStock: 0,
+    purpose: "",
+    specification: "",
+    itemSubtype: "",
+    budgetaryHead: "",
+    expectedDelivery: null,
+    sourceOfSupply: "",
+    remark: "",
+    forwardTo: "",
+    receiverDesignation: "",
+    role: "",
+  });
+
+  const handleInputChange = (field) => (event) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [field]: event.currentTarget.value,
+    }));
+  };
+
+  // Fetch designations based on the entered receiver name
+  // eslint-disable-next-line no-shadow
   const fetchDesignations = async (receiverName) => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/filetracking/getdesignations/${receiverName}/`,
-      );
-      setDesignations(response.data);
+      const response = await axios.get(getDesignationsRoute(receiverName));
+      console.log("Fetched designations:", response.data);
+      setDesignations(response.data); // Set the fetched designations in state
     } catch (error) {
       console.error("Error fetching designations:", error);
+      // setErrorMessage(
+      //   error.response
+      //     ? error.response.data
+      //     : "An error occurred while fetching designations",
+      // );
     }
   };
 
+  // const handleReceiverChange = (value) => {
+  //   setReceiverName(value);
+  //   fetchDesignations(value);
+  // };
   const handleSearchChange = (value) => {
     filterUsers(value);
     fetchDesignations(value);
   };
+  const handleDesignationChange = (value) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      receiverDesignation: value,
+    }));
+  };
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append("title", indent.item_name);
+    data.append("description", indent.item_name);
+    data.append("item_name", indent.item_name);
+    data.append("quantity", indent.quantity);
+    data.append("estimated_cost", indent.estimated_cost);
+    data.append("item_type", indent.item_type);
+    data.append("present_stock", indent.present_stock);
+    data.append("purpose", indent.purpose);
+    data.append("specification", indent.specification);
+    data.append("itemSubtype", indent.item_subtype);
+    data.append("budgetary_head", indent.budgetary_head);
+    data.append("expected_delivery", indent.expected_delivery);
+    data.append("sources_of_supply", indent.sources_of_supply);
+    data.append("file", file);
+    data.append("remark", formValues.remark);
+    data.append("forwardTo", selectedUser);
+    data.append("receiverDesignation", formValues.receiverDesignation);
+    data.append("receiverName", receiverName);
+    data.append("uploaderUsername", uploader_username);
+    console.log("Form data:", data.get("receiverDesignation"));
+    data.append("role", role);
     try {
-      setSubmitting(true);
       const token = localStorage.getItem("authToken");
-
-      const requests = values.items.map((item) => {
-        const data = new FormData();
-        data.append("title", values.title);
-        data.append("description", values.description);
-        data.append("forwardTo", values.forwardTo);
-        data.append("receiverDesignation", values.receiverDesignation);
-        data.append("uploaderUsername", uploaderUsername);
-        data.append("item_name", item.itemName);
-        data.append("quantity", item.quantity);
-        data.append("estimated_cost", item.cost);
-        data.append("item_type", item.itemType);
-        data.append("present_stock", item.presentStock);
-        data.append("purpose", item.purpose);
-        data.append("specification", item.specification);
-        data.append("itemSubtype", item.itemSubtype);
-        data.append("budgetary_head", item.budgetaryHead);
-        data.append("expected_delivery", formatDate(item.expectedDelivery));
-        data.append("sources_of_supply", item.sourceOfSupply);
-        data.append("remark", item.remark);
-
-        if (item.file) {
-          data.append("file", item.file);
-        } else {
-          data.append("file", "null");
-        }
-
-        return axios.post(createProposalRoute(role), data, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Token ${token}`,
-          },
-        });
+      const response = await axios.post(forwardIndentRoute(indentID), data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token}`,
+        },
       });
 
-      await Promise.all(requests);
-      alert("Indent submitted successfully!");
-      form.reset();
-
-      setTimeout(() => {
-        window.location.href = "/purchase/outbox";
-      }, 100);
+      console.log("Success:", response.data);
+      navigate("/purchase/all_filed_indents");
     } catch (error) {
-      console.error("Error submitting indent:", error);
-      alert("Failed to submit indent. Please try again.");
-    } finally {
-      setSubmitting(false);
+      console.error("Error submitting form:", error);
+      // setErrorMessage(
+      //   error.response
+      //     ? error.response.data
+      //     : "An error occurred during submission",
+      // );
     }
   };
 
   return (
-    <Container size="xl">
-      <Paper p="md" radius="md" withBorder>
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack spacing="md">
-            <Title order={2} align="center">
-              Create New Indent
-            </Title>
-
-            <Card withBorder shadow="sm" p="md">
-              <Stack spacing="md">
-                <Title order={3}>General Information</Title>
-                <Grid>
-                  <Grid.Col span={12}>
-                    <TextInput
-                      label="Title"
-                      required
-                      value={form.values.title}
-                      onChange={(event) =>
-                        form.setFieldValue("title", event.currentTarget.value)
-                      }
-                      error={form.errors.title}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <Textarea
-                      label="Description"
-                      minRows={3}
-                      value={form.values.description}
-                      onChange={(event) =>
-                        form.setFieldValue(
-                          "description",
-                          event.currentTarget.value,
-                        )
-                      }
-                      error={form.errors.description}
-                    />
-                  </Grid.Col>
-                </Grid>
-              </Stack>
-            </Card>
-
-            <Card withBorder shadow="sm" p="md">
-              <Stack spacing="md">
-                <Title order={3}>Items</Title>
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      marginBottom: "16px",
-                      position: "relative",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        borderBottom: "1px solid #dee2e6",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          overflowX: "auto",
-                          paddingBottom: "8px",
-                          scrollbarWidth: "thin",
-                          scrollbarColor: "#74c0fc #f8f9fa",
-                        }}
-                        className="custom-scrollbar"
-                      >
-                        {form.values.items.map((_, index) => (
-                          <div
-                            key={index}
-                            onClick={() => setActiveTab(String(index))}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                setActiveTab(String(index));
-                              }
-                            }}
-                            role="tab"
-                            tabIndex={0}
-                            style={{
-                              padding: "8px 16px",
-                              cursor: "pointer",
-                              backgroundColor:
-                                activeTab === String(index)
-                                  ? "#f1f3f5"
-                                  : "transparent",
-                              borderBottom:
-                                activeTab === String(index)
-                                  ? "2px solid #228be6"
-                                  : "none",
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "4px",
-                              whiteSpace: "nowrap",
-                              width: "fit-content",
-                            }}
-                          >
-                            <span>Item {index + 1}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <div
-                        style={{
-                          width: "1px",
-                          backgroundColor: "#dee2e6",
-                          margin: "0 12px",
-                          alignSelf: "stretch",
-                        }}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          flexShrink: 0,
-                        }}
-                      >
-                        {form.values.items.length < 20 && (
-                          <ActionIcon
-                            variant="light"
-                            color="blue"
-                            onClick={addItem}
-                            size="md"
-                            title="Add new item"
-                            style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
-                          >
-                            <IconPlus size={18} />
-                          </ActionIcon>
-                        )}
-                        {form.values.items.length > 1 && (
-                          <ActionIcon
-                            color="red"
-                            variant="light"
-                            onClick={() => removeItem(parseInt(activeTab, 10))}
-                            size="md"
-                            title="Delete current item"
-                            style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
-                          >
-                            <IconTrash size={18} />
-                          </ActionIcon>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <style>{`
-                    .custom-scrollbar::-webkit-scrollbar {
-                      height: 4px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-track {
-                      background: #f8f9fa;
-                      border-radius: 10px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-thumb {
-                      background: #74c0fc;
-                      border-radius: 10px;
-                      opacity: 0.7;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                      background: #4dabf7;
-                      opacity: 1;
-                    }
-                  `}</style>
-
-                  {form.values.items.map((item, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        display: activeTab === String(index) ? "block" : "none",
-                      }}
-                    >
-                      <Grid>
-                        <Grid.Col span={6}>
-                          <TextInput
-                            label="Item Name *"
-                            required
-                            value={item.itemName}
-                            onChange={(event) =>
-                              form.setFieldValue(
-                                `items.${index}.itemName`,
-                                event.currentTarget.value,
-                              )
-                            }
-                            error={form.errors.items?.[index]?.itemName}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={3}>
-                          <NumberInput
-                            label="Quantity *"
-                            required
-                            min={1}
-                            value={item.quantity}
-                            onChange={(value) =>
-                              form.setFieldValue(
-                                `items.${index}.quantity`,
-                                value,
-                              )
-                            }
-                            error={form.errors.items?.[index]?.quantity}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={3}>
-                          <NumberInput
-                            label="Cost (₹) *"
-                            required
-                            min={0}
-                            value={item.cost}
-                            onChange={(value) =>
-                              form.setFieldValue(`items.${index}.cost`, value)
-                            }
-                            error={form.errors.items?.[index]?.cost}
-                          />
-                        </Grid.Col>
-                      </Grid>
-
-                      <Grid>
-                        <Grid.Col span={6}>
-                          <Select
-                            label="Item Type *"
-                            required
-                            data={ITEM_TYPES}
-                            value={item.itemType}
-                            onChange={(value) =>
-                              form.setFieldValue(
-                                `items.${index}.itemType`,
-                                value,
-                              )
-                            }
-                            error={form.errors.items?.[index]?.itemType}
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                          <TextInput
-                            label="Item Subtype"
-                            value={item.itemSubtype}
-                            onChange={(event) =>
-                              form.setFieldValue(
-                                `items.${index}.itemSubtype`,
-                                event.currentTarget.value,
-                              )
-                            }
-                          />
-                        </Grid.Col>
-                      </Grid>
-
-                      <Grid>
-                        <Grid.Col span={6}>
-                          <NumberInput
-                            label="Present Stock"
-                            min={0}
-                            value={item.presentStock}
-                            onChange={(value) =>
-                              form.setFieldValue(
-                                `items.${index}.presentStock`,
-                                value,
-                              )
-                            }
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                          <TextInput
-                            label="Budgetary Head"
-                            value={item.budgetaryHead}
-                            onChange={(event) =>
-                              form.setFieldValue(
-                                `items.${index}.budgetaryHead`,
-                                event.currentTarget.value,
-                              )
-                            }
-                          />
-                        </Grid.Col>
-                      </Grid>
-
-                      <TextInput
-                        label="Purpose"
-                        value={item.purpose}
-                        onChange={(event) =>
-                          form.setFieldValue(
-                            `items.${index}.purpose`,
-                            event.currentTarget.value,
-                          )
-                        }
-                      />
-                      <TextInput
-                        label="Specification"
-                        value={item.specification}
-                        onChange={(event) =>
-                          form.setFieldValue(
-                            `items.${index}.specification`,
-                            event.currentTarget.value,
-                          )
-                        }
-                      />
-
-                      <Grid>
-                        <Grid.Col span={6}>
-                          <DateInput
-                            label="Expected Delivery"
-                            value={item.expectedDelivery}
-                            onChange={(value) =>
-                              form.setFieldValue(
-                                `items.${index}.expectedDelivery`,
-                                value,
-                              )
-                            }
-                          />
-                        </Grid.Col>
-                        <Grid.Col span={6}>
-                          <TextInput
-                            label="Source of Supply"
-                            value={item.sourceOfSupply}
-                            onChange={(event) =>
-                              form.setFieldValue(
-                                `items.${index}.sourceOfSupply`,
-                                event.currentTarget.value,
-                              )
-                            }
-                          />
-                        </Grid.Col>
-                      </Grid>
-
-                      <TextInput
-                        label="Remarks"
-                        value={item.remark}
-                        onChange={(event) =>
-                          form.setFieldValue(
-                            `items.${index}.remark`,
-                            event.currentTarget.value,
-                          )
-                        }
-                      />
-
-                      <FileInput
-                        label="Attachment"
-                        placeholder="Upload file"
-                        icon={<IconUpload size={14} />}
-                        value={item.file}
-                        onChange={(file) =>
-                          form.setFieldValue(`items.${index}.file`, file)
-                        }
-                      />
-                    </div>
-                  ))}
-                </div>
-              </Stack>
-            </Card>
-
-            <Card withBorder shadow="sm" p="md">
-              <Stack spacing="md">
-                <Title order={3}>Forward Information</Title>
-                <Grid>
-                  <Grid.Col xs={12} md={6}>
-                    <Select
-                      label="Forward To"
-                      placeholder="Select receiver"
-                      value={form.values.forwardTo}
-                      onChange={(value) =>
-                        form.setFieldValue("forwardTo", value)
-                      }
-                      data={filteredUsers.map((user) => ({
-                        value: user.username,
-                        label: user.username,
-                      }))}
-                      onSearchChange={handleSearchChange}
-                      searchable
-                      clearable
-                      error={form.errors.forwardTo}
-                    />
-                  </Grid.Col>
-                  <Grid.Col xs={12} md={6}>
-                    <Select
-                      label="Receiver Designation"
-                      placeholder="Select designation"
-                      data={designations.map((designation) => ({
-                        value: designation,
-                        label: designation,
-                      }))}
-                      value={form.values.receiverDesignation}
-                      onChange={(value) =>
-                        form.setFieldValue("receiverDesignation", value)
-                      }
-                      searchable
-                      clearable
-                      error={form.errors.receiverDesignation}
-                    />
-                  </Grid.Col>
-                </Grid>
-              </Stack>
-            </Card>
-          </Stack>
-
-          <Group position="center" spacing="md">
-            <Button type="submit" loading={submitting}>
-              Submit Indent
-            </Button>
+    <div>
+      <Container
+        size="lg"
+        px="md"
+        backgroundColor="white"
+        style={{
+          backgroundColor: "white",
+          shadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+          padding: "20px",
+        }}
+      >
+        {/* Main Paper/Card Container */}
+        <Paper
+          shadow="sm"
+          padding="lg"
+          radius="md"
+          style={{
+            backgroundColor: "#f3f9ff",
+            marginRight: "170px",
+            marginLeft: "170px",
+            marginTop: "2px",
+            padding: "5px",
+          }}
+        >
+          {/* Header Section */}
+          <Group position="apart" mb="lg" justify="space-evenly">
+            <Title order={3}>Note Sheets</Title>
+            {/* <PiPrinter size={28} /> */}
+            <Title order={3}>Attachments</Title>
           </Group>
-        </form>
-      </Paper>
-    </Container>
+
+          {/* Created By and File ID Section */}
+          <Grid columns={2} gutter="lg" style={{ marginLeft: "24px" }}>
+            <Grid.Col span={1}>
+              <Group>
+                <Text weight={600}>
+                  <strong>Created by:</strong>
+                </Text>
+                <Text>
+                  {" "}
+                  {uploader_username} - {role}{" "}
+                </Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={1}>
+              <Group>
+                <Text weight={600}>
+                  <strong>File ID:</strong>
+                </Text>
+                <Text>
+                  {department}-{year}-{month}-#{fileInfo ? fileInfo.id : ""}
+                </Text>
+              </Group>
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Text>
+                <DataTable indent={indent} />
+              </Text>
+            </Grid.Col>
+          </Grid>
+
+          <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>
+            <Grid>
+              <Grid.Col sm={12}>
+                <Textarea
+                  label="Remark"
+                  placeholder="Enter remark"
+                  value={formValues.remark}
+                  onChange={handleInputChange("remark")}
+                />
+              </Grid.Col>
+              {/* <Grid.Col sm={12}>
+                <TextInput
+                  label="Forward To"
+                  placeholder="Enter forward to"
+                  value={formValues.forwardTo}
+                  onChange={handleInputChange("forwardTo")}
+                />
+              </Grid.Col> */}
+
+              <Grid.Col xs={12} sm={6}>
+                <Select
+                  label="Forward To"
+                  placeholder="Select receiver"
+                  value={selectedUser}
+                  onChange={setSelectedUser}
+                  data={filteredUsers.map((user) => ({
+                    value: user.username,
+                    label: user.username,
+                  }))}
+                  onSearchChange={handleSearchChange} // Trigger when user types
+                  searchable
+                  clearable
+                />
+              </Grid.Col>
+
+              <Grid.Col sm={12}>
+                <Select
+                  label="Receiver Designation"
+                  placeholder="Select designation"
+                  data={designations.map((designation) => ({
+                    value: designation,
+                    label: designation,
+                  }))}
+                  value={formValues.receiverDesignation}
+                  onChange={handleDesignationChange} // Update designation on selection
+                  searchable
+                  clearable
+                />
+              </Grid.Col>
+              <Grid.Col sm={12}>
+                <FileInput
+                  label="File Upload"
+                  placeholder="Upload file"
+                  onChange={setFile}
+                  accept="application/pdf,image/jpeg,image/png"
+                />
+              </Grid.Col>
+              <Grid.Col sm={12}>
+                <Button type="submit" color="green" style={{ float: "right" }}>
+                  Submit Indent
+                </Button>
+              </Grid.Col>
+            </Grid>
+            {/* Submit and Archive Buttons */}
+          </form>
+        </Paper>
+      </Container>
+    </div>
+    // <></>
   );
 }
+
+export default ForwardIndent;

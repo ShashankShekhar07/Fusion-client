@@ -1,421 +1,4 @@
-// import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import {
-//   Container,
-//   Grid,
-//   Paper,
-//   Text,
-//   Group,
-//   Button,
-//   Title,
-// } from "@mantine/core";
-// import axios from "axios";
-// import DataTable from "./Table";
-// import {
-//   archiveIndentRoute,
-//   viewIndentRoute,
-// } from "../../routes/purchaseRoutes";
-
-// function EmployeeViewFileIndent() {
-//   const navigate = useNavigate();
-//   const { indentID } = useParams();
-//   const handleSubmit = () => {
-//     alert("Submitted");
-//   };
-//   const role = useSelector((state) => state.user.role);
-//   // const username = useSelector((state) => state.user.roll_no);
-//   const [err, setErr] = useState("");
-//   const archieveIndent = async (indent_id) => {
-//     // Send POST request to archive the file
-//     const id = indent_id;
-//     try {
-//       // setLoading(true);
-//       const token = localStorage.getItem("authToken");
-//       const response = await axios.get(archiveIndentRoute(role, id), {
-//         headers: {
-//           Authorization: `Token ${token}`, // Correct placement of headers
-//         },
-//       });
-
-//       console.log(response);
-//       navigate("/purchase/archieved_indents");
-//       // setLoading(false);
-//     } catch (error) {
-//       setErr("Failed to archieve indent."); // Handle errors
-//       console.log(err);
-//       // setLoading(false);
-//     }
-//   };
-//   const [indent, setIndent] = useState(null);
-
-//   const fetchIndentDetails = async () => {
-//     try {
-//       const token = localStorage.getItem("authToken");
-//       const response = await axios.post(
-//         viewIndentRoute,
-//         { file_id: indentID },
-//         {
-//           headers: {
-//             Authorization: `Token ${token}`,
-//             "Content-Type": "application/json",
-//           },
-//         },
-//       );
-//       setIndent(response.data.indent);
-//     } catch (error) {
-//       console.error("Error fetching indents:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (indentID) {
-//       fetchIndentDetails(indentID);
-//     }
-//   }, [indentID]);
-
-//   return (
-//     <div>
-//       <Container
-//         size="lg"
-//         px="md"
-//         backgroundColor="white"
-//         style={{
-//           backgroundColor: "white",
-//           shadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-//           padding: "20px",
-//         }}
-//       >
-//         <Paper
-//           shadow="sm"
-//           padding="lg"
-//           radius="md"
-//           style={{
-//             // backgroundColor: "#f3f9ff",
-//             backgroundColor: "#D9EAF7",
-//             marginRight: "170px",
-//             marginLeft: "170px",
-//             marginTop: "2px",
-//             padding: "5px",
-//           }}
-//         >
-//           {/* Header Section */}
-//           <Group position="apart" mb="lg" justify="space-evenly">
-//             <Title order={3}>Note Sheets</Title>
-//             {/* <PiPrinter size={28} /> */}
-//             <Title order={3}>Attachments</Title>
-//           </Group>
-
-//           {/* Created By and File ID Section */}
-//           <Grid columns={2} gutter="lg" style={{ marginLeft: "24px" }}>
-//             <Grid.Col span={1}>
-//               <Group>
-//                 <Text weight={600}>
-//                   <strong>Created by:</strong>
-//                 </Text>
-//                 <Text>atul-professor</Text>
-//               </Group>
-//             </Grid.Col>
-//             <Grid.Col span={1}>
-//               <Group>
-//                 <Text weight={600}>
-//                   <strong>File ID:</strong>
-//                 </Text>
-//                 <Text>CSE-2027-9-#{indentID}</Text>
-//               </Group>
-//             </Grid.Col>
-//             <Grid.Col span={2}>
-//               <Text>
-//                 <DataTable indent={indent} />
-//               </Text>
-//             </Grid.Col>
-//             {/* <Grid.Col span={2}>
-//               <Text>
-//                 <DataTable2 />
-//               </Text>
-//             </Grid.Col> */}
-//           </Grid>
-//           <form onSubmit={handleSubmit} style={{ marginLeft: "24px" }}>
-//             <Group position="right" mt="lg" style={{ justifyContent: "end" }}>
-//               <Button
-//                 type="submit"
-//                 variant="fill"
-//                 color="blue"
-//                 onClick={() => {
-//                   archieveIndent(indentID);
-//                 }}
-//               >
-//                 Archieve
-//               </Button>
-//             </Group>
-//           </form>
-//         </Paper>
-//       </Container>
-//     </div>
-//   );
-// }
-
-// export default EmployeeViewFileIndent;
-
-// import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import { useSelector } from "react-redux";
-// import {
-//   Container,
-//   Paper,
-//   Text,
-//   Group,
-//   Button,
-//   Title,
-//   Timeline,
-//   Badge,
-//   Card,
-//   Grid,
-//   Accordion,
-//   Tabs,
-//   ActionIcon,
-//   Tooltip,
-// } from "@mantine/core";
-// import {
-//   IconFileDescription,
-//   IconArchive,
-//   IconCheck,
-//   IconClock,
-//   IconNotes,
-//   IconPaperclip,
-//   IconPrinter,
-// } from "@tabler/icons-react";
-// import axios from "axios";
-// import dayjs from "dayjs";
-// import DataTable from "./Table";
-// import {
-//   archiveIndentRoute,
-//   viewIndentRoute,
-// } from "../../routes/purchaseRoutes";
-
-// function EmployeeViewFileIndent() {
-//   const navigate = useNavigate();
-//   const { indentID } = useParams();
-//   const role = useSelector((state) => state.user.role);
-//   const [error, setError] = useState("");
-//   const [indent, setIndent] = useState(null);
-//   const [activeTab, setActiveTab] = useState("notesheets");
-//   const [loading, setLoading] = useState(false);
-
-//   const archiveIndent = async (indentId) => {
-//     try {
-//       setLoading(true);
-//       const token = localStorage.getItem("authToken");
-//       await axios.get(archiveIndentRoute(role, indentId), {
-//         headers: {
-//           Authorization: `Token ${token}`,
-//         },
-//       });
-//       navigate("/purchase/archieved_indents");
-//     } catch (error) {
-//       setError("Failed to archive indent.");
-//       console.error("Archive error:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const fetchIndentDetails = async () => {
-//     try {
-//       setLoading(true);
-//       const token = localStorage.getItem("authToken");
-//       const response = await axios.post(
-//         viewIndentRoute,
-//         { file_id: indentID },
-//         {
-//           headers: {
-//             Authorization: `Token ${token}`,
-//             "Content-Type": "application/json",
-//           },
-//         },
-//       );
-//       setIndent(response.data.indent);
-//     } catch (error) {
-//       console.error("Error fetching indents:", error);
-//       setError("Failed to fetch indent details.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (indentID) {
-//       fetchIndentDetails();
-//     }
-//   }, [indentID]);
-
-//   if (!indent) {
-//     return (
-//       <Container size="xl" py="xl">
-//         <Text>Loading indent details...</Text>
-//       </Container>
-//     );
-//   }
-
-//   return (
-//     <Container size="xl" py="xl">
-//       {/* Header Section */}
-//       <Paper shadow="sm" p="md" mb="xl" radius="md">
-//         <Group position="apart" mb="md">
-//           <Group>
-//             <IconFileDescription size={32} />
-//             <div>
-//               <Title order={2}>Indent #{indentID}</Title>
-//               <Text color="dimmed">
-//                 Filed on {dayjs(indent.created_at).format("MMMM D, YYYY")}
-//               </Text>
-//             </div>
-//           </Group>
-//           <Group>
-//             <Badge size="lg" color={indent.purchased ? "green" : "blue"}>
-//               {indent.purchased ? "Purchased" : "In Progress"}
-//             </Badge>
-//             {indent.revised && (
-//               <Badge size="lg" color="yellow">
-//                 Revised
-//               </Badge>
-//             )}
-//             <Tooltip label="Print Indent">
-//               <ActionIcon variant="light" size="lg">
-//                 <IconPrinter size={20} />
-//               </ActionIcon>
-//             </Tooltip>
-//           </Group>
-//         </Group>
-
-//         {/* Approval Timeline */}
-//         <Timeline active={1} bulletSize={24} lineWidth={2}>
-//           <Timeline.Item
-//             bullet={
-//               indent.head_approval ? (
-//                 <IconCheck size={12} />
-//               ) : (
-//                 <IconClock size={12} />
-//               )
-//             }
-//             title="Head Approval"
-//           >
-//             <Text color="dimmed" size="sm">
-//               Department head approval status
-//             </Text>
-//           </Timeline.Item>
-//           <Timeline.Item
-//             bullet={
-//               indent.director_approval ? (
-//                 <IconCheck size={12} />
-//               ) : (
-//                 <IconClock size={12} />
-//               )
-//             }
-//             title="Director Approval"
-//           >
-//             <Text color="dimmed" size="sm">
-//               Director approval status
-//             </Text>
-//           </Timeline.Item>
-//           <Timeline.Item
-//             bullet={
-//               indent.financial_approval ? (
-//                 <IconCheck size={12} />
-//               ) : (
-//                 <IconClock size={12} />
-//               )
-//             }
-//             title="Financial Approval"
-//           >
-//             <Text color="dimmed" size="sm">
-//               Financial clearance status
-//             </Text>
-//           </Timeline.Item>
-//         </Timeline>
-//       </Paper>
-
-//       {/* Content Tabs */}
-//       <Tabs value={activeTab} onChange={setActiveTab} mb="xl">
-//         <Tabs.List>
-//           <Tabs.Tab value="notesheets" leftSection={<IconNotes size={16} />}>
-//             Note Sheets
-//           </Tabs.Tab>
-//           <Tabs.Tab
-//             value="attachments"
-//             leftSection={<IconPaperclip size={16} />}
-//           >
-//             Attachments
-//           </Tabs.Tab>
-//         </Tabs.List>
-
-//         <Tabs.Panel value="notesheets" pt="md">
-//           <Card shadow="sm" radius="md" p="md">
-//             <Grid>
-//               <Grid.Col span={6}>
-//                 <Group>
-//                   <Text weight={600}>Created by:</Text>
-//                   <Text>{indent.created_by || "atul-professor"}</Text>
-//                 </Group>
-//               </Grid.Col>
-//               <Grid.Col span={6}>
-//                 <Group>
-//                   <Text weight={600}>File ID:</Text>
-//                   <Text>CSE-2024-02-#{indentID}</Text>
-//                 </Group>
-//               </Grid.Col>
-//             </Grid>
-//           </Card>
-
-//           {/* Indent Details */}
-//           <Accordion variant="contained" radius="md" mt="md">
-//             <Accordion.Item value="details">
-//               <Accordion.Control>
-//                 <Group position="apart">
-//                   <Text weight={500}>Indent Details</Text>
-//                   <Badge>Status: Active</Badge>
-//                 </Group>
-//               </Accordion.Control>
-//               <Accordion.Panel>
-//                 <DataTable indent={indent} />
-//               </Accordion.Panel>
-//             </Accordion.Item>
-//           </Accordion>
-//         </Tabs.Panel>
-
-//         <Tabs.Panel value="attachments" pt="md">
-//           <Card shadow="sm" radius="md" p="md">
-//             <Text>No attachments available</Text>
-//           </Card>
-//         </Tabs.Panel>
-//       </Tabs>
-
-//       {/* Action Buttons */}
-//       <Group position="right">
-//         <Button
-//           variant="light"
-//           color="blue"
-//           leftIcon={<IconArchive size={20} />}
-//           onClick={() => archiveIndent(indentID)}
-//           loading={loading}
-//         >
-//           Archive Indent
-//         </Button>
-//       </Group>
-
-//       {/* Error Message */}
-//       {error && (
-//         <Text color="red" mt="md">
-//           {error}
-//         </Text>
-//       )}
-//     </Container>
-//   );
-// }
-
-// export default EmployeeViewFileIndent;
-
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { usePDF } from "react-to-pdf";
@@ -429,27 +12,33 @@ import {
   Timeline,
   Badge,
   Card,
+  Textarea,
   Grid,
   Accordion,
   Tabs,
   ActionIcon,
+  FileInput,
+  Select,
   Tooltip,
 } from "@mantine/core";
 import {
   IconFileDescription,
   IconArchive,
   IconCheck,
+  IconSend,
   IconClock,
   IconNotes,
   IconPaperclip,
+  IconMessageDots,
   IconPrinter,
 } from "@tabler/icons-react";
 import axios from "axios";
 import dayjs from "dayjs";
-import DataTable from "./Table";
 import {
   archiveIndentRoute,
   viewIndentRoute,
+  getDesignationsRoute,
+  forwardIndentRoute,
 } from "../../routes/purchaseRoutes";
 
 function EmployeeViewFileIndent() {
@@ -460,32 +49,127 @@ function EmployeeViewFileIndent() {
   const [indent, setIndent] = useState(null);
   const [activeTab, setActiveTab] = useState("notesheets");
   const [loading, setLoading] = useState(false);
-  // const contentRef = useRef(null);
-
+  const [designations, setDesignations] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [file, setFile] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [formValues, setFormValues] = useState({
+    title: "",
+    description: "",
+    itemName: "",
+    quantity: 0,
+    cost: 0,
+    itemType: "",
+    presentStock: 0,
+    purpose: "",
+    specification: "",
+    itemSubtype: "",
+    budgetaryHead: "",
+    expectedDelivery: null,
+    sourceOfSupply: "",
+    remark: "",
+    forwardTo: "",
+    receiverDesignation: "",
+    role: "",
+  });
   const showStockEntryButton = () => {
+    console.log(`hello${indent.indent.director_approval}`);
     return (
-      indent?.head_approval &&
-      indent?.director_approval &&
-      !indent?.financial_approval
+      indent?.indent.head_approval &&
+      indent?.indent.director_approval &&
+      !indent?.indent.financial_approval
     );
   };
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(
+        "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+      );
+      setUsers(response.data.users);
+      setFilteredUsers(response.data.users);
+    } catch (err) {
+      console.error("Error fetching all users", err);
+    }
+  };
 
-  // const handlePrint = async () => {
-  //   try {
-  //     const options = {
-  //       filename: `indent_${indentID}.pdf`,
-  //       page: {
-  //         margin: 20,
-  //         format: "a4",
-  //       },
-  //     };
-  //     await toPDF(contentRef, options);
-  //   } catch (error) {
-  //     console.error("Error generating PDF:", error);
-  //     setError("Failed to generate PDF");
-  //   }
-  // };
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+  const filterUsers = (searchQuery) => {
+    if (searchQuery === "") {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter((user) =>
+        user.username.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setFilteredUsers(filtered);
+    }
+  };
+  const handleDesignationChange = (value) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      receiverDesignation: value,
+    }));
+  };
+  const fetchDesignations = async (receiverName) => {
+    try {
+      const response = await axios.get(getDesignationsRoute(receiverName));
+      setDesignations(response.data);
+    } catch (err) {
+      console.error("Error fetching designations:", err);
+    }
+  };
+  const handleSearchChange = (value) => {
+    filterUsers(value);
+    fetchDesignations(value);
+  };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    // data.append("title", indent.indent.item_name);
+    // data.append("description", indent.item_name);
+    // data.append("item_name", indent.item_name);
+    // data.append("quantity", indent.quantity);
+    // data.append("estimated_cost", indent.estimated_cost);
+    // data.append("item_type", indent.item_type);
+    // data.append("present_stock", indent.present_stock);
+    // data.append("purpose", indent.purpose);
+    // data.append("specification", indent.specification);
+    // data.append("itemSubtype", indent.item_subtype);
+    // data.append("budgetary_head", indent.budgetary_head);
+    // data.append("expected_delivery", indent.expected_delivery);
+    // data.append("sources_of_supply", indent.sources_of_supply);
+    data.append("file", file);
+    data.append("remarks", formValues.remark);
+    data.append("forwardTo", selectedUser);
+    data.append("receiverDesignation", formValues.receiverDesignation);
+    // data.append("receiverName", receiverName);
+    // data.append("uploaderUsername", uploader_username);
+    data.append("role", role);
+
+    try {
+      const token = localStorage.getItem("authToken");
+      const response = await axios.post(forwardIndentRoute(indentID), data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      console.log("Success:", response.data);
+      navigate("/purchase/all_filed_indents");
+    } catch (err) {
+      console.error("Error submitting form:", err);
+    }
+  };
+  const handleInputChange = (field) => (event) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [field]: event.currentTarget.value,
+    }));
+  };
   const { toPDF, targetRef } = usePDF({ filename: `indent_${indentID}.pdf` });
 
   const archiveIndent = async (indentId) => {
@@ -498,9 +182,9 @@ function EmployeeViewFileIndent() {
         },
       });
       navigate("/purchase/archieved_indents");
-    } catch (error) {
+    } catch (err) {
       setError("Failed to archive indent.");
-      console.error("Archive error:", error);
+      console.error("Archive error:", err);
     } finally {
       setLoading(false);
     }
@@ -520,9 +204,18 @@ function EmployeeViewFileIndent() {
           },
         },
       );
-      setIndent(response.data.indent);
-    } catch (error) {
-      console.error("Error fetching indents:", error);
+      setIndent(response.data);
+      // if (
+      //   response.data.director_approval &&
+      //   response.data.head_approval &&
+      //   !response.data.financial_approval
+      // ) {
+      //   console.log()
+      //   setStockEntryShow(true);
+      // }
+      console.log(response.data);
+    } catch (err) {
+      console.error("Error fetching indents:", err);
       setError("Failed to fetch indent details.");
     } finally {
       setLoading(false);
@@ -552,9 +245,13 @@ function EmployeeViewFileIndent() {
             <Group>
               <IconFileDescription size={32} />
               <div>
-                <Title order={2}>Indent #{indentID}</Title>
+                <Title order={2}>
+                  Indent #{indent.indent.file_info} -{" "}
+                  {indent.indent.indent_name}
+                </Title>
                 <Text color="dimmed">
-                  Filed on {dayjs(indent.created_at).format("MMMM D, YYYY")}
+                  Filed on{" "}
+                  {dayjs(indent.indent.upload_date).format("MMMM D, YYYY")}
                 </Text>
               </div>
             </Group>
@@ -572,16 +269,6 @@ function EmployeeViewFileIndent() {
                   <IconPrinter size={20} />
                 </ActionIcon>
               </Tooltip>
-              {showStockEntryButton() && (
-                <Button
-                  color="green"
-                  onClick={() =>
-                    navigate(`/purchase/stock_entry/`, { state: indent })
-                  }
-                >
-                  Stock Entry
-                </Button>
-              )}
             </Group>
           </Group>
 
@@ -589,7 +276,7 @@ function EmployeeViewFileIndent() {
           <Timeline active={1} bulletSize={24} lineWidth={2}>
             <Timeline.Item
               bullet={
-                indent.head_approval ? (
+                indent.indent.head_approval ? (
                   <IconCheck size={12} />
                 ) : (
                   <IconClock size={12} />
@@ -603,7 +290,7 @@ function EmployeeViewFileIndent() {
             </Timeline.Item>
             <Timeline.Item
               bullet={
-                indent.director_approval ? (
+                indent.indent.director_approval ? (
                   <IconCheck size={12} />
                 ) : (
                   <IconClock size={12} />
@@ -617,7 +304,7 @@ function EmployeeViewFileIndent() {
             </Timeline.Item>
             <Timeline.Item
               bullet={
-                indent.financial_approval ? (
+                indent.indent.financial_approval ? (
                   <IconCheck size={12} />
                 ) : (
                   <IconClock size={12} />
@@ -631,6 +318,15 @@ function EmployeeViewFileIndent() {
             </Timeline.Item>
           </Timeline>
         </Paper>
+
+        <Card shadow="sm" radius="md" p="md" withBorder>
+          <Text weight={500} mb="xs">
+            Description
+          </Text>
+          <Text size="sm" color="dimmed">
+            {indent.indent.description || "No description provided."}
+          </Text>
+        </Card>
 
         {/* Content Tabs */}
         <Tabs value={activeTab} onChange={setActiveTab} mb="xl">
@@ -658,7 +354,7 @@ function EmployeeViewFileIndent() {
                 <Grid.Col span={6}>
                   <Group>
                     <Text weight={600}>File ID:</Text>
-                    <Text>CSE-2024-02-#{indentID}</Text>
+                    <Text>CSE-2024-02-#{indent.indent.file_info}</Text>
                   </Group>
                 </Grid.Col>
               </Grid>
@@ -669,13 +365,145 @@ function EmployeeViewFileIndent() {
               <Accordion.Item value="details">
                 <Accordion.Control>
                   <Group position="apart">
-                    <Text weight={500}>Indent Details</Text>
-                    <Badge>Status: Active</Badge>
+                    {/* <Text weight={500}>Indent Details</Text> */}
+                    <Badge>Indent Details</Badge>
                   </Group>
                 </Accordion.Control>
-                <Accordion.Panel>
+                <Accordion variant="contained" radius="md" mb="xl">
+                  {indent.items.map((item) => (
+                    <Accordion.Item key={item.id} value={item.id.toString()}>
+                      <Accordion.Control>
+                        <Group position="apart" style={{ width: "100%" }}>
+                          <Group>
+                            <Text weight={500}>{item.item_name}</Text>
+                            <Badge>Qty: {item.quantity}</Badge>
+                            <Text weight={500} color="blue">
+                              ₹{item.estimated_cost.toLocaleString()}
+                            </Text>
+                          </Group>
+                          <Group
+                            style={{ marginLeft: "auto", paddingRight: "10px" }}
+                          >
+                            {showStockEntryButton() && (
+                              <Button
+                                color="green"
+                                onClick={() =>
+                                  navigate(`/purchase/stock_entry/`, {
+                                    state: {
+                                      file: indent.file,
+                                      department: indent.department,
+                                      indent: indent.indent, // Not indent.indent (unless it's a nested object)
+                                      item, // Ensure you're sending only the selected item
+                                    },
+                                  })
+                                }
+                              >
+                                Stock Entry
+                              </Button>
+                            )}
+                          </Group>
+                        </Group>
+                      </Accordion.Control>
+                      <Accordion.Panel>
+                        <Grid>
+                          <Grid.Col span={6}>
+                            <Card withBorder p="md">
+                              <Text weight={500} mb="xs">
+                                Specifications
+                              </Text>
+                              <Text size="sm">{item.specification}</Text>
+                            </Card>
+                          </Grid.Col>
+                          <Grid.Col span={6}>
+                            <Card withBorder p="md">
+                              <Text weight={500} mb="xs">
+                                Purpose
+                              </Text>
+                              <Text size="sm">{item.purpose}</Text>
+                            </Card>
+                          </Grid.Col>
+                          <Grid.Col span={12}>
+                            <Grid>
+                              <Grid.Col span={3}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Item Nature</Text>
+                                  <Badge color={item.nature ? "green" : "red"}>
+                                    {item.nature ? "Yes" : "No"}
+                                  </Badge>
+                                </Card>
+                              </Grid.Col>
+                              <Grid.Col span={3}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Replaced</Text>
+                                  <Badge
+                                    color={item.replaced ? "green" : "red"}
+                                  >
+                                    {item.replaced ? "Yes" : "No"}
+                                  </Badge>
+                                </Card>
+                              </Grid.Col>
+                              <Grid.Col span={3}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Indigenous</Text>
+                                  <Badge
+                                    color={item.indigenous ? "green" : "red"}
+                                  >
+                                    {item.indigenous ? "Yes" : "No"}
+                                  </Badge>
+                                </Card>
+                              </Grid.Col>
+                              <Grid.Col span={3}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Present Stock</Text>
+                                  <Text size="sm">{item.present_stock}</Text>
+                                </Card>
+                              </Grid.Col>
+                            </Grid>
+                          </Grid.Col>
+                          <Grid.Col span={12}>
+                            <Grid>
+                              <Grid.Col span={4}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Type</Text>
+                                  <Text size="sm">
+                                    {item.item_type} - {item.item_subtype}
+                                  </Text>
+                                </Card>
+                              </Grid.Col>
+                              <Grid.Col span={4}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Budgetary Head</Text>
+                                  <Text size="sm">{item.budgetary_head}</Text>
+                                </Card>
+                              </Grid.Col>
+                              <Grid.Col span={4}>
+                                <Card withBorder p="md">
+                                  <Text weight={500}>Expected Delivery</Text>
+                                  <Text size="sm">
+                                    {dayjs(item.expected_delivery).format(
+                                      "MMM D, YYYY",
+                                    )}
+                                  </Text>
+                                </Card>
+                              </Grid.Col>
+                            </Grid>
+                          </Grid.Col>
+                          <Grid.Col span={12}>
+                            <Card withBorder p="md">
+                              <Text weight={500} mb="xs">
+                                Sources of Supply
+                              </Text>
+                              <Text size="sm">{item.sources_of_supply}</Text>
+                            </Card>
+                          </Grid.Col>
+                        </Grid>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  ))}
+                </Accordion>
+                {/* <Accordion.Panel>
                   <DataTable indent={indent} />
-                </Accordion.Panel>
+                </Accordion.Panel> */}
               </Accordion.Item>
             </Accordion>
           </Tabs.Panel>
@@ -687,7 +515,76 @@ function EmployeeViewFileIndent() {
           </Tabs.Panel>
         </Tabs>
       </div>
+      <Paper shadow="sm" p="lg" radius="md">
+        <Title order={3} mb="lg">
+          Forward Indent
+        </Title>
+        <Grid>
+          <Grid.Col span={12}>
+            <Textarea
+              label="Remarks"
+              placeholder="Add your remarks here..."
+              minRows={4}
+              value={formValues.remark}
+              onChange={handleInputChange("remark")}
+              icon={<IconMessageDots size={14} />}
+            />
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <Select
+              label="Forward To"
+              placeholder="Select receiver"
+              value={selectedUser}
+              onChange={setSelectedUser}
+              data={filteredUsers.map((user) => ({
+                value: user.username,
+                label: user.username,
+              }))}
+              onSearchChange={handleSearchChange}
+              searchable
+              clearable
+            />
+          </Grid.Col>
 
+          <Grid.Col sm={12}>
+            <Select
+              label="Receiver Designation"
+              placeholder="Select designation"
+              data={designations.map((designation) => ({
+                value: designation,
+                label: designation,
+              }))}
+              value={formValues.receiverDesignation}
+              onChange={handleDesignationChange}
+              searchable
+              clearable
+            />
+          </Grid.Col>
+
+          <Grid.Col span={12}>
+            <FileInput
+              label="Attachments"
+              placeholder="Upload files"
+              accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              icon={<IconPaperclip size={14} />}
+              onChange={setFile}
+            />
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <Group position="right">
+              <Button
+                variant="filled"
+                color="green"
+                size="md"
+                leftIcon={<IconSend size={20} />}
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Group>
+          </Grid.Col>
+        </Grid>
+      </Paper>
       {/* Action Buttons */}
       <Group position="right">
         <Button
