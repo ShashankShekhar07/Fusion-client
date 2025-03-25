@@ -1,0 +1,131 @@
+.wrapper {
+  font-family: Arial, sans-serif;
+  max-width: 100%;
+  padding: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.underline1 {
+  height: 2px;
+  background-color: #17ABFF;
+  margin-bottom: 20px;
+}
+
+.underline {
+  height: 1px;
+  background-color: grey;
+  margin-bottom: 10px;
+}
+
+.scholarshipName {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 5px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* .inputContainer {
+  
+} */
+
+.select,
+.inputField {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.select {
+  appearance: none;
+  background: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 20px;
+  padding-right: 30px;
+}
+
+.checkStatusButton {
+  align-self: flex-start;
+  background-color: #17ABFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.checkStatusButton:hover {
+  background-color: #1497e0;
+}
+
+/* New CSS for status message */
+.statusMessage {
+  color: #17ABFF; /* Blue color for the status message */
+  font-size: 16px;
+  margin-top: 20px;
+}
+.status{
+  margin-left: 15%
+}
+
+.statuss{
+  background-color: lightblue;
+  border: 2px solid #1497e0;
+  border-radius: 10px;
+  margin-right: 50%;
+  margin-bottom: 5%;
+}
+
+
+
+
+
+.table {
+  border-collapse: collapse;
+  border-style: hidden;
+  margin-top: 80px;
+  
+}
+.table td {
+  border: 2px solid rgb(199, 190, 190);
+  padding: 12px;
+}
+.table thead tr th{
+  border: 2px solid  rgb(199, 190, 190);
+  background-color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: rgb(220, 223, 224);
+}
+
+
+.sch{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}

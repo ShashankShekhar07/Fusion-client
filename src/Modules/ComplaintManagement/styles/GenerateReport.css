@@ -1,0 +1,196 @@
+/* Global styles */
+body, html {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container to align the main card to the left and the filter card to the right */
+.full-width-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px; /* Adds space between the main card and the filter card */
+  padding-left: 2vw;
+  padding-right: 2vw;
+}
+
+/* Main card styling (left-side) */
+.main-card-container {
+  border-left: 0.6rem solid #15ABFF;
+  width: 60vw;
+  background-color: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1240px;
+  min-height: 45vh;
+  padding-bottom: 20px;
+  margin-top: 20px;
+}
+
+#main-card {
+  border-left: 14px solid #15ABFF;
+  max-height: 900px; 
+  overflow: scroll;
+}
+
+#main-card::-webkit-scrollbar {
+  width: 0;  /* For vertical scroll */
+  height: 0; /* For horizontal scroll */
+}
+
+/* Right-side filter card styling */
+.filter-card-container {
+  width: 25vw;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8e8e8;
+  padding: 20px; /* Padding inside the filter card */
+  margin-top: 30px;  /* Top margin for spacing from the top */
+  margin-left: 20px; /* Left margin to separate it from the main card */
+  margin-right: 20px; /* Right margin to separate it from the edge */
+  max-height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 30px; /* Bottom margin to give space below the filter card */
+}
+
+/* Filter card content styling */
+.filter-card-container h2 {
+  font-size: 25px;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+#complaint-type-badge {
+  background-color: #14abff;
+  color: hsl(0, 0%, 100%);
+  padding: 15px 25px;
+  border-radius: 50px;
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 10px;
+  width: 15vw;
+}
+
+.filter-card-container label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.filter-card-container select, 
+.filter-card-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.filter-card-container input[type="date"] {
+  padding: 8px;
+}
+
+.filter-card-container .sort-dropdown {
+  margin-top: 0px;
+}
+
+#sortheading {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+#FromDate, #ToDate {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+/* Complaint card header section */
+.complaint-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Adjust the badge styling */
+.complaint-type-badge {
+  margin-left: auto; /* Moves badge to the right of complaint header */
+}
+
+/* Container for details and status on the extreme right */
+.details-status-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 20px; /* Adds space between details and status */
+}
+
+/* Complaint subcard general styling */
+.complaint-subcard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Complaint details section */
+.details-section, .status-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.complaint-header {
+  font-weight: bold;
+  font-size: 19px;
+  color: #000000;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  display: inline-flex;
+  flex-direction: row;
+  /*align-items: center;*/
+  justify-content: space-between;
+  width: 100%;
+
+  margin-right: 0vw;
+  margin-bottom: -22px;
+}
+
+.details {
+  margin-top: -55px;
+  margin-bottom: -10px;
+}
+
+.complaint-detail b {
+  font-size: 15px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #333;
+  margin: -2px 0;
+}
+
+#content-generate {
+  font-size: 13px;
+  color: #6a6868;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .full-width-container {
+      padding-left: 49px;
+      flex-direction: column;
+  }
+
+  .main-card-container {
+      width: 100%;
+      margin-bottom: 20px;
+  }
+}

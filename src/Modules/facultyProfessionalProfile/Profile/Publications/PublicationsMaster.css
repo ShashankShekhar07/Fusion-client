@@ -1,0 +1,32 @@
+.publication-master-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .project-navigation {
+    display: flex;
+    justify-content: start;
+    gap: 20px;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .nav-link {
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    background-color: #0056b3;
+  }
+  
+  .form-container {
+    margin-top: 20px;
+    padding: 20px;
+  }
+  

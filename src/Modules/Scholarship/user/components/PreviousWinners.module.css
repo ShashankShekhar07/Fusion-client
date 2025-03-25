@@ -1,0 +1,94 @@
+.wrapper {
+  padding: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns for larger screens */
+  gap: 1rem; /* Gap between cards */
+}
+
+.label {
+  font-weight: bold; /* Make the label text bold */
+  margin-bottom: 5px; /* Space between the label and select */
+  width: 100%;
+}
+
+.selectContainer {
+  position: relative;
+}
+
+.select {
+  width: 100%;
+  padding: 10px 15px;
+  appearance: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.caretIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2%;
+}
+
+.submitButton {
+  background-color: #17ABFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #1499e6;
+}
+
+
+
+
+
+.table {
+  border-collapse: collapse;
+  border-style: hidden;
+  margin-top: 80px;
+  
+}
+.table td {
+  border: 2px solid rgb(199, 190, 190);
+  padding: 12px;
+}
+.table thead tr th{
+  border: 2px solid  rgb(199, 190, 190);
+  background-color: white;
+}
+
+tr:nth-child(odd) {
+  background-color: rgb(220, 223, 224);
+}
+
+
+@media (max-width: 1024px) {
+  .formRow {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr; /* 1 column for small screens */
+  }
+}

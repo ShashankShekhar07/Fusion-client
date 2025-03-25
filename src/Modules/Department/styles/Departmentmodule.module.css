@@ -1,0 +1,67 @@
+.fusionText {
+    font-size: 1rem;
+    @media (min-width: mantine-breakpoint-md) {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .fusionCaretCircleIcon {
+    font-size: 2rem;
+    @media (min-width: mantine-breakpoint-md) {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .fusionCaretIcon {
+    font-size: 1rem;
+    @media (min-width: mantine-breakpoint-md) {
+      font-size: 1.25rem;
+    }
+  }
+  
+  .fusionActiveRecentTab {
+    background-color: #15abff13;
+    color: #15abff;
+    font-weight: 800;
+    border-radius: 4px;
+  }
+  
+  .fusionTabsContainer {
+    flex-shrink: 1;
+    max-width: 80vw;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+  }
+  
+  .fusionTabsContainer::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .selectinputs {
+      background-color: #15abff20;
+      border-color: #15abff4d;
+  }
+  
+  .selectinputs::placeholder {
+      color: #15abff;
+      font-weight: 600;
+  }
+  
+  .selectoptions:hover {
+    background-color: #15abff10; /* Transparent blue hover background */
+  }
+
+  .bbx {
+    border: 1px solid red;
+  }
+
+  .flex {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .w_full {
+    max-width: 1500px;
+  }
+
+  

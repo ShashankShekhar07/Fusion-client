@@ -16,10 +16,43 @@ function InboxTable() {
     (state) => state.inbox,
   );
   useEffect(() => {
+
     if (!fetched) {
       dispatch(fetchIndentsInbox({ username, role }));
     }
   }, [dispatch, username, role]);
+
+    // Fetch indents from the server using HoldsDesignation ID from local storage
+    const fetchIndents = async () => {
+      try {
+        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
+        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
+        // console.log("me");
+        console.log(username);
+        console.log(role);
+        const response = await axios.get(
+          viewIndentByUsernameAndRoleRoute2(username, role),
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          },
+        );
+        // const filteredData = response.data.in_file.filter(
+        //   (item) => item.receiver_designation_name === role,
+        // );
+        setInbox(response.data.in_file); // Set the fetched data to indents state
+        // setDepartment(response.data.department);
+        setLoading(false); // Stop loading once data is fetched
+      } catch (err) {
+        setError("Failed to fetch indents."); // Handle errors
+        setLoading(false);
+      }
+    };
+
+    fetchIndents(); // Call the function to fetch indents
+  }, [role]); // Empty dependency array to run effect on mount
+
   if (loading) {
     return <Text>Loading...</Text>;
   }
@@ -29,6 +62,18 @@ function InboxTable() {
   }
 
   console.log(inbox);
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true, // Optional: Change to 24-hour format if needed
+    });
+  };
   return (
     <Box p="md">
       {" "}
@@ -130,7 +175,8 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.upload_date}
+                  {/* {booking.upload_date} */}
+                  {formatDate(booking.upload_date)}
                 </td>
                 <td
                   style={{
@@ -201,7 +247,7 @@ function InboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  {booking.upload_date}
+                  {formatDate(booking.upload_date)}
                 </td>
                 <td
                   style={{

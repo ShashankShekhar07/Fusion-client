@@ -1,0 +1,129 @@
+.wrapper {
+  padding: 20px;
+}
+
+.formRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.formItem {
+  flex: 1;
+}
+
+.label {
+  font-weight: bold; /* Make the label text bold */
+  margin-bottom: 5px; /* Space between the label and select */
+}
+
+.selectContainer {
+  position: relative;
+}
+
+.select {
+  width: 100%;
+  padding: 10px 15px;
+  appearance: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.caretIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #888;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submitButton {
+  background-color: #17ABFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background-color: #1499e6;
+}
+
+/* Table Styles */
+.table {
+  border-collapse: collapse;
+  border-style: hidden;
+  margin-top: 80px;
+  width: 100%; /* Ensure table takes full width */
+}
+
+.table td {
+  border: 2px solid rgb(199, 190, 190);
+  padding: 12px;
+}
+
+.table thead tr th {
+  border: 2px solid rgb(199, 190, 190);
+  background-color: white;
+  text-align: left;
+}
+
+tr:nth-child(odd) {
+  background-color: rgb(220, 223, 224);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .formRow {
+    display: flex;
+    flex-direction: column; /* Stack form items vertically */
+    gap: 15px;
+  }
+
+  .buttonContainer {
+    justify-content: center; /* Center the submit button */
+  }
+
+  .submitButton {
+    width: 100%; /* Full-width button for small screens */
+  }
+
+  .table {
+    margin-top: 40px; /* Reduce top margin */
+  }
+
+  .table thead {
+    display: none; /* Hide table headers on small screens */
+  }
+
+  .table tr {
+    display: block;
+    margin-bottom: 10px; /* Add space between rows */
+    border: 1px solid #e0e0e0; /* Add border around each block */
+  }
+
+  .table td {
+    display: block;
+    text-align: right; /* Align text to the right */
+    padding-left: 50%; /* Add left padding for labels */
+    position: relative;
+  }
+
+  .table td::before {
+    content: attr(data-label); /* Use data-label for mobile labels */
+    position: absolute;
+    left: 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+}

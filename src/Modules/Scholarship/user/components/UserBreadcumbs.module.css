@@ -1,0 +1,35 @@
+.ctr {
+  padding: 1rem 1rem; /* Increase padding for space above */
+  display: flex;
+  gap: 0.2rem; /* Decrease gap between items */
+  font-size: 1.25rem; /* Increased font size */
+  margin-left: 5%;
+}
+
+.activeLink {
+  color: #17ABFF; /* Active link color */
+  text-decoration: underline; /* Underline for active link */
+}
+
+.inactiveLink {
+  color: black; /* Inactive link color */
+  text-decoration: none; /* No underline for inactive link */
+}
+
+.caret {
+  display: flex;
+  justify-content: center; /* Center the caret horizontally */
+  align-items: center; /* Center the caret vertically */
+  margin: 0 0.1rem; /* Adjust margin for spacing, reduced to decrease space */
+  font-size: 1.25rem; /* Match caret size with increased font size */
+}
+
+/* Change caret color based on the preceding link */
+.ctr > .caret {
+  color: black; /* Default caret color */
+}
+
+/* Make caret blue when the preceding link is active */
+.ctr > .activeLink + .caret {
+  color: #17ABFF; /* Blue color for caret after the active link */
+}

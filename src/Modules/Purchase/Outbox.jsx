@@ -120,7 +120,7 @@ function OutboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  <Text weight={500}>{row.designation}</Text>
+                  <Text weight={500}>{row.receiver_username}</Text>
                   {/* <Text style={{ size: "sm", color: "dimmed" }}> */}
                   {/* {row.receiver_email} */}
                   {/* </Text> */}
@@ -202,7 +202,8 @@ function OutboxTable() {
                     textAlign: "center",
                   }}
                 >
-                  <Text weight={500}>{row.designation}</Text>
+                  <Text weight={500}>{row.receiver_username}</Text>
+                  {/* <Text weight={500}>vkjain</Text> */}
                   <Text style={{ size: "sm", color: "dimmed" }}>
                     {row.receiver_email}
                   </Text>

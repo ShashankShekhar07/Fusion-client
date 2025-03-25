@@ -17,7 +17,7 @@ import {
   Text,
   Group,
 } from "@mantine/core";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import { useSelector } from "react-redux";
@@ -25,6 +25,7 @@ import {
   createProposalRoute,
   getDesignationsRoute,
 } from "../../routes/purchaseRoutes";
+import { host } from "../../routes/globalRoutes";
 
 function StockEntry() {
   const [designations, setDesignations] = useState([]);
@@ -35,21 +36,23 @@ function StockEntry() {
   const [loading, setLoading] = useState(false); // State for loading status
   const [err, setErr] = useState(null);
   // console.log(uploader_username);
+  const location = useLocation();
+  const indentData = location.state || {};
   const form = useForm({
     initialValues: {
       title: "",
       description: "",
-      itemName: "",
-      quantity: 0,
-      cost: 0,
-      itemType: "",
-      presentStock: 0,
-      purpose: "",
-      specification: "",
-      itemSubtype: "",
-      budgetaryHead: "",
-      expectedDelivery: null,
-      sourceOfSupply: "",
+      itemName: indentData.item_name || "",
+      quantity: indentData.quantity || "",
+      cost: indentData.estimated_cost || "",
+      itemType: indentData.item_type || "",
+      presentStock: indentData.present_stock || "",
+      purpose: indentData.purpose || "",
+      specification: indentData.specification || "",
+      itemSubtype: indentData.item_subtype || "",
+      budgetaryHead: indentData.budgetary_head || "",
+      expectedDelivery: "",
+      sourceOfSupply: indentData.sources_of_supply || "",
       remark: "",
       forwardTo: "",
       receiverDesignation: "",
@@ -65,7 +68,7 @@ function StockEntry() {
   });
   const [pid, setPid] = useState("");
   const [vendor, setVendor] = useState("");
-  const [pquantity, setPquantity] = useState("");
+  const [pquantity, setPquantity] = useState(0);
   const [cat, setCat] = useState("");
   const [receivedDate, setReceivedDate] = useState("");
   const [files, setFiles] = useState("");
@@ -77,7 +80,7 @@ function StockEntry() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users); // Save all users data to state
       setFilteredUsers(response.data.users); // Initially, show all users
@@ -87,8 +90,72 @@ function StockEntry() {
   };
 
   useEffect(() => {
+    console.log(indentData);
     fetchAllUsers(); // Fetch all users on mount
   }, []);
+
+  useEffect(() => {
+    if (location.state) {
+      console.log("Received Item:", location.state.item); // Debugging
+      form.setValues({
+        title: "",
+        description: "",
+        itemName: location.state.item.item_name || "",
+        quantity: location.state.item.quantity || "",
+        cost: location.state.item.estimated_cost || "",
+        itemType: location.state.item.item_type || "",
+        presentStock: location.state.item.present_stock || "",
+        purpose: location.state.item.purpose || "",
+        specification: location.state.item.specification || "",
+        itemSubtype: location.state.item.item_subtype || "",
+        budgetaryHead: location.state.item.budgetary_head || "",
+        expectedDelivery: "",
+        sourceOfSupply: location.state.item.sources_of_supply || "",
+        remark: "",
+        forwardTo: "",
+        receiverDesignation: "",
+        receiverName: "",
+        file: null,
+        item_id: location.state.item.id || "",
+        vendor: "",
+        recieved_date: "",
+        bill: "",
+        dealing_assistant_id: "",
+        location: "",
+      });
+    }
+  }, [location.state]); // ✅ Runs when location.state changes
+
+  useEffect(() => {
+    // if (formData) {
+    form.setValues({
+      title: "",
+      description: "",
+      itemName: indentData.item.item_name || "",
+      quantity: indentData.item.quantity || "",
+      cost: indentData.item.estimated_cost || "",
+      itemType: indentData.item.item_type || "",
+      presentStock: indentData.item.presentStock || "",
+      purpose: indentData.item.purpose || "",
+      specification: indentData.item.specification || "",
+      itemSubtype: indentData.item.item_subtype || "",
+      budgetaryHead: indentData.item.budgetary_head || "",
+      expectedDelivery: "",
+      sourceOfSupply: indentData.item.sources_of_supply || "",
+      remark: "",
+      forwardTo: "",
+      receiverDesignation: "",
+      receiverName: "",
+      file: null,
+      item_id: indentData.item.item_id || "",
+      vendor: "",
+      recieved_date: "",
+      bill: "",
+      dealing_assistant_id: "",
+      location: "",
+    });
+    // }
+  }, [indentData]);
   // console.log("Users:", users);
   // Handle search input change
 
@@ -146,7 +213,7 @@ function StockEntry() {
     data.append("quantity", values.quantity);
     data.append("estimated_cost", values.cost);
     data.append("item_type", values.itemType);
-    data.append("present_stock", values.presentStock);
+    data.append("current_stock", values.presentStock);
     data.append("purpose", values.purpose);
     data.append("specification", values.specification);
     data.append("itemSubtype", values.itemSubtype);
@@ -166,7 +233,7 @@ function StockEntry() {
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `127.0.0.1:8000/purchase-and-store/api/stockEntry/4322`,
+        `${host}/purchase-and-store/api/stockEntry/4322`,
         data,
         {
           headers: {
@@ -214,14 +281,14 @@ function StockEntry() {
     formData.append("current_stock", pquantity);
     formData.append("bill", files); // Ensure file is a File object
     formData.append("location", cat); // Assuming category is location
-    formData.append("recieved_date", receivedDate);
+    formData.append("received_date", receivedDate);
     formData.append("role", role);
     setLoading(true);
-
+    console.log(formData);
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        `http://127.0.0.1:8000/purchase-and-store/api/stockEntry/${username}/`,
+        `${host}/purchase-and-store/api/stockEntry/${username}/`,
         formData,
         {
           headers: {
@@ -444,7 +511,7 @@ function StockEntry() {
 
                 <Grid.Col sm={6}>
                   <DateInput
-                    label="Expected Delivery"
+                    label="Expected Delivery Date"
                     placeholder="Pick a date"
                     value={form.values.expectedDelivery}
                     onChange={(date) =>

@@ -15,7 +15,8 @@ import {
   Text,
   CloseButton,
 } from "@mantine/core";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setTotalNotifications } from "../../redux/userslice.jsx";
 import classes from "./Dashboard.module.css";
 import { Empty } from "../../components/empty";
 import CustomBreadcrumbs from "../../components/Breadcrumbs.jsx";
@@ -110,6 +111,9 @@ function Dashboard() {
     (n) => !n.deleted && n.unread,
   ).length;
   const badges = [notificationBadgeCount, announcementBadgeCount];
+  dispatch(
+    setTotalNotifications(notificationBadgeCount + announcementBadgeCount),
+  );
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -118,22 +122,13 @@ function Dashboard() {
 
       try {
         setLoading(true);
-
         const { data } = await axios.get(getNotificationsRoute, {
           headers: { Authorization: `Token ${token}` },
         });
-
         const { notifications } = data;
-
         const notificationsData = notifications.map((item) => ({
           ...item,
-          data: (function () {
-            let newData = "";
-            for (let i = 0; i < item.data.length; i += 1) {
-              newData += item.data[i] === "'" ? '"' : item.data[i];
-            }
-            return JSON.parse(newData);
-          })(),
+          data: JSON.parse(item.data.replace(/'/g, '"')),
         }));
 
         setNotificationsList(
@@ -155,42 +150,6 @@ function Dashboard() {
 
     fetchDashboardData();
   }, [dispatch]);
-  // useEffect(() => {
-  //   const fetchDashboardData = async () => {
-  //     const token = localStorage.getItem("authToken");
-  //     if (!token) return console.error("No authentication token found!");
-
-  //     try {
-  //       setLoading(true);
-  //       const { data } = await axios.get(getNotificationsRoute, {
-  //         headers: { Authorization: `Token ${token}` },
-  //       });
-  //       const { notifications } = data;
-  //       const notificationsData = notifications.map((item) => ({
-  //         ...item,
-  //         data: JSON.parse(item.data.replace(/'/g, '"')),
-  //         // data: JSON.parse(item.data.replace(/'/g, '"')),
-  //       }));
-
-  //       setNotificationsList(
-  //         notificationsData.filter(
-  //           (item) => item.data?.flag !== "announcement",
-  //         ),
-  //       );
-  //       setAnnouncementsList(
-  //         notificationsData.filter(
-  //           (item) => item.data?.flag === "announcement",
-  //         ),
-  //       );
-  //     } catch (error) {
-  //       console.error("Error fetching dashboard data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchDashboardData();
-  // }, [dispatch]);
 
   // const handleTabChange = (direction) => {
   //   const newIndex =
@@ -308,13 +267,16 @@ function Dashboard() {
       console.error("Error deleting notification:", err);
     }
   };
-  const roll_no = useSelector((state) => state.user.roll_no);
-  console.log(roll_no);
 
   return (
     <>
       <CustomBreadcrumbs />
-      <Flex justify="space-between" align="center" mt="lg">
+      <Flex
+        justify="space-between"
+        align={{ base: "start", sm: "center" }}
+        mt="lg"
+        direction={{ base: "column", sm: "row" }}
+      >
         {/* <Flex
           justify="flex-start"
           align="center"
@@ -385,7 +347,14 @@ function Dashboard() {
           badges={badges}
         />
 
-        <Flex align="center" mt="md" rowGap="1rem" columnGap="4rem" wrap="wrap">
+        <Flex
+          w={{ base: "40%", sm: "auto" }}
+          align="center"
+          mt="md"
+          rowGap="1rem"
+          columnGap="4rem"
+          wrap="wrap"
+        >
           <Select
             classNames={{
               option: classes.selectoptions,
@@ -400,7 +369,6 @@ function Dashboard() {
           />
         </Flex>
       </Flex>
-
       <Grid mt="xl">
         {loading ? (
           <Container py="xl">

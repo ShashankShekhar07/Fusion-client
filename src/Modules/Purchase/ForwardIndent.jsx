@@ -23,6 +23,7 @@ import {
   viewIndentRoute,
 } from "../../routes/purchaseRoutes";
 // import DataTable2 from "./Table2";
+import { host } from "../../routes/globalRoutes";
 
 function ForwardIndent() {
   // const [remarks, setRemarks] = useState("");
@@ -44,7 +45,7 @@ function ForwardIndent() {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(
-        " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
+        `${host}/purchase-and-store/api/user-suggestions`,
       );
       setUsers(response.data.users); // Save all users data to state
       setFilteredUsers(response.data.users); // Initially, show all users
@@ -56,10 +57,7 @@ function ForwardIndent() {
   useEffect(() => {
     fetchAllUsers(); // Fetch all users on mount
   }, []);
-  // console.log("Users:", users);
-  // Handle search input change
 
-  // Filter users based on the query
   const filterUsers = (searchQuery) => {
     if (searchQuery === "") {
       setFilteredUsers(users); // If query is empty, show all users

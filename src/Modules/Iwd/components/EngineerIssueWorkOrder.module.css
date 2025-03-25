@@ -1,0 +1,53 @@
+.parentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.issueWorkOrderForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    padding: 20px;
+    background-color: #efefef;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.root {
+    position: relative;
+}
+
+.input {
+    height: rem(54px);
+    padding-top: rem(18px);
+    border: 2px solid #efefef;
+    border-radius: 20px;
+}
+
+.label {
+    position: absolute;
+    pointer-events: none;
+    font-size: var(--mantine-font-size-xs);
+    padding-left: var(--mantine-spacing-sm);
+    padding-top: calc(var(--mantine-spacing-sm) / 2);
+    z-index: 1;
+}
+
+.containerDiv {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.CalenderHeader{
+        font-size: 5px; 
+        padding: 10px;
+        /* backgroundColor: ' */
+}

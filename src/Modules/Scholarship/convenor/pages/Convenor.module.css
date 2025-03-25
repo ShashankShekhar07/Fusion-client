@@ -1,0 +1,99 @@
+.pageBackground {
+  background-color: white;
+  width: 90vw;
+  margin: 20px auto;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.wrapper {
+  width: 100%;
+  margin: 0.5rem auto;
+  padding: 4%;
+}
+
+.tabsContainer {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.tabsContainer::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+.activeTab {
+  color: #17abff;
+  padding: 1rem 1.5rem;
+  margin-right: 0.5rem;
+  text-align: center;
+  position: relative;
+  font-size: 1.25rem; /* Main heading size */
+}
+
+.inactiveTab {
+  color: black;
+  padding: 1rem 1.5rem;
+  margin-right: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.25rem; /* Main heading size */
+}
+
+.inactiveTab:hover {
+  color: #17abff;
+}
+
+.underline {
+  position: absolute;
+  bottom: -2px; /* Position the underline below text */
+  left: 0;
+  right: 0;
+  height: 2px; /* Thickness of underline */
+  background-color: #17abff;
+}
+
+.caretIcon {
+  color: inherit;
+  cursor: pointer;
+  font-size: 1.5rem; /* 2px smaller than the main heading */
+}
+
+/* Adjust size for side headings (2px smaller than main heading) */
+.sideHeading {
+  font-size: 1.125rem; /* 1.25rem - 2px */
+}
+
+/* Breakpoints for responsiveness */
+@media (max-width: 1024px) {
+  .activeTab,
+  .inactiveTab {
+    font-size: 1.125rem; /* Slightly smaller for medium screens */
+    padding: 0.75rem 1rem; /* Reduce padding */
+  }
+
+  .caretIcon {
+    font-size: 1.375rem; /* Adjust caret size (2px smaller than 1.5rem) */
+  }
+
+  .sideHeading {
+    font-size: 1rem; /* Adjust size for medium screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .activeTab,
+  .inactiveTab {
+    font-size: 1rem; /* Smaller for small screens */
+    padding: 0.5rem 0.75rem; /* Further reduce padding */
+  }
+
+  .caretIcon {
+    font-size: 1.25rem; /* Smaller caret size for mobile */
+  }
+
+  .sideHeading {
+    font-size: 0.875rem; /* Further reduce size for mobile */
+  }
+}
