@@ -7,8 +7,8 @@ const userSlice = createSlice({
     roll_no: "",
     roles: ["Guest-User"],
     role: "Guest-User",
-    accessibleModules: {}, // Format---> {role: {module: true}}
-    currentAccessibleModules: {}, // Format---> {module: true}
+    accessibleModules: {},
+    currentAccessibleModules: {},
   },
   reducers: {
     setUserName: (state, action) => {

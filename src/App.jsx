@@ -26,7 +26,8 @@ import StockEntry from "./Modules/Purchase/StockEntry";
 import SavedIndents from "./Modules/Purchase/SavedIndentes";
 import Outbox from "./Modules/Purchase/Outbox.jsx";
 import ForwardIndent from "./Modules/Purchase/ForwardIndent.jsx";
-import MultiItemIndentForm from "./Modules/Purchase/Temp.jsx";
+// import MultiItemIndentForm from "./Modules/Purchase/Temp.jsx";
+import IndentForm from "./Modules/Purchase/New.jsx";
 
 export default function App() {
   const location = useLocation();
@@ -72,7 +73,8 @@ export default function App() {
             <Layout>
               <PurchaseNavbar />
               <div style={{ margin: "32px" }}>
-                <MultiItemIndentForm />
+                {/* <MultiItemIndentForm /> */}
+                <IndentForm />
               </div>
             </Layout>
           }

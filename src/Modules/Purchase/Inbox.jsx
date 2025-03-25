@@ -1,60 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
-import axios from "axios";
-import { useSelector } from "react-redux";
+
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { viewIndentByUsernameAndRoleRoute2 } from "../../routes/purchaseRoutes";
+// import { viewIndentByUsernameAndRoleRoute2 } from "../../routes/purchaseRoutes";
+import { fetchIndentsInbox } from "../../redux/purchase/inboxSlice";
 
 function InboxTable() {
-  const [inbox, setInbox] = useState([]); // State for indents data
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState(null); // State for error handling
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const role = useSelector((state) => state.user.role);
   const username = useSelector((state) => state.user.roll_no);
   console.log(useSelector((state) => state.user));
-  // const [department, setDepartment] = useState("");
-  // console.log(useSelector((state) => state.user));
-  // const desigid = useSelector((state) => state.user.Holds_designation);
+  const { inbox, error, loading, fetched } = useSelector(
+    (state) => state.inbox,
+  );
   useEffect(() => {
-    // Fetch indents from the server using HoldsDesignation ID from local storage
-    const fetchIndents = async () => {
-      try {
-        const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
-        // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
-        // console.log("me");
-        console.log(username);
-        console.log(role);
-        const response = await axios.get(
-          viewIndentByUsernameAndRoleRoute2(username, role), // Use dynamic HoldsDesignation ID
-          {
-            headers: {
-              Authorization: `Token ${token}`, // Add the token in Authorization header
-            },
-          },
-        );
-        // const filteredData = response.data.in_file.filter(
-        //   (item) => item.receiver_designation_name === role,
-        // );
-        setInbox(response.data.in_file); // Set the fetched data to indents state
-        // setDepartment(response.data.department);
-        setLoading(false); // Stop loading once data is fetched
-      } catch (err) {
-        setError("Failed to fetch indents."); // Handle errors
-        setLoading(false);
-      }
-    };
-
-    fetchIndents(); // Call the function to fetch indents
-  }, [role]); // Empty dependency array to run effect on mount
+    if (!fetched) {
+      dispatch(fetchIndentsInbox({ username, role }));
+    }
+  }, [dispatch, username, role]);
   if (loading) {
-    return <Text>Loading...</Text>; // Display loading state
+    return <Text>Loading...</Text>;
   }
 
   if (error) {
-    return <Text color="red">{error}</Text>; // Display error message
+    return <Text color="red">{error}</Text>;
   }
-  // const navigate = useNavigate();
+
   console.log(inbox);
   return (
     <Box p="md">
@@ -81,10 +54,10 @@ function InboxTable() {
       </Box>
       <Table
         style={{
-          backgroundColor: "#f3f9ff", // Changed background color
-          borderRadius: "8px", // Border radius for table
-          overflow: "hidden", // Overflow hidden to round table corners
-          border: "1px solid #E0E0E0", // Optional border for visibility
+          backgroundColor: "#f3f9ff",
+          borderRadius: "8px",
+          overflow: "hidden",
+          border: "1px solid #E0E0E0",
         }}
       >
         <thead>
@@ -265,23 +238,23 @@ function Inbox() {
       <Box
         style={{
           display: "flex",
-          justifyContent: "center", // Center horizontally
-          alignItems: "center", // Center vertically
-          height: "80vh", // Full viewport height
-          overflow: "auto", // Ensure scroll if content exceeds viewport
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80vh",
+          overflow: "auto",
         }}
       >
         <Box
           style={{
-            maxWidth: "1440px", // Increased max width by 20%
-            width: "100%", // Make it responsive
+            maxWidth: "1440px",
+            width: "100%",
             backgroundColor: "white",
-            borderRadius: "12px", // Add border radius to outer Box
-            padding: "16px", // Optional padding
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Optional shadow
-            overflowX: "auto", // Horizontal scroll bar
-            overflowY: "auto", // Vertical scroll bar
-            maxHeight: "80vh", // Limit height to 80% of the viewport
+            borderRadius: "12px",
+            padding: "16px",
+            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+            overflowX: "auto",
+            overflowY: "auto",
+            maxHeight: "80vh",
           }}
         >
           <InboxTable />
