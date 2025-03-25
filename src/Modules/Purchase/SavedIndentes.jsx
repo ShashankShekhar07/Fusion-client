@@ -1,77 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { deleteIndentRoute, draftViewRoute } from "../../routes/purchaseRoutes";
+
+import { useSelector, useDispatch } from "react-redux";
+// import { deleteIndentRoute } from "../../routes/purchaseRoutes";
+import { fetchIndents } from "../../redux/purchase/savedIndentsSlice";
+import { remove_indent } from "../../redux/purchase/purchaseSlice";
 
 function SavedIndentsTable() {
-  const [indents, setIndents] = useState([]); // State for indents data
-  const [loading, setLoading] = useState(true); // State for loading status
-  const [error, setError] = useState(null); // State for error handling
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const role = useSelector((state) => state.user.role);
   const username = useSelector((state) => state.user.roll_no);
-  const [department, setDepartment] = useState("");
+  const { indents, error, loading, fetched } = useSelector(
+    (state) => state.savedIndent,
+  );
+  const [department] = useState("");
   console.log(useSelector((state) => state.user));
-  // console.log(useSelector((state) => state.user));
-  const fetchIndents = async () => {
-    try {
-      const token = localStorage.getItem("authToken"); // Assuming token is stored in localStorage after login
-      // const holdsDesignationId = localStorage.getItem("holdsDesignationId"); // Get the HoldsDesignation ID
 
-      const response = await axios.get(
-        draftViewRoute(username), // Use dynamic HoldsDesignation ID
-        {
-          headers: {
-            Authorization: `Token ${token}`, // Add the token in Authorization header
-          },
-        },
-      );
-      setIndents(response.data.files); // Set the fetched data to indents state
-      setDepartment(response.data.department);
-      setLoading(false); // Stop loading once data is fetched
-    } catch (err) {
-      setError("Failed to fetch indents."); // Handle errors
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    // Fetch indents from the server using HoldsDesignation ID from local storage
+    if (!fetched) {
+      dispatch(fetchIndents({ username }));
+    }
+  }, [dispatch, username, role, fetched]);
 
-    fetchIndents(); // Call the function to fetch indents
-  }, []); // Empty dependency array to run effect on mount
   console.log(indents);
 
-  const remove_indent = async (id) => {
-    try {
-      const token = localStorage.getItem("authToken");
-      await axios.post(
-        deleteIndentRoute,
-        {
-          file_id: id,
-        },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        },
-      );
-      fetchIndents();
-    } catch (err) {
-      console.error(
-        "Error removing indent:",
-        err.response?.data || err.message,
-      );
-    }
-  };
+  // const remove_indent = async (id) => {
+  //   try {
+  //     const token = localStorage.getItem("authToken");
+  //     await axios.post(
+  //       deleteIndentRoute,
+  //       {
+  //         file_id: id,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Token ${token}`,
+  //         },
+  //       },
+  //     );
+  //     fetchIndents();
+  //   } catch (err) {
+  //     console.error(
+  //       "Error removing indent:",
+  //       err.response?.data || err.message,
+  //     );
+  //   }
+  // };
 
   if (loading) {
-    return <Text>Loading...</Text>; // Display loading state
+    return <Text>Loading...</Text>;
   }
 
   if (error) {
-    return <Text color="red">{error}</Text>; // Display error message
+    return <Text color="red">{error}</Text>;
   }
 
   return (

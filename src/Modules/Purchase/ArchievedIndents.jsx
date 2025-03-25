@@ -1,38 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { archiveViewRoute } from "../../routes/purchaseRoutes";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { fetchArchived } from "../../redux/purchase/archivedSlice";
 
 function ArchievedTable() {
-  const [indents, setIndents] = useState([]);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { indents, error, fetched, loading } = useSelector(
+    (state) => state.archieve,
+  );
   const username = useSelector((state) => state.user.roll_no);
   const role = useSelector((state) => state.user.role);
   console.log(role);
-  useEffect(() => {
-    const fetchIndents = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        const response = await axios.get(archiveViewRoute(username, role), {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        });
-        console.log(response.data.archieves);
-        setIndents(response.data.archieves);
-        setLoading(false);
-      } catch (err) {
-        setError("Failed to fetch indents.");
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchIndents = async () => {
+  //     try {
+  //       const token = localStorage.getItem("authToken");
+  //       const response = await axios.get(archiveViewRoute(username, role), {
+  //         headers: {
+  //           Authorization: `Token ${token}`,
+  //         },
+  //       });
+  //       console.log(response.data.archieves);
+  //       setIndents(response.data.archieves);
+  //       setLoading(false);
+  //     } catch (err) {
+  //       setError("Failed to fetch indents.");
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchIndents();
-  }, []);
+  //   fetchIndents();
+  // }, []);
+  useEffect(() => {
+    if (!fetched) {
+      dispatch(fetchArchived({ username, role }));
+    }
+  }, [dispatch, username, role, fetched]);
   if (loading) {
     return <Text>Loading...</Text>;
   }

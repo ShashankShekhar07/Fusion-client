@@ -21,6 +21,11 @@ import ViewIndent from "./Modules/Purchase/ViewIndent";
 import StockEntry from "./Modules/Purchase/StockEntry";
 import SavedIndents from "./Modules/Purchase/SavedIndentes";
 import Outbox from "./Modules/Purchase/Outbox.jsx";
+
+import ForwardIndent from "./Modules/Purchase/ForwardIndent.jsx";
+// import MultiItemIndentForm from "./Modules/Purchase/Temp.jsx";
+import IndentForm from "./Modules/Purchase/New.jsx";
+
 import { IndentForm } from "./Modules/Purchase/IndentForm.jsx";
 import NewForwardIndent from "./Modules/Purchase/NewForwardIndent.jsx";
 
@@ -86,6 +91,7 @@ const GymkhanaDashboard = lazy(
 const theme = createTheme({
   breakpoints: { xs: "30em", sm: "48em", md: "64em", lg: "74em", xl: "90em" },
 });
+
 
 export default function App() {
   const location = useLocation();
