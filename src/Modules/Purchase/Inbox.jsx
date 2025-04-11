@@ -101,20 +101,58 @@ function InboxTable() {
       >
         <thead>
           <tr>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
               Received as
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
               Send by
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
               File Id
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
               Subject
             </th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>Date</th>
-            <th style={{ backgroundColor: "white", padding: "12px" }}>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
+              Date
+            </th>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
               Features
             </th>
           </tr>
@@ -188,9 +226,6 @@ function InboxTable() {
                   >
                     View
                   </Button>
-                  <Button variant="outline" color="red">
-                    Delete
-                  </Button>
                 </td>
               </tr>
             ) : (
@@ -258,9 +293,6 @@ function InboxTable() {
                     }
                   >
                     View
-                  </Button>
-                  <Button variant="outline" color="red">
-                    Delete
                   </Button>
                 </td>
               </tr>

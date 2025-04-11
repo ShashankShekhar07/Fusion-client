@@ -3,7 +3,7 @@ import { MantineProvider, Table, Button, Text, Box } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { outboxViewRoute2 } from "../../routes/purchaseRoutes";
+import { filedIndentRoute } from "../../routes/purchaseRoutes";
 
 function OutboxTable() {
   const [outbox, setOutbox] = useState([]);
@@ -30,12 +30,13 @@ function OutboxTable() {
     const fetchIndents = async () => {
       try {
         const token = localStorage.getItem("authToken");
-        const response = await axios.get(outboxViewRoute2(username, role), {
+        const response = await axios.get(filedIndentRoute(username), {
           headers: {
             Authorization: `Token ${token}`,
           },
         });
-        setOutbox(response.data.in_file);
+        console.log(response.data.results);
+        setOutbox(response.data.results);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch indents.");
@@ -142,8 +143,8 @@ function OutboxTable() {
           </tr>
         </thead>
         <tbody>
-          {outbox.map((row, index) => {
-            const status = getStatus(row);
+          {/* {outbox.map((row, index) => {
+            const status = getStatus(row.status);
             return (
               <tr
                 key={row.id}
@@ -182,10 +183,71 @@ function OutboxTable() {
                 </td>
               </tr>
             );
-          })}
+          })} */}
+          {outbox && outbox.length > 0 ? (
+            outbox.map((row, index) => {
+              const status = getStatus(row.status);
+              return (
+                <tr
+                  key={row.id}
+                  style={{
+                    backgroundColor: index % 2 === 0 ? "#f8fafb" : "white",
+                  }}
+                >
+                  <td style={{ padding: "12px", textAlign: "center" }}>
+                    {row.id}
+                  </td>
+                  <td style={{ padding: "12px", textAlign: "center" }}>
+                    {row.indent_name}
+                  </td>
+                  <td style={{ padding: "12px", textAlign: "center" }}>
+                    {formatDate(row.upload_date)}
+                  </td>
+                  <td
+                    style={{
+                      padding: "12px",
+                      textAlign: "center",
+                      color: getStatusColor(status),
+                      fontWeight: 500,
+                    }}
+                  >
+                    {status}
+                  </td>
+                  <td style={{ padding: "12px", textAlign: "center" }}>
+                    <Button
+                      color="green"
+                      onClick={() =>
+                        navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
+                      }
+                    >
+                      View
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td
+                colSpan="5"
+                style={{
+                  textAlign: "center",
+                  padding: "24px",
+                  color: "black",
+                  fontSize: "16px",
+                }}
+              >
+                <strong>No filed indents found</strong>
+                <div
+                  style={{ marginTop: "4px", fontSize: "14px", color: "black" }}
+                >
+                  Once you file an indent, it will show up here.
+                </div>
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
-      ;
     </Box>
   );
 }

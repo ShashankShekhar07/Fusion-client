@@ -18,6 +18,8 @@ export const createDraftRoute = () =>
   `${host}/purchase-and-store/api/create_draft/`;
 export const outboxViewRoute2 = (username, role) =>
   `${host}/purchase-and-store/api/outboxview2/${username}?role=${role}`;
+export const filedIndentRoute = (username) =>
+  `${host}/purchase-and-store/api/my-indents/${username}`;
 export const draftViewRoute = (username) =>
   `${host}/purchase-and-store/api/draftview/${username}`;
 export const forwardIndentFileRoute = (indentID) =>

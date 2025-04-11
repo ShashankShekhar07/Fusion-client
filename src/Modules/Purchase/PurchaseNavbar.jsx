@@ -27,7 +27,7 @@ const TabsModules = [
   },
   { label: "Outbox", id: "outbox", url: "/purchase/outbox" },
   {
-    label: "Archieved Indents",
+    label: "Archived Indents",
     id: "archieved-indents",
     url: "/purchase/archieved_indents",
   },
