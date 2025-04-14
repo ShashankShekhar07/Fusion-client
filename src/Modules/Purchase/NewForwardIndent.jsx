@@ -1,799 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import {
-//   Container,
-//   Tabs,
-//   Paper,
-//   Text,
-//   Select,
-//   Button,
-//   Textarea,
-//   FileInput,
-//   Stack,
-//   Title,
-//   LoadingOverlay,
-// } from "@mantine/core";
-// import { IconNotes, IconPaperclip } from "@tabler/icons-react";
-// import axios from "axios";
-// import { useSelector } from "react-redux";
-// import DataTable from "./Table";
-// import { viewIndentRoute } from "../../routes/purchaseRoutes";
-
-// const ROUTES = {
-//   forwardIndent: (id) =>
-//     `http://127.0.0.1:8000/purchase-and-store/api/forward-indent/${id}`,
-//   getDesignations: (name) =>
-//     `http://127.0.0.1:8000/purchase-and-store/api/get-designations/${name}`,
-//   viewIndent: "http://127.0.0.1:8000/purchase-and-store/api/view-indent",
-//   userSuggestions:
-//     "http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
-// };
-
-// function NewForwardIndent() {
-//   const [activeTab, setActiveTab] = useState("notesheets");
-//   const [loading, setLoading] = useState(false);
-//   const [file, setFile] = useState(null);
-//   const [users, setUsers] = useState([]);
-//   const [designations, setDesignations] = useState([]);
-//   const [indent, setIndent] = useState(null);
-//   const [fileInfo, setFileInfo] = useState(null);
-
-//   const [formData, setFormData] = useState({
-//     remark: "",
-//     forwardTo: "",
-//     receiverDesignation: "",
-//   });
-
-//   const navigate = useNavigate();
-//   const { indentID } = useParams();
-//   const uploader_username = useSelector((state) => state.user.roll_no);
-//   const role = useSelector((state) => state.user.role);
-
-//   useEffect(() => {
-//     fetchInitialData();
-//   }, [indentID]);
-
-//   const fetchInitialData = async () => {
-//     setLoading(true);
-//     try {
-//       await Promise.all([fetchUsers(), fetchIndentDetails()]);
-//     } catch (error) {
-//       console.error("Error fetching initial data:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const fetchUsers = async () => {
-//     try {
-//       const response = await axios.get(ROUTES.userSuggestions);
-//       setUsers(response.data.users);
-//     } catch (error) {
-//       console.error("Error fetching users:", error);
-//     }
-//   };
-
-//   const fetchIndentDetails = async () => {
-//     if (!indentID) return;
-
-//     try {
-//       const token = localStorage.getItem("authToken");
-//       const response = await axios.post(
-//         viewIndentRoute,
-//         { file_id: indentID },
-//         {
-//           headers: {
-//             Authorization: `Token ${token}`,
-//             "Content-Type": "application/json",
-//           },
-//         },
-//       );
-//       const indent = response.data.indent;
-//       setIndent(Array.isArray(indent) ? indent : [indent]);
-//       setFileInfo(response.data.file);
-//     } catch (error) {
-//       console.error("Error fetching indent details:", error);
-//     }
-//   };
-
-//   const fetchDesignations = async (receiverName) => {
-//     try {
-//       const response = await axios.get(ROUTES.getDesignations(receiverName));
-//       setDesignations(response.data);
-//     } catch (error) {
-//       console.error("Error fetching designations:", error);
-//     }
-//   };
-
-//   const handleUserChange = (value) => {
-//     setFormData((prev) => ({ ...prev, forwardTo: value }));
-//     if (value) {
-//       fetchDesignations(value);
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoading(true);
-
-//     const formDataToSend = new FormData();
-//     if (file) formDataToSend.append("file", file);
-//     formDataToSend.append("remark", formData.remark);
-//     formDataToSend.append("forwardTo", formData.forwardTo);
-//     formDataToSend.append("receiverDesignation", formData.receiverDesignation);
-//     formDataToSend.append("uploaderUsername", uploader_username);
-//     formDataToSend.append("role", role);
-
-//     if (Array.isArray(indent)) {
-//       indent.forEach((item, index) => {
-//         Object.entries(item).forEach(([key, value]) => {
-//           formDataToSend.append(`items[${index}][${key}]`, value);
-//         });
-//       });
-//     }
-
-//     try {
-//       const token = localStorage.getItem("authToken");
-//       await axios.post(ROUTES.forwardIndent(indentID), formDataToSend, {
-//         headers: {
-//           "Content-Type": "multipart/form-data",
-//           Authorization: `Token ${token}`,
-//         },
-//       });
-//       navigate("/purchase/all_filed_indents");
-//     } catch (error) {
-//       console.error("Error submitting form:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <Container size="xl" py="xl">
-//       <Paper shadow="sm" p="md" radius="md" pos="relative">
-//         <LoadingOverlay visible={loading} overlayBlur={2} />
-
-//         <Title order={2} mb="lg">
-//           Forward Indent
-//         </Title>
-
-//         <Tabs value={activeTab} onChange={setActiveTab}>
-//           <Tabs.List mb="md">
-//             <Tabs.Tab value="notesheets" leftSection={<IconNotes size={16} />}>
-//               Note Sheets
-//             </Tabs.Tab>
-//             <Tabs.Tab
-//               value="attachments"
-//               leftSection={<IconPaperclip size={16} />}
-//             >
-//               Attachments
-//             </Tabs.Tab>
-//           </Tabs.List>
-
-//           <Tabs.Panel value="notesheets">
-//             <Stack spacing="md">
-//               {indent && <DataTable indent={indent} />}
-//             </Stack>
-//           </Tabs.Panel>
-
-//           <Tabs.Panel value="attachments">
-//             <Stack spacing="md">
-//               <Text>Current attachments will be displayed here</Text>
-//             </Stack>
-//           </Tabs.Panel>
-//         </Tabs>
-
-//         <Paper withBorder p="md" mt="xl">
-//           <form onSubmit={handleSubmit}>
-//             <Stack spacing="md">
-//               <Textarea
-//                 label="Remark"
-//                 placeholder="Enter your remark here"
-//                 minRows={3}
-//                 value={formData.remark}
-//                 onChange={(e) =>
-//                   setFormData((prev) => ({ ...prev, remark: e.target.value }))
-//                 }
-//                 required
-//               />
-
-//               <Select
-//                 label="Forward To"
-//                 placeholder="Select user"
-//                 data={users.map((user) => ({
-//                   value: user.username,
-//                   label: user.username,
-//                 }))}
-//                 value={formData.forwardTo}
-//                 onChange={handleUserChange}
-//                 searchable
-//                 required
-//               />
-
-//               <Select
-//                 label="Receiver Designation"
-//                 placeholder="Select designation"
-//                 data={designations.map((d) => ({ value: d, label: d }))}
-//                 value={formData.receiverDesignation}
-//                 onChange={(value) =>
-//                   setFormData((prev) => ({
-//                     ...prev,
-//                     receiverDesignation: value || "",
-//                   }))
-//                 }
-//                 searchable
-//                 required
-//               />
-
-//               <FileInput
-//                 label="Attachment"
-//                 placeholder="Upload file"
-//                 accept="application/pdf,image/jpeg,image/png"
-//                 value={file}
-//                 onChange={setFile}
-//               />
-
-//               <Button type="submit" color="blue" fullWidth mt="md">
-//                 Submit Forward Request
-//               </Button>
-//             </Stack>
-//           </form>
-//         </Paper>
-//       </Paper>
-//     </Container>
-//   );
-// }
-
-// export default NewForwardIndent;
-
-// import React, { useState, useEffect } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import {
-//   Container,
-//   Paper,
-//   Title,
-//   Group,
-//   Badge,
-//   Text,
-//   Grid,
-//   Card,
-//   Button,
-//   Textarea,
-//   Select,
-//   FileInput,
-//   Timeline,
-//   Accordion,
-// } from "@mantine/core";
-// import {
-//   IconFileDescription,
-//   IconPaperclip,
-//   IconSend,
-//   IconCheck,
-//   IconClock,
-//   IconArrowForward,
-//   IconMessageDots,
-// } from "@tabler/icons-react";
-// import dayjs from "dayjs";
-// import axios from "axios";
-// import { useSelector } from "react-redux";
-// import {
-//   forwardIndentRoute,
-//   getDesignationsRoute,
-//   viewIndentRoute,
-// } from "../../routes/purchaseRoutes";
-
-// // const mockDesignations = [
-// //   "Department Head",
-// //   "Director",
-// //   "Financial Officer",
-// //   "Store Manager",
-// //   "Purchase Committee",
-// // ];
-
-// export default function NewForwardIndent() {
-//   // const [remark, setRemark] = useState("");
-//   // const [selectedDesignation, setSelectedDesignation] = useState(null);
-//   // const [attachment, setAttachment] = useState(null);
-//   const [file, setFile] = useState(null);
-//   const [receiverName, setReceiverName] = useState("");
-//   const [designations, setDesignations] = useState([]);
-//   const navigate = useNavigate();
-//   const uploader_username = useSelector((state) => state.user.roll_no);
-//   console.log(uploader_username);
-//   const role = useSelector((state) => state.user.role);
-//   const [users, setUsers] = useState([]); // Store all users data here
-//   const [filteredUsers, setFilteredUsers] = useState([]); // Store filtered users
-//   const [selectedUser, setSelectedUser] = useState(""); // Selected user from dropdown
-
-//   const fetchAllUsers = async () => {
-//     try {
-//       const response = await axios.get(
-//         " http://127.0.0.1:8000/purchase-and-store/api/user-suggestions",
-//       );
-//       setUsers(response.data.users); // Save all users data to state
-//       setFilteredUsers(response.data.users); // Initially, show all users
-//     } catch (error) {
-//       console.error("Error fetching all users", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchAllUsers(); // Fetch all users on mount
-//   }, []);
-
-//   const filterUsers = (searchQuery) => {
-//     if (searchQuery === "") {
-//       setFilteredUsers(users); // If query is empty, show all users
-//     } else {
-//       const filtered = users.filter((user) =>
-//         user.username.toLowerCase().includes(searchQuery.toLowerCase()),
-//       );
-//       setFilteredUsers(filtered); // Set the filtered users
-//     }
-//   };
-
-//   const { indentID } = useParams();
-//   const [indent, setIndent] = useState(null);
-//   const [fileInfo, setFileInfo] = useState(null);
-//   const [department, setDepartment] = useState("");
-
-//   const fetchIndentDetails = async () => {
-//     try {
-//       const token = localStorage.getItem("authToken");
-//       const response = await axios.post(
-//         viewIndentRoute,
-//         { file_id: indentID },
-//         {
-//           headers: {
-//             Authorization: `Token ${token}`,
-//             "Content-Type": "application/json",
-//           },
-//         },
-//       );
-//       setIndent(response.data.indent);
-//       setFileInfo(response.data.file);
-//       setDepartment(response.data.department);
-//       console.log(response.data);
-//     } catch (error) {
-//       console.error("Error fetching indents:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (indentID) {
-//       console.log(indentID);
-//       fetchIndentDetails(indentID);
-//     }
-//   }, []);
-//   console.log(indent);
-
-//   const year = fileInfo ? fileInfo.upload_date.slice(0, 4) : "";
-//   const month = fileInfo ? fileInfo.upload_date.slice(5, 7) : "";
-//   const [formValues, setFormValues] = useState({
-//     title: "",
-//     description: "",
-//     itemName: "",
-//     quantity: 0,
-//     cost: 0,
-//     itemType: "",
-//     presentStock: 0,
-//     purpose: "",
-//     specification: "",
-//     itemSubtype: "",
-//     budgetaryHead: "",
-//     expectedDelivery: null,
-//     sourceOfSupply: "",
-//     remark: "",
-//     forwardTo: "",
-//     receiverDesignation: "",
-//     role: "",
-//   });
-
-//   const handleInputChange = (field) => (event) => {
-//     setFormValues((prevValues) => ({
-//       ...prevValues,
-//       [field]: event.currentTarget.value,
-//     }));
-//   };
-
-//   // Fetch designations based on the entered receiver name
-//   // eslint-disable-next-line no-shadow
-//   const fetchDesignations = async (receiverName) => {
-//     try {
-//       const response = await axios.get(getDesignationsRoute(receiverName));
-//       console.log("Fetched designations:", response.data);
-//       setDesignations(response.data); // Set the fetched designations in state
-//     } catch (error) {
-//       console.error("Error fetching designations:", error);
-//       // setErrorMessage(
-//       //   error.response
-//       //     ? error.response.data
-//       //     : "An error occurred while fetching designations",
-//       // );
-//     }
-//   };
-
-//   // const handleReceiverChange = (value) => {
-//   //   setReceiverName(value);
-//   //   fetchDesignations(value);
-//   // };
-//   const handleSearchChange = (value) => {
-//     filterUsers(value);
-//     fetchDesignations(value);
-//   };
-//   const handleDesignationChange = (value) => {
-//     setFormValues((prevValues) => ({
-//       ...prevValues,
-//       receiverDesignation: value,
-//     }));
-//   };
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     const data = new FormData();
-//     data.append("title", indent.item_name);
-//     data.append("description", indent.item_name);
-//     data.append("item_name", indent.item_name);
-//     data.append("quantity", indent.quantity);
-//     data.append("estimated_cost", indent.estimated_cost);
-//     data.append("item_type", indent.item_type);
-//     data.append("present_stock", indent.present_stock);
-//     data.append("purpose", indent.purpose);
-//     data.append("specification", indent.specification);
-//     data.append("itemSubtype", indent.item_subtype);
-//     data.append("budgetary_head", indent.budgetary_head);
-//     data.append("expected_delivery", indent.expected_delivery);
-//     data.append("sources_of_supply", indent.sources_of_supply);
-//     data.append("file", file);
-//     data.append("remark", formValues.remark);
-//     data.append("forwardTo", selectedUser);
-//     data.append("receiverDesignation", formValues.receiverDesignation);
-//     data.append("receiverName", receiverName);
-//     data.append("uploaderUsername", uploader_username);
-//     console.log("Form data:", data.get("receiverDesignation"));
-//     data.append("role", role);
-//     try {
-//       const token = localStorage.getItem("authToken");
-//       const response = await axios.post(forwardIndentRoute(indentID), data, {
-//         headers: {
-//           "Content-Type": "multipart/form-data",
-//           Authorization: `Token ${token}`,
-//         },
-//       });
-
-//       console.log("Success:", response.data);
-//       navigate("/purchase/all_filed_indents");
-//     } catch (error) {
-//       console.error("Error submitting form:", error);
-//       // setErrorMessage(
-//       //   error.response
-//       //     ? error.response.data
-//       //     : "An error occurred during submission",
-//       // );
-//     }
-//   };
-
-//   // useEffect(() => {
-//   //   // Mock data fetch - replace with actual API call
-//   //   const fetchindent = async () => {
-//   //     // Simulated API response
-//   //     const mockData = {
-//   //       file_info: parseInt(indentId || "0"),
-//   //       items: [
-//   //         {
-//   //           id: 1,
-//   //           item_name: "GPU Workstation",
-//   //           quantity: 2,
-//   //           present_stock: 0,
-//   //           estimated_cost: 150000,
-//   //           purpose: "Research and Development",
-//   //           specification: "NVIDIA RTX 4090, 64GB RAM, 2TB SSD",
-//   //           item_type: "Equipment",
-//   //           item_subtype: "Computing",
-//   //           nature: true,
-//   //           indigenous: true,
-//   //           replaced: false,
-//   //           budgetary_head: "Research Equipment",
-//   //           expected_delivery: "2024-03-30",
-//   //           sources_of_supply: "Authorized NVIDIA Dealer",
-//   //           indent_file: parseInt(indentId || "0"),
-//   //         },
-//   //       ],
-//   //       head_approval: true,
-//   //       director_approval: false,
-//   //       financial_approval: false,
-//   //       purchased: false,
-//   //       revised: false,
-//   //       message: "Indent Filed Successfully!",
-//   //     };
-//   //     setindent(mockData);
-//   //   };
-
-//   //   fetchindent();
-//   // }, [indentId]);
-
-//   // const handleSubmit = () => {
-//   //   console.log({
-//   //     indentId,
-//   //     remark,
-//   //     selectedDesignation,
-//   //     attachment,
-//   //   });
-//   //   // Implement submission logic here
-//   // };
-
-//   if (!indent) {
-//     return (
-//       <Container size="xl" py="xl">
-//         <Text>Loading...</Text>
-//       </Container>
-//     );
-//   }
-
-//   return (
-//     <Container size="xl" py="xl">
-//       {/* Header Section */}
-//       <Paper shadow="sm" p="md" mb="xl" radius="md">
-//         <Group position="apart" mb="md">
-//           <Group>
-//             <IconFileDescription size={32} />
-//             <div>
-//               <Title order={2}>Indent #{indent.file_info}</Title>
-//               <Text color="dimmed">
-//                 Filed on {dayjs().format("MMMM D, YYYY")}
-//               </Text>
-//             </div>
-//           </Group>
-//           <Group>
-//             <Badge size="lg" color={indent.purchased ? "green" : "blue"}>
-//               {indent.purchased ? "Purchased" : "In Progress"}
-//             </Badge>
-//             {indent.revised && (
-//               <Badge size="lg" color="yellow">
-//                 Revised
-//               </Badge>
-//             )}
-//           </Group>
-//         </Group>
-
-//         {/* Approval Status */}
-//         <Timeline active={1} bulletSize={24} lineWidth={2}>
-//           <Timeline.Item
-//             bullet={
-//               indent.head_approval ? (
-//                 <IconCheck size={12} />
-//               ) : (
-//                 <IconClock size={12} />
-//               )
-//             }
-//             title="Head Approval"
-//           >
-//             <Text color="dimmed" size="sm">
-//               Department head approval status
-//             </Text>
-//           </Timeline.Item>
-//           <Timeline.Item
-//             bullet={
-//               indent?.director_approval ? (
-//                 <IconCheck size={12} />
-//               ) : (
-//                 <IconClock size={12} />
-//               )
-//             }
-//             title="Director Approval"
-//           >
-//             <Text color="dimmed" size="sm">
-//               Director approval status
-//             </Text>
-//           </Timeline.Item>
-//           <Timeline.Item
-//             bullet={
-//               indent?.financial_approval ? (
-//                 <IconCheck size={12} color="blue" />
-//               ) : (
-//                 <IconClock size={12} />
-//               )
-//             }
-//             title="Bill Approval"
-//           >
-//             <Text color="dimmed" size="sm">
-//               Financial clearance status
-//             </Text>
-//           </Timeline.Item>
-//         </Timeline>
-//       </Paper>
-
-//       {/* Items Section */}
-//       <Title order={3} mb="md">
-//         Indent Items
-//       </Title>
-//       <Accordion variant="contained" radius="md" mb="xl">
-//         <Accordion.Item value={indent.file_info.toString()}>
-//           <Accordion.Control>
-//             <Group position="apart">
-//               <Group>
-//                 <Text weight={500}>{indent.item_name}</Text>
-//                 <Badge>Qty: {indent.quantity}</Badge>
-//               </Group>
-//               <Text weight={500} color="blue">
-//                 ₹{indent.estimated_cost.toLocaleString()}
-//               </Text>
-//             </Group>
-//           </Accordion.Control>
-//           <Accordion.Panel>
-//             <Grid>
-//               <Grid.Col span={6}>
-//                 <Card withBorder p="md">
-//                   <Text weight={500} mb="xs">
-//                     Specifications
-//                   </Text>
-//                   <Text size="sm">{indent.specification}</Text>
-//                 </Card>
-//               </Grid.Col>
-//               <Grid.Col span={6}>
-//                 <Card withBorder p="md">
-//                   <Text weight={500} mb="xs">
-//                     Purpose
-//                   </Text>
-//                   <Text size="sm">{indent.purpose}</Text>
-//                 </Card>
-//               </Grid.Col>
-//               <Grid.Col span={12}>
-//                 <Grid>
-//                   <Grid.Col span={3}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Item Nature</Text>
-//                       <Badge color={indent.nature ? "green" : "red"}>
-//                         {indent.nature ? "Yes" : "No"}
-//                       </Badge>
-//                     </Card>
-//                   </Grid.Col>
-//                   <Grid.Col span={3}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Replaced</Text>
-//                       <Badge color={indent.replaced ? "green" : "red"}>
-//                         {indent.replaced ? "Yes" : "No"}
-//                       </Badge>
-//                     </Card>
-//                   </Grid.Col>
-//                   <Grid.Col span={3}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Indigenous</Text>
-//                       <Badge color={indent.indigenous ? "green" : "red"}>
-//                         {indent.indigenous ? "Yes" : "No"}
-//                       </Badge>
-//                     </Card>
-//                   </Grid.Col>
-//                   <Grid.Col span={3}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Present Stock</Text>
-//                       <Text size="sm">{indent.present_stock}</Text>
-//                     </Card>
-//                   </Grid.Col>
-//                 </Grid>
-//               </Grid.Col>
-//               <Grid.Col span={12}>
-//                 <Grid>
-//                   <Grid.Col span={4}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Type</Text>
-//                       <Text size="sm">
-//                         {indent.item_type} - {indent.item_subtype}
-//                       </Text>
-//                     </Card>
-//                   </Grid.Col>
-//                   <Grid.Col span={4}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Budgetary Head</Text>
-//                       <Text size="sm">{indent.budgetary_head}</Text>
-//                     </Card>
-//                   </Grid.Col>
-//                   <Grid.Col span={4}>
-//                     <Card withBorder p="md">
-//                       <Text weight={500}>Expected Delivery</Text>
-//                       <Text size="sm">
-//                         {dayjs(indent.expected_delivery).format("MMM D, YYYY")}
-//                       </Text>
-//                     </Card>
-//                   </Grid.Col>
-//                 </Grid>
-//               </Grid.Col>
-//               <Grid.Col span={12}>
-//                 <Card withBorder p="md">
-//                   <Text weight={500} mb="xs">
-//                     Sources of Supply
-//                   </Text>
-//                   <Text size="sm">{indent.sources_of_supply}</Text>
-//                 </Card>
-//               </Grid.Col>
-//             </Grid>
-//           </Accordion.Panel>
-//         </Accordion.Item>
-//       </Accordion>
-
-//       {/* Forward Section */}
-//       <Paper shadow="sm" p="lg" radius="md">
-//         <Title order={3} mb="lg">
-//           Forward Indent
-//         </Title>
-//         <Grid>
-//           <Grid.Col span={12}>
-//             <Textarea
-//               label="Remarks"
-//               placeholder="Add your remarks here..."
-//               minRows={4}
-//               value={formValues.remark}
-//               onChange={handleInputChange("remark")}
-//               icon={<IconMessageDots size={14} />}
-//             />
-//           </Grid.Col>
-//           <Grid.Col span={12}>
-//             <Select
-//               label="Forward To"
-//               placeholder="Select receiver"
-//               value={selectedUser}
-//               onChange={setSelectedUser}
-//               data={filteredUsers.map((user) => ({
-//                 value: user.username,
-//                 label: user.username,
-//               }))}
-//               onSearchChange={handleSearchChange} // Trigger when user types
-//               searchable
-//               clearable
-//             />
-//           </Grid.Col>
-
-//           <Grid.Col sm={12}>
-//             <Select
-//               label="Receiver Designation"
-//               placeholder="Select designation"
-//               data={designations.map((designation) => ({
-//                 value: designation,
-//                 label: designation,
-//               }))}
-//               value={formValues.receiverDesignation}
-//               onChange={handleDesignationChange} // Update designation on selection
-//               searchable
-//               clearable
-//             />
-//           </Grid.Col>
-
-//           <Grid.Col span={12}>
-//             {/* <FileInput
-//               label="Attachments"
-//               placeholder="Upload files"
-//               accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//               icon={<IconPaperclip size={14} />}
-//               value={attachment}
-//               onChange={setAttachment}
-//             /> */}
-//             <FileInput
-//               label="File Upload"
-//               placeholder="Upload file"
-//               onChange={setFile}
-//               icon={<IconPaperclip size={14} />}
-//               accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-//             />
-//           </Grid.Col>
-//           <Grid.Col span={12}>
-//             <Group position="right">
-//               <Button
-//                 variant="filled"
-//                 color="green"
-//                 size="md"
-//                 leftIcon={<IconSend size={20} />}
-//                 onClick={handleSubmit}
-//               >
-//                 Submit
-//               </Button>
-//             </Group>
-//           </Grid.Col>
-//         </Grid>
-//       </Paper>
-//     </Container>
-//   );
-// }
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
@@ -811,6 +15,11 @@ import {
   FileInput,
   Timeline,
   Accordion,
+  ThemeIcon,
+  Box,
+  Drawer,
+  Center,
+  Loader,
 } from "@mantine/core";
 import {
   IconFileDescription,
@@ -819,27 +28,33 @@ import {
   IconCheck,
   IconClock,
   IconMessageDots,
+  IconArrowForward,
+  IconFileDownload,
+  IconCalendarTime,
+  IconHistory,
 } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "@mantine/hooks";
 import { host } from "../../routes/globalRoutes";
 import {
   forwardIndentRoute,
   getDesignationsRoute,
   viewIndentRoute,
 } from "../../routes/purchaseRoutes";
+import { historyRoute } from "../../routes/filetrackingRoutes";
 
 export default function NewForwardIndent() {
   const [file, setFile] = useState(null);
-  // const [receiverName] = useState("");
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
-  // const uploader_username = useSelector((state) => state.user.roll_no);
   const role = useSelector((state) => state.user.role);
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
+  const [fileHistory, setFileHistory] = useState([]);
+  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
 
   const { indentID } = useParams();
   const [indent, setIndent] = useState(null);
@@ -848,23 +63,9 @@ export default function NewForwardIndent() {
   console.log(fileInfo);
   console.log(department);
   const [formValues, setFormValues] = useState({
-    title: "",
-    description: "",
-    itemName: "",
-    quantity: 0,
-    cost: 0,
-    itemType: "",
-    presentStock: 0,
-    purpose: "",
-    specification: "",
-    itemSubtype: "",
-    budgetaryHead: "",
-    expectedDelivery: null,
-    sourceOfSupply: "",
     remark: "",
     forwardTo: "",
     receiverDesignation: "",
-    role: "",
   });
 
   const fetchAllUsers = async () => {
@@ -879,9 +80,20 @@ export default function NewForwardIndent() {
     }
   };
 
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
+  const getHistory = async (fileID) => {
+    try {
+      const response = await axios.get(`${historyRoute}${fileID}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Token ${localStorage.getItem("authToken")}`,
+        },
+      });
+      setFileHistory(response.data.reverse());
+      console.log(response.data);
+    } catch (err) {
+      console.error("Error fetching history:", err);
+    }
+  };
 
   const fetchIndentDetails = async () => {
     try {
@@ -896,21 +108,22 @@ export default function NewForwardIndent() {
           },
         },
       );
-      setIndent(response.data);
       console.log(response.data);
+      setIndent(response.data);
       setFileInfo(response.data.file);
       setDepartment(response.data.department);
-      console.log(response.data.indent);
+      await getHistory(indentID);
     } catch (error) {
       console.error("Error fetching indents:", error);
     }
   };
 
   useEffect(() => {
+    fetchAllUsers();
     if (indentID) {
       fetchIndentDetails(indentID);
     }
-  }, []);
+  }, [indentID]);
 
   const filterUsers = (searchQuery) => {
     if (searchQuery === "") {
@@ -951,36 +164,38 @@ export default function NewForwardIndent() {
     }));
   };
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const showStockEntryButton = () => {
     return (
-      indent?.head_approval &&
-      indent?.director_approval &&
-      !indent?.financial_approval
+      indent?.indent.head_approval &&
+      indent?.indent.director_approval &&
+      indent?.indent.purchased &&
+      !indent?.indent.financial_approval &&
+      role === "ps_admin"
     );
   };
+
+  // const handleviewattachment = async (e) => {
+  //   e.preventDefault();
+  //   const token = localStorage.getItem("authToken");
+  //   console.log("token", token);
+  //   const response = await axios.get(`${host}/filetracking/api/file/788`, {
+  //     headers: {
+  //       Authorization: `Token ${token}`,
+  //     },
+  //   });
+  //   console.log(response);
+  //   setfilee(response.data.upload_file);
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData();
-    // data.append("title", indent.indent.item_name);
-    // data.append("description", indent.item_name);
-    // data.append("item_name", indent.item_name);
-    // data.append("quantity", indent.quantity);
-    // data.append("estimated_cost", indent.estimated_cost);
-    // data.append("item_type", indent.item_type);
-    // data.append("present_stock", indent.present_stock);
-    // data.append("purpose", indent.purpose);
-    // data.append("specification", indent.specification);
-    // data.append("itemSubtype", indent.item_subtype);
-    // data.append("budgetary_head", indent.budgetary_head);
-    // data.append("expected_delivery", indent.expected_delivery);
-    // data.append("sources_of_supply", indent.sources_of_supply);
     data.append("file", file);
     data.append("remarks", formValues.remark);
     data.append("forwardTo", selectedUser);
     data.append("receiverDesignation", formValues.receiverDesignation);
-    // data.append("receiverName", receiverName);
-    // data.append("uploaderUsername", uploader_username);
     data.append("role", role);
 
     try {
@@ -993,7 +208,7 @@ export default function NewForwardIndent() {
       });
 
       console.log("Success:", response.data);
-      navigate("/purchase/all_filed_indents");
+      navigate("/purchase/outbox");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -1001,9 +216,14 @@ export default function NewForwardIndent() {
 
   if (!indent) {
     return (
-      <Container size="xl" py="xl">
-        <Text>Loading...</Text>
-      </Container>
+      <Center style={{ height: "80vh" }}>
+        <Paper shadow="md" radius="md" p="xl" withBorder>
+          <Box>
+            <Loader size="sm" color="blue" />
+            <Text mt="sm">Loading indent details...</Text>
+          </Box>
+        </Paper>
+      </Center>
     );
   }
 
@@ -1021,7 +241,16 @@ export default function NewForwardIndent() {
             </div>
           </Group>
           <Group>
-            <Badge size="lg" color={indent.purchased ? "green" : "blue"}>
+            <Button
+              variant="light"
+              color="blue"
+              size="md"
+              leftIcon={<IconHistory size={20} />}
+              onClick={() => setHistoryDrawerOpen(true)}
+            >
+              View Indent History
+            </Button>
+            <Badge size="lg" color={indent.indent.purchased ? "green" : "blue"}>
               {indent.indent.purchased ? "Purchased" : "In Progress"}
             </Badge>
             {indent.indent.revised && (
@@ -1029,20 +258,21 @@ export default function NewForwardIndent() {
                 Revised
               </Badge>
             )}
-            {showStockEntryButton() && (
-              <Button
-                color="green"
-                onClick={() =>
-                  navigate(`/purchase/stock_entry/`, { state: indent })
-                }
-              >
-                Stock Entry
-              </Button>
-            )}
           </Group>
         </Group>
 
-        <Timeline active={1} bulletSize={24} lineWidth={2}>
+        <Timeline
+          active={
+            indent.indent.financial_approval
+              ? 2
+              : indent.indent.director_approval
+                ? 1
+                : indent.indent.head_approval
+                  ? 0
+                  : -1
+          }
+          mb="xl"
+        >
           <Timeline.Item
             bullet={
               indent.indent.head_approval ? (
@@ -1091,126 +321,47 @@ export default function NewForwardIndent() {
       <Title order={3} mb="md">
         Indent Items
       </Title>
-      {/* <Accordion variant="contained" radius="md" mb="xl">
-        <Accordion.Item value={indent.file_info.toString()}>
-          <Accordion.Control>
-            <Group position="apart">
-              <Group>
-                <Text weight={500}>{indent.item_name}</Text>
-                <Badge>Qty: {indent.quantity}</Badge>
-              </Group>
-              <Text weight={500} color="blue">
-                ₹{indent.estimated_cost.toLocaleString()}
-              </Text>
-            </Group>
-          </Accordion.Control>
-          <Accordion.Panel>
-            <Grid>
-              <Grid.Col span={6}>
-                <Card withBorder p="md">
-                  <Text weight={500} mb="xs">
-                    Specifications
-                  </Text>
-                  <Text size="sm">{indent.specification}</Text>
-                </Card>
-              </Grid.Col>
-              <Grid.Col span={6}>
-                <Card withBorder p="md">
-                  <Text weight={500} mb="xs">
-                    Purpose
-                  </Text>
-                  <Text size="sm">{indent.purpose}</Text>
-                </Card>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Grid>
-                  <Grid.Col span={3}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Item Nature</Text>
-                      <Badge color={indent.nature ? "green" : "red"}>
-                        {indent.nature ? "Yes" : "No"}
-                      </Badge>
-                    </Card>
-                  </Grid.Col>
-                  <Grid.Col span={3}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Replaced</Text>
-                      <Badge color={indent.replaced ? "green" : "red"}>
-                        {indent.replaced ? "Yes" : "No"}
-                      </Badge>
-                    </Card>
-                  </Grid.Col>
-                  <Grid.Col span={3}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Indigenous</Text>
-                      <Badge color={indent.indigenous ? "green" : "red"}>
-                        {indent.indigenous ? "Yes" : "No"}
-                      </Badge>
-                    </Card>
-                  </Grid.Col>
-                  <Grid.Col span={3}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Present Stock</Text>
-                      <Text size="sm">{indent.present_stock}</Text>
-                    </Card>
-                  </Grid.Col>
-                </Grid>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Grid>
-                  <Grid.Col span={4}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Type</Text>
-                      <Text size="sm">
-                        {indent.item_type} - {indent.item_subtype}
-                      </Text>
-                    </Card>
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Budgetary Head</Text>
-                      <Text size="sm">{indent.budgetary_head}</Text>
-                    </Card>
-                  </Grid.Col>
-                  <Grid.Col span={4}>
-                    <Card withBorder p="md">
-                      <Text weight={500}>Expected Delivery</Text>
-                      <Text size="sm">
-                        {dayjs(indent.expected_delivery).format("MMM D, YYYY")}
-                      </Text>
-                    </Card>
-                  </Grid.Col>
-                </Grid>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Card withBorder p="md">
-                  <Text weight={500} mb="xs">
-                    Sources of Supply
-                  </Text>
-                  <Text size="sm">{indent.sources_of_supply}</Text>
-                </Card>
-              </Grid.Col>
-            </Grid>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion> */}
       <Accordion variant="contained" radius="md" mb="xl">
         {indent.items.map((item) => (
           <Accordion.Item key={item.id} value={item.id.toString()}>
             <Accordion.Control>
-              <Group position="apart">
+              <Group
+                position="apart"
+                wrap="nowrap"
+                style={{ flexWrap: isMobile ? "wrap" : "nowrap" }}
+              >
                 <Group>
-                  <Text weight={500}>{item.item_name}</Text>
+                  <Text weight={500} size={isMobile ? "sm" : "md"}>
+                    {item.item_name}
+                  </Text>
                   <Badge>Qty: {item.quantity}</Badge>
                 </Group>
-                <Text weight={500} color="blue">
+                <Text weight={500} color="blue" size={isMobile ? "sm" : "md"}>
                   ₹{item.estimated_cost.toLocaleString()}
                 </Text>
+                {showStockEntryButton() && (
+                  <Button
+                    color="green"
+                    size={isMobile ? "xs" : "sm"}
+                    onClick={() =>
+                      navigate("/purchase/stock_entry/", {
+                        state: {
+                          file: indent.file,
+                          department: indent.department,
+                          indent: indent.indent,
+                          item,
+                        },
+                      })
+                    }
+                  >
+                    Stock Entry
+                  </Button>
+                )}
               </Group>
             </Accordion.Control>
             <Accordion.Panel>
-              <Grid>
-                <Grid.Col span={6}>
+              <Grid gutter="md">
+                <Grid.Col span={isMobile ? 12 : 6}>
                   <Card withBorder p="md">
                     <Text weight={500} mb="xs">
                       Specifications
@@ -1218,7 +369,7 @@ export default function NewForwardIndent() {
                     <Text size="sm">{item.specification}</Text>
                   </Card>
                 </Grid.Col>
-                <Grid.Col span={6}>
+                <Grid.Col span={isMobile ? 12 : 6}>
                   <Card withBorder p="md">
                     <Text weight={500} mb="xs">
                       Purpose
@@ -1227,63 +378,64 @@ export default function NewForwardIndent() {
                   </Card>
                 </Grid.Col>
                 <Grid.Col span={12}>
-                  <Grid>
-                    <Grid.Col span={3}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Item Nature</Text>
-                        <Badge color={item.nature ? "green" : "red"}>
-                          {item.nature ? "Yes" : "No"}
-                        </Badge>
-                      </Card>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Replaced</Text>
-                        <Badge color={item.replaced ? "green" : "red"}>
-                          {item.replaced ? "Yes" : "No"}
-                        </Badge>
-                      </Card>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Indigenous</Text>
-                        <Badge color={item.indigenous ? "green" : "red"}>
-                          {item.indigenous ? "Yes" : "No"}
-                        </Badge>
-                      </Card>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Present Stock</Text>
-                        <Text size="sm">{item.present_stock}</Text>
-                      </Card>
-                    </Grid.Col>
+                  <Grid gutter="md">
+                    {[
+                      {
+                        label: "Item Nature",
+                        value: item.nature,
+                        color: item.nature ? "green" : "red",
+                      },
+                      {
+                        label: "Replaced",
+                        value: item.replaced,
+                        color: item.replaced ? "green" : "red",
+                      },
+                      {
+                        label: "Indigenous",
+                        value: item.indigenous,
+                        color: item.indigenous ? "green" : "red",
+                      },
+                      {
+                        label: "Present Stock",
+                        value: item.present_stock,
+                        text: true,
+                      },
+                    ].map(({ label, value, color, text }) => (
+                      <Grid.Col key={label} span={isMobile ? 6 : 3}>
+                        <Card withBorder p="md">
+                          <Text weight={500}>{label}</Text>
+                          {text ? (
+                            <Text size="sm">{value}</Text>
+                          ) : (
+                            <Badge color={color}>{value ? "Yes" : "No"}</Badge>
+                          )}
+                        </Card>
+                      </Grid.Col>
+                    ))}
                   </Grid>
                 </Grid.Col>
                 <Grid.Col span={12}>
-                  <Grid>
-                    <Grid.Col span={4}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Type</Text>
-                        <Text size="sm">
-                          {item.item_type} - {item.item_subtype}
-                        </Text>
-                      </Card>
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Budgetary Head</Text>
-                        <Text size="sm">{item.budgetary_head}</Text>
-                      </Card>
-                    </Grid.Col>
-                    <Grid.Col span={4}>
-                      <Card withBorder p="md">
-                        <Text weight={500}>Expected Delivery</Text>
-                        <Text size="sm">
-                          {dayjs(item.expected_delivery).format("MMM D, YYYY")}
-                        </Text>
-                      </Card>
-                    </Grid.Col>
+                  <Grid gutter="md">
+                    {[
+                      {
+                        label: "Type",
+                        value: `${item.item_type} - ${item.item_subtype}`,
+                      },
+                      { label: "Budgetary Head", value: item.budgetary_head },
+                      {
+                        label: "Expected Delivery",
+                        value: dayjs(item.expected_delivery).format(
+                          "MMM D, YYYY",
+                        ),
+                      },
+                    ].map(({ label, value }) => (
+                      <Grid.Col key={label} span={isMobile ? 12 : 4}>
+                        <Card withBorder p="md">
+                          <Text weight={500}>{label}</Text>
+                          <Text size="sm">{value}</Text>
+                        </Card>
+                      </Grid.Col>
+                    ))}
                   </Grid>
                 </Grid.Col>
                 <Grid.Col span={12}>
@@ -1370,6 +522,67 @@ export default function NewForwardIndent() {
           </Grid.Col>
         </Grid>
       </Paper>
+
+      <Drawer
+        opened={historyDrawerOpen}
+        onClose={() => setHistoryDrawerOpen(false)}
+        title={<Title order={3}>File History</Title>}
+        padding="lg"
+        size="lg"
+        position="right"
+      >
+        <Timeline active={fileHistory.length - 1} bulletSize={24} lineWidth={2}>
+          {fileHistory.map((history, index) => (
+            <Timeline.Item
+              key={history.id}
+              bullet={
+                <ThemeIcon
+                  size={24}
+                  radius="xl"
+                  color={index === fileHistory.length - 1 ? "blue" : "gray"}
+                >
+                  <IconArrowForward size={12} />
+                </ThemeIcon>
+              }
+              title={
+                <Group spacing="xs">
+                  <Text weight={500}>{history.current_id}</Text>
+                  <IconArrowForward size={14} />
+                  <Text weight={500}>{history.receiver_id}</Text>
+                  <Badge size="sm">{history.receive_design}</Badge>
+                </Group>
+              }
+            >
+              <Box ml="xs">
+                <Text size="sm" color="dimmed" mb="xs">
+                  <IconCalendarTime
+                    size={14}
+                    style={{ verticalAlign: "middle" }}
+                  />
+                  {dayjs(history.forward_date).format("MMM D, YYYY h:mm A")}
+                </Text>
+                {history.remarks && (
+                  <Paper p="xs" bg="gray.0" radius="sm" mb="xs">
+                    <Text size="sm">{history.remarks}</Text>
+                  </Paper>
+                )}
+                {history.upload_file && (
+                  <Button
+                    variant="light"
+                    size="xs"
+                    leftIcon={<IconFileDownload size={14} />}
+                    component="a"
+                    href={`${host}${history.upload_file}`}
+                    target="_blank"
+                  >
+                    View Attachment
+                  </Button>
+                )}
+              </Box>
+            </Timeline.Item>
+          ))}
+        </Timeline>
+      </Drawer>
     </Container>
   );
 }

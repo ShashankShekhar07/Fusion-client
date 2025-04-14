@@ -60,7 +60,7 @@ function ArchievedTable() {
             color: "#1881d9",
           }}
         >
-          Archieved Indents
+          Archived Indents
         </Text>
       </Box>
       <Table
@@ -139,17 +139,15 @@ function ArchievedTable() {
                   }}
                 >
                   <Button
-                    variant="outline"
-                    color="blue"
+                    color="green"
                     style={{ marginRight: "8px" }}
                     onClick={() =>
-                      navigate("/purchase/employeeviewfiledindent")
+                      navigate(
+                        `/purchase/employeeviewfiledindent/${booking.id}`,
+                      )
                     }
                   >
                     View
-                  </Button>
-                  <Button variant="outline" color="red">
-                    Delete
                   </Button>
                 </td>
               </tr>
@@ -202,17 +200,13 @@ function ArchievedTable() {
                   }}
                 >
                   <Button
-                    variant="outline"
-                    color="blue"
+                    color="green"
                     style={{ marginRight: "8px" }}
                     onClick={() =>
                       navigate("/purchase/employeeviewfiledindent")
                     }
                   >
                     View
-                  </Button>
-                  <Button variant="outline" color="red">
-                    Delete
                   </Button>
                 </td>
               </tr>

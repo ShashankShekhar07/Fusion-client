@@ -121,7 +121,7 @@ function SavedIndentsTable() {
           </tr>
         </thead>
         <tbody>
-          {indents.map((booking, index) =>
+          {/* {indents.map((booking, index) =>
             index % 2 === 0 ? (
               <tr key={booking.id} style={{ backgroundColor: "#f8fafb" }}>
                 <td
@@ -255,6 +255,99 @@ function SavedIndentsTable() {
                 </td>
               </tr>
             ),
+          )} */}
+          {indents && indents.length > 0 ? (
+            indents.map((booking, index) => (
+              <tr
+                key={booking.id}
+                style={{
+                  backgroundColor: index % 2 === 0 ? "#f8fafb" : "white",
+                }}
+              >
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Text weight={500}>{booking.name}</Text>
+                  <Text size="sm">
+                    {booking.uploader} - {role}
+                  </Text>
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {department}&nbsp;#{booking.id}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {booking.subject ? booking.subject : "None"}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {booking.upload_date}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Button
+                    color="green"
+                    style={{ marginRight: "8px" }}
+                    onClick={() =>
+                      navigate(`/purchase/viewsavedindent/${booking.id}`)
+                    }
+                  >
+                    View
+                  </Button>
+                  <Button
+                    variant="outline"
+                    color="red"
+                    onClick={() => remove_indent(booking.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="5"
+                style={{
+                  textAlign: "center",
+                  padding: "24px",
+                  color: "black",
+                  fontSize: "16px",
+                }}
+              >
+                <strong>No saved indents yet</strong>
+                <div
+                  style={{ marginTop: "4px", fontSize: "14px", color: "black" }}
+                >
+                  Start by creating one to see it listed here.
+                </div>
+              </td>
+            </tr>
           )}
         </tbody>
       </Table>
