@@ -30,9 +30,10 @@ import {
 import {
   IconFileDescription,
   IconArchive,
-  IconCheck,
+  // IconCheck,
   IconSend,
-  IconClock,
+  // IconClock,
+  IconThumbUp,
   IconNotes,
   IconPaperclip,
   IconMessageDots,
@@ -41,6 +42,12 @@ import {
   IconArrowForward,
   IconCalendarTime,
   IconFileDownload,
+  IconClipboardCheck,
+  IconClipboardX,
+  // IconStamp,
+  IconUserCheck,
+  IconBadge,
+  IconCheckbox,
 } from "@tabler/icons-react";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -69,6 +76,11 @@ function EmployeeViewFileIndent() {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [file, setFile] = useState(null);
   const [users, setUsers] = useState([]);
+  const username = useSelector((state) => state.user.username);
+  const [isApproving, setIsApproving] = useState(false);
+  const [stringg, setstringg] = useState("");
+  console.log(stringg);
+  const [approvalHistory, setApprovalHistory] = useState([]);
   const [formValues, setFormValues] = useState({
     title: "",
     description: "",
@@ -242,6 +254,26 @@ function EmployeeViewFileIndent() {
         },
       );
       setIndent(response.data);
+      console.log(response.data);
+      setstringg(response.data.indent.approved_by);
+      console.log(response.data.indent.approved_by);
+      if (response.data.indent.approved_by) {
+        const approvals = response.data.indent.approved_by
+          .split(",")
+          .map((approval) => {
+            const trimmed = approval.trim();
+            const lastDashIndex = trimmed.lastIndexOf("-");
+            const namePart = trimmed.slice(0, lastDashIndex);
+            const rolePart = trimmed.slice(lastDashIndex + 1);
+
+            const name = namePart.replace(/_/g, " ");
+            const rolee = rolePart.trim();
+
+            return { name, rolee };
+          });
+
+        setApprovalHistory(approvals);
+      }
       // if (
       //   response.data.director_approval &&
       //   response.data.head_approval &&
@@ -256,6 +288,34 @@ function EmployeeViewFileIndent() {
       setError("Failed to fetch indent details.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleApprove = async () => {
+    if (isApproving) return; // Optional double-check
+    setIsApproving(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      console.log(indentID);
+      console.log(`${username}-${role}`);
+      await axios.post(
+        `${host}/purchase-and-store/api/approve-indent/`,
+        {
+          indent_id: indentID,
+          approval_data: `${username}-${role}`,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      // Refetch indent details to update approval status
+      await fetchIndentDetails();
+    } catch (e) {
+      console.error("Error approving indent:", e);
     }
   };
 
@@ -298,6 +358,18 @@ function EmployeeViewFileIndent() {
               </div>
             </Group>
             <Group>
+              {role !== "Professor" && (
+                <Button
+                  variant="light"
+                  color="green"
+                  size="md"
+                  leftIcon={<IconThumbUp size={20} />}
+                  onClick={handleApprove}
+                  disabled={isApproving}
+                >
+                  {isApproving ? "Approved" : "Approve Indent"}
+                </Button>
+              )}
               <Button
                 variant="light"
                 color="blue"
@@ -327,7 +399,7 @@ function EmployeeViewFileIndent() {
           </Group>
 
           {/* Approval Timeline */}
-          <Timeline
+          {/* <Timeline
             active={
               indent.indent.financial_approval
                 ? 2
@@ -380,21 +452,147 @@ function EmployeeViewFileIndent() {
                 Bill approval status
               </Text>
             </Timeline.Item>
-            {/* <Timeline.Item
-              bullet={
-                indent.indent.financial_approval ? (
-                  <IconCheck size={12} />
-                ) : (
-                  <IconClock size={12} />
-                )
-              }
-              title="Financial Approval"
-            >
-              <Text color="dimmed" size="sm">
-                Financial clearance status
+          </Timeline> */}
+          {/* <Box mb="xl">
+            <Title order={4} mb="md">
+              Approval Status
+            </Title>
+
+            {approvalHistory.length === 0 ? (
+              <Text size="sm" color="dimmed">
+                No approvals received yet.
               </Text>
-            </Timeline.Item> */}
-          </Timeline>
+            ) : (
+              approvalHistory.map((approval, index) => (
+                <Paper
+                  key={index}
+                  p="md"
+                  mb="xs"
+                  withBorder
+                  sx={(theme) => ({
+                    backgroundColor: theme.colors.gray[0],
+                    display: "flex",
+                    alignItems: "center",
+                    gap: theme.spacing.sm,
+                  })}
+                >
+                  <ThemeIcon color="green" size={28} radius="xl">
+                    <IconCheck size={18} />
+                  </ThemeIcon>
+                  <div>
+                    <Text size="sm" weight={500}>
+                      Approved by {approval.name}
+                    </Text>
+                    <Text size="xs" color="dimmed" transform="capitalize">
+                      {approval.rolee.replace(/_/g, " ")}
+                    </Text>
+                  </div>
+                </Paper>
+              ))
+            )}
+          </Box> */}
+          <Box mb="xl">
+            <Group mb="md" align="center">
+              <IconClipboardCheck size={24} color="#228BE6" />
+              <Title order={4}>Approval Status</Title>
+            </Group>
+
+            {approvalHistory.length === 0 ? (
+              <Paper
+                p="md"
+                withBorder
+                sx={(theme) => ({
+                  backgroundColor: theme.fn.rgba(theme.colors.gray[0], 0.5),
+                  borderStyle: "dashed",
+                })}
+              >
+                <Group spacing="sm">
+                  <ThemeIcon size={32} radius="xl" color="gray" variant="light">
+                    <IconClipboardX size={20} />
+                  </ThemeIcon>
+                  <Text size="sm" color="dimmed">
+                    No approvals received yet.
+                  </Text>
+                </Group>
+              </Paper>
+            ) : (
+              <Timeline
+                active={approvalHistory.length - 1}
+                bulletSize={24}
+                lineWidth={2}
+              >
+                {approvalHistory.map((approval, index) => (
+                  <Timeline.Item
+                    key={index}
+                    bullet={
+                      <ThemeIcon
+                        size={24}
+                        radius="xl"
+                        color={
+                          index === approvalHistory.length - 1
+                            ? "green"
+                            : "blue"
+                        }
+                      >
+                        {/* <IconStamp size={14} /> */}
+                      </ThemeIcon>
+                    }
+                  >
+                    <Paper
+                      p="md"
+                      mb="xs"
+                      withBorder
+                      sx={(theme) => ({
+                        backgroundColor: theme.fn.rgba(
+                          index === approvalHistory.length - 1
+                            ? theme.colors.green[0]
+                            : theme.colors.blue[0],
+                          0.2,
+                        ),
+                        borderColor:
+                          index === approvalHistory.length - 1
+                            ? theme.colors.green[3]
+                            : theme.colors.blue[3],
+                      })}
+                    >
+                      <Group position="apart">
+                        <div>
+                          <Group spacing="xs" mb={4}>
+                            <IconUserCheck size={18} />
+                            <Text size="sm" weight={600}>
+                              {approval.name}
+                            </Text>
+                          </Group>
+                          <Group spacing="xs">
+                            <IconBadge size={16} />
+                            <Text
+                              size="xs"
+                              color="dimmed"
+                              transform="capitalize"
+                            >
+                              {approval.rolee.replace(/_/g, " ")}
+                            </Text>
+                          </Group>
+                        </div>
+                        <ThemeIcon
+                          size={32}
+                          radius="xl"
+                          color={
+                            index === approvalHistory.length - 1
+                              ? "green"
+                              : "blue"
+                          }
+                          variant="light"
+                        >
+                          <IconCheckbox size={20} />
+                        </ThemeIcon>
+                      </Group>
+                    </Paper>
+                  </Timeline.Item>
+                ))}
+              </Timeline>
+            )}
+          </Box>
         </Paper>
 
         <Card shadow="sm" radius="md" p="md" withBorder>

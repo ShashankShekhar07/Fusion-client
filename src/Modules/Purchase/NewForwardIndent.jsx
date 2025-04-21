@@ -20,19 +20,23 @@ import {
   Drawer,
   Center,
   Loader,
+  Modal,
 } from "@mantine/core";
 import {
   IconFileDescription,
   IconPaperclip,
   IconSend,
   IconCheck,
-  IconClock,
+  // IconClock,
   IconMessageDots,
   IconArrowForward,
   IconFileDownload,
   IconCalendarTime,
   IconHistory,
+  IconThumbUp,
 } from "@tabler/icons-react";
+import { Paperclip } from "@phosphor-icons/react";
+
 import dayjs from "dayjs";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -50,35 +54,31 @@ export default function NewForwardIndent() {
   const [designations, setDesignations] = useState([]);
   const navigate = useNavigate();
   const role = useSelector((state) => state.user.role);
+  const username = useSelector((state) => state.user.username);
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [fileHistory, setFileHistory] = useState([]);
   const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
+  const [selectedHistoryFile] = useState({
+    id: null,
+    file: null,
+  });
+  const [confirmForwardOpen, setConfirmForwardOpen] = useState(false);
+  const [stringg, setstringg] = useState("");
+  const [approvalHistory, setApprovalHistory] = useState([]);
 
   const { indentID } = useParams();
   const [indent, setIndent] = useState(null);
   const [fileInfo, setFileInfo] = useState(null);
   const [department, setDepartment] = useState("");
-  console.log(fileInfo);
-  console.log(department);
   const [formValues, setFormValues] = useState({
     remark: "",
     forwardTo: "",
     receiverDesignation: "",
   });
-
-  const fetchAllUsers = async () => {
-    try {
-      const response = await axios.get(
-        `${host}/purchase-and-store/api/user-suggestions`,
-      );
-      setUsers(response.data.users);
-      setFilteredUsers(response.data.users);
-    } catch (error) {
-      console.error("Error fetching all users", error);
-    }
-  };
+  console.log(fileInfo, stringg, department);
 
   const getHistory = async (fileID) => {
     try {
@@ -89,7 +89,6 @@ export default function NewForwardIndent() {
         },
       });
       setFileHistory(response.data.reverse());
-      console.log(response.data);
     } catch (err) {
       console.error("Error fetching history:", err);
     }
@@ -108,13 +107,71 @@ export default function NewForwardIndent() {
           },
         },
       );
-      console.log(response.data);
       setIndent(response.data);
+      console.log(response.data);
+      setstringg(response.data.indent.approved_by);
+      console.log(response.data.indent.approved_by);
+      if (response.data.indent.approved_by) {
+        const approvals = response.data.indent.approved_by
+          .split(",")
+          .map((approval) => {
+            const trimmed = approval.trim();
+            const lastDashIndex = trimmed.lastIndexOf("-");
+            const namePart = trimmed.slice(0, lastDashIndex);
+            const rolePart = trimmed.slice(lastDashIndex + 1);
+
+            const name = namePart.replace(/_/g, " ");
+            const rolee = rolePart.trim();
+
+            return { name, rolee };
+          });
+
+        setApprovalHistory(approvals);
+      }
       setFileInfo(response.data.file);
       setDepartment(response.data.department);
       await getHistory(indentID);
     } catch (error) {
       console.error("Error fetching indents:", error);
+    }
+  };
+
+  const handleApprove = async () => {
+    if (isApproving) return;
+    setIsApproving(true);
+    try {
+      const token = localStorage.getItem("authToken");
+      console.log(indentID);
+      console.log(`${username}-${role}`);
+      await axios.post(
+        `${host}/purchase-and-store/api/approve-indent/`,
+        {
+          indent_id: indentID,
+          approval_data: `${username}-${role}`,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      await fetchIndentDetails();
+    } catch (error) {
+      console.error("Error approving indent:", error);
+    }
+  };
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(
+        `${host}/purchase-and-store/api/user-suggestions`,
+      );
+      setUsers(response.data.users);
+      setFilteredUsers(response.data.users);
+    } catch (error) {
+      console.error("Error fetching all users", error);
     }
   };
 
@@ -169,28 +226,31 @@ export default function NewForwardIndent() {
   const showStockEntryButton = () => {
     return (
       indent?.indent.head_approval &&
-      indent?.indent.director_approval &&
-      indent?.indent.purchased &&
-      !indent?.indent.financial_approval &&
-      role === "ps_admin"
+      // indent?.indent.director_approval &&
+      // indent?.indent.purchased &&
+      // !indent?.indent.financial_approval &&
+      role !== "Professor"
     );
   };
 
-  // const handleviewattachment = async (e) => {
-  //   e.preventDefault();
-  //   const token = localStorage.getItem("authToken");
-  //   console.log("token", token);
-  //   const response = await axios.get(`${host}/filetracking/api/file/788`, {
-  //     headers: {
-  //       Authorization: `Token ${token}`,
-  //     },
-  //   });
-  //   console.log(response);
-  //   setfilee(response.data.upload_file);
+  // const handleviewattachment = async (historyId) => {
+  //   try {
+  //     const token = localStorage.getItem("authToken");
+  //     const response = await axios.get(`${host}/filetracking/api/file/788`, {
+  //       headers: {
+  //         Authorization: `Token ${token}`,
+  //       },
+  //     });
+  //     setSelectedHistoryFile({
+  //       id: historyId,
+  //       file: response.data.upload_file,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching file:", error);
+  //   }
   // };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     const data = new FormData();
     data.append("file", file);
     data.append("remarks", formValues.remark);
@@ -208,6 +268,7 @@ export default function NewForwardIndent() {
       });
 
       console.log("Success:", response.data);
+      setConfirmForwardOpen(false);
       navigate("/purchase/outbox");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -229,6 +290,25 @@ export default function NewForwardIndent() {
 
   return (
     <Container size="xl" py="xl">
+      <Modal
+        opened={confirmForwardOpen}
+        onClose={() => setConfirmForwardOpen(false)}
+        title="Confirm Forward"
+        centered
+      >
+        <Text size="sm" mb="lg">
+          Are you sure you want to forward this indent to {selectedUser}?
+        </Text>
+        <Group position="right" spacing="sm">
+          <Button variant="light" onClick={() => setConfirmForwardOpen(false)}>
+            Cancel
+          </Button>
+          <Button color="blue" onClick={handleSubmit}>
+            Confirm
+          </Button>
+        </Group>
+      </Modal>
+
       <Paper shadow="sm" p="md" mb="xl" radius="md">
         <Group position="apart" mb="md">
           <Group>
@@ -250,6 +330,18 @@ export default function NewForwardIndent() {
             >
               View Indent History
             </Button>
+            {role !== "Professor" && (
+              <Button
+                variant="light"
+                color="green"
+                size="md"
+                leftIcon={<IconThumbUp size={20} />}
+                onClick={handleApprove}
+                disabled={isApproving}
+              >
+                {isApproving ? "Approved" : "Approve Indent"}
+              </Button>
+            )}
             <Badge size="lg" color={indent.indent.purchased ? "green" : "blue"}>
               {indent.indent.purchased ? "Purchased" : "In Progress"}
             </Badge>
@@ -261,7 +353,7 @@ export default function NewForwardIndent() {
           </Group>
         </Group>
 
-        <Timeline
+        {/* <Timeline
           active={
             indent.indent.financial_approval
               ? 2
@@ -315,7 +407,45 @@ export default function NewForwardIndent() {
               Financial clearance status
             </Text>
           </Timeline.Item>
-        </Timeline>
+        </Timeline> */}
+        <Box mb="xl">
+          <Title order={4} mb="md">
+            Approval Status
+          </Title>
+
+          {approvalHistory.length === 0 ? (
+            <Text size="sm" color="dimmed">
+              No approvals received yet.
+            </Text>
+          ) : (
+            approvalHistory.map((approval, index) => (
+              <Paper
+                key={index}
+                p="md"
+                mb="xs"
+                withBorder
+                sx={(theme) => ({
+                  backgroundColor: theme.colors.gray[0],
+                  display: "flex",
+                  alignItems: "center",
+                  gap: theme.spacing.sm,
+                })}
+              >
+                <ThemeIcon color="green" size={28} radius="xl">
+                  <IconCheck size={18} />
+                </ThemeIcon>
+                <div>
+                  <Text size="sm" weight={500}>
+                    Approved by {approval.name}
+                  </Text>
+                  <Text size="xs" color="dimmed" transform="capitalize">
+                    {approval.rolee.replace(/_/g, " ")}
+                  </Text>
+                </div>
+              </Paper>
+            ))
+          )}
+        </Box>
       </Paper>
 
       <Title order={3} mb="md">
@@ -514,9 +644,9 @@ export default function NewForwardIndent() {
                 color="green"
                 size="md"
                 leftIcon={<IconSend size={20} />}
-                onClick={handleSubmit}
+                onClick={() => setConfirmForwardOpen(true)}
               >
-                Submit
+                Forward
               </Button>
             </Group>
           </Grid.Col>
@@ -578,6 +708,27 @@ export default function NewForwardIndent() {
                     View Attachment
                   </Button>
                 )}
+                {selectedHistoryFile.id === history.id &&
+                  selectedHistoryFile.file && (
+                    <Group spacing="xs" mt="xs">
+                      <Paperclip size="1rem" />
+                      <Button
+                        variant="light"
+                        component="a"
+                        href={`${host}/${selectedHistoryFile.file}`}
+                        target="_blank"
+                        radius="md"
+                        sx={{
+                          textOverflow: "ellipsis",
+                          maxWidth: "200px",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {selectedHistoryFile.file.split("/")[2]}
+                      </Button>
+                    </Group>
+                  )}
               </Box>
             </Timeline.Item>
           ))}

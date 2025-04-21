@@ -17,6 +17,7 @@ import {
   Text,
   Modal,
   List,
+  Alert,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -26,6 +27,7 @@ import {
   IconUpload,
   IconCheck,
   IconX,
+  IconAlertCircle,
 } from "@tabler/icons-react";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -41,9 +43,9 @@ const YES_NO_OPTIONS = [
 
 const emptyItem = {
   item_name: "",
-  quantity: 0,
-  present_stock: 0,
-  estimated_cost: 0,
+  quantity: 1,
+  present_stock: 1,
+  estimated_cost: 1,
   purpose: "",
   specification: "",
   item_type: "",
@@ -63,6 +65,7 @@ export default function IndentForm() {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [activeTab, setActiveTab] = useState("0");
+  const [validationAlert, setValidationAlert] = useState(null);
   const role = useSelector((state) => state.user.role);
   const uploaderUsername = useSelector((state) => state.user.username);
   const navigate = useNavigate();
@@ -100,8 +103,7 @@ export default function IndentForm() {
         !value ? "Receiver designation is required" : null,
       items: {
         item_name: (value) => (!value ? "Item name is required" : null),
-        quantity: (value) =>
-          value <= 0 ? "Quantity must be greater than 0" : null,
+        quantity: (value) => (!value ? "Quantity is required" : null),
         item_type: (value) => (!value ? "Item type is required" : null),
       },
     },
@@ -115,7 +117,8 @@ export default function IndentForm() {
         setActiveTab(String(newIndex));
       }, 50);
     } else {
-      alert("Maximum of 20 items allowed");
+      setValidationAlert("Maximum of 20 items allowed");
+      setTimeout(() => setValidationAlert(null), 3000);
     }
   };
 
@@ -185,8 +188,46 @@ export default function IndentForm() {
     );
   };
 
-  const handleSubmit = async (values) => {
-    console.log(values);
+  // This function handles custom parsing for quantity input
+  const parseQuantity = (value) => {
+    // If input is empty, return 1 (our minimum value)
+    if (value === "" || value === null) return 1;
+
+    const parsedValue = parseInt(value, 10);
+    // If parsed value is less than 1, keep the previous value
+    if (Number.isNaN(parsedValue) || parsedValue < 1) {
+      return form.values.items[parseInt(activeTab, 10)]?.quantity || 1;
+    }
+    return parsedValue;
+  };
+
+  // This function handles custom parsing for cost input
+  const parseCost = (value) => {
+    // If input is empty, return 0
+    if (value === "" || value === null) return 0;
+
+    const parsedValue = parseFloat(value);
+    // If parsed value is negative, keep the previous value
+    if (Number.isNaN(parsedValue) || parsedValue < 0) {
+      return form.values.items[parseInt(activeTab, 10)]?.estimated_cost || 1;
+    }
+    return parsedValue;
+  };
+
+  // New function to handle parsing of present stock input
+  const parsePresentStock = (value) => {
+    // If input is empty, return 0
+    if (value === "" || value === null) return 0;
+
+    const parsedValue = parseInt(value, 10);
+    // If parsed value is negative, keep the previous value
+    if (Number.isNaN(parsedValue) || parsedValue < 0) {
+      return form.values.items[parseInt(activeTab, 10)]?.present_stock || 1;
+    }
+    return parsedValue;
+  };
+
+  const handleSubmit = async () => {
     setConfirmModalOpen(true);
   };
 
@@ -233,14 +274,142 @@ export default function IndentForm() {
       navigate("/purchase/outbox");
     } catch (error) {
       console.error("Error submitting indent:", error);
-      alert("Failed to submit indent. Please try again.");
+      setValidationAlert("Failed to submit indent. Please try again.");
+      setTimeout(() => setValidationAlert(null), 3000);
     } finally {
       setSubmitting(false);
     }
   };
 
+  // Function to validate and prevent invalid keystrokes for quantity
+  const handleQuantityKeyDown = (e, index) => {
+    // Get the current value
+    const currentValue = form.values.items[index].quantity.toString();
+    const { selectionStart } = e.target;
+
+    // Allow navigation keys, backspace, delete, tab
+    if (
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight" ||
+      e.key === "Backspace" ||
+      e.key === "Delete" ||
+      e.key === "Tab" ||
+      e.ctrlKey // Allow copy/paste shortcuts
+    ) {
+      return;
+    }
+
+    // Only allow digits
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+      return;
+    }
+
+    // Create the new value that would result from this keystroke
+    const newValue =
+      currentValue.slice(0, selectionStart) +
+      e.key +
+      currentValue.slice(e.target.selectionEnd);
+
+    // If it would result in 0 or a negative number, prevent it
+    if (parseInt(newValue, 10) < 1) {
+      e.preventDefault();
+    }
+  };
+
+  // Function to validate and prevent invalid keystrokes for cost
+  const handleCostKeyDown = (e, index) => {
+    // Get the current value
+    const currentValue = form.values.items[index].estimated_cost.toString();
+    const { selectionStart } = e.target;
+
+    // Allow navigation keys, backspace, delete, tab
+    if (
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight" ||
+      e.key === "Backspace" ||
+      e.key === "Delete" ||
+      e.key === "Tab" ||
+      e.ctrlKey // Allow copy/paste shortcuts
+    ) {
+      return;
+    }
+
+    // Allow digits and decimals
+    if (!/^\d$/.test(e.key) && e.key !== ".") {
+      e.preventDefault();
+      return;
+    }
+
+    // Only allow one decimal point
+    if (e.key === "." && currentValue.includes(".")) {
+      e.preventDefault();
+      return;
+    }
+
+    // Create the new value that would result from this keystroke
+    const newValue =
+      currentValue.slice(0, selectionStart) +
+      e.key +
+      currentValue.slice(e.target.selectionEnd);
+
+    // If it would result in a negative number, prevent it
+    if (parseFloat(newValue) < 0) {
+      e.preventDefault();
+    }
+  };
+
+  // New function to validate and prevent invalid keystrokes for present stock
+  const handlePresentStockKeyDown = (e, index) => {
+    // Get the current value
+    const currentValue = form.values.items[index].present_stock.toString();
+    const { selectionStart } = e.target;
+
+    // Allow navigation keys, backspace, delete, tab
+    if (
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight" ||
+      e.key === "Backspace" ||
+      e.key === "Delete" ||
+      e.key === "Tab" ||
+      e.ctrlKey // Allow copy/paste shortcuts
+    ) {
+      return;
+    }
+
+    // Only allow digits
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+      return;
+    }
+
+    // Create the new value that would result from this keystroke
+    const newValue =
+      currentValue.slice(0, selectionStart) +
+      e.key +
+      currentValue.slice(e.target.selectionEnd);
+
+    // If it would result in a negative number, prevent it
+    if (parseInt(newValue, 10) < 0) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Container size="xl">
+      {validationAlert && (
+        <Alert
+          icon={<IconAlertCircle size={16} />}
+          title="Validation Error"
+          color="red"
+          mb="md"
+          withCloseButton
+          onClose={() => setValidationAlert(null)}
+        >
+          {validationAlert}
+        </Alert>
+      )}
+
       <Modal
         opened={confirmModalOpen}
         onClose={() => setConfirmModalOpen(false)}
@@ -340,13 +509,6 @@ export default function IndentForm() {
                 <div className="items-container">
                   <div className="items-tabs">
                     {form.values.items.map((_, index) => (
-                      // <div
-                      //   key={index}
-                      //   className={`item-tab ${activeTab === String(index) ? "active" : ""}`}
-                      //   onClick={() => setActiveTab(String(index))}
-                      //   role="button"
-                      //   tabIndex={0}
-                      // >
                       <div
                         key={index}
                         className={`item-tab ${activeTab === String(index) ? "active" : ""}`}
@@ -420,25 +582,31 @@ export default function IndentForm() {
                             onChange={(value) =>
                               form.setFieldValue(
                                 `items.${index}.quantity`,
-                                value,
+                                parseQuantity(value),
                               )
                             }
+                            onKeyDown={(e) => handleQuantityKeyDown(e, index)}
+                            hideControls={false}
                             error={form.errors.items?.[index]?.quantity}
+                            clampBehavior="strict"
                           />
                         </div>
                         <div className="form-field">
                           <NumberInput
                             label="Estimated Cost (₹)"
                             required
-                            min={0}
+                            min={1}
                             value={item.estimated_cost}
                             onChange={(value) =>
                               form.setFieldValue(
                                 `items.${index}.estimated_cost`,
-                                value,
+                                parseCost(value),
                               )
                             }
+                            onKeyDown={(e) => handleCostKeyDown(e, index)}
+                            hideControls={false}
                             error={form.errors.items?.[index]?.estimated_cost}
+                            clampBehavior="strict"
                           />
                         </div>
                       </div>
@@ -478,14 +646,19 @@ export default function IndentForm() {
                         <div className="form-field">
                           <NumberInput
                             label="Present Stock"
-                            min={0}
+                            min={1}
                             value={item.present_stock}
                             onChange={(value) =>
                               form.setFieldValue(
                                 `items.${index}.present_stock`,
-                                value,
+                                parsePresentStock(value),
                               )
                             }
+                            onKeyDown={(e) =>
+                              handlePresentStockKeyDown(e, index)
+                            }
+                            hideControls={false}
+                            clampBehavior="strict"
                             required
                           />
                         </div>

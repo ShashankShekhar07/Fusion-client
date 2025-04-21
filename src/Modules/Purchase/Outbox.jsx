@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { MantineProvider, Table, Button, Text, Box, Flex } from "@mantine/core";
+import {
+  MantineProvider,
+  Table,
+  Button,
+  Text,
+  Box,
+  Flex,
+  TextInput,
+} from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { CaretUp, CaretDown, ArrowsDownUp } from "@phosphor-icons/react";
 import { outboxViewRoute2 } from "../../routes/purchaseRoutes";
 
 function OutboxTable() {
@@ -12,6 +21,8 @@ function OutboxTable() {
   const [error, setError] = useState(null);
   const role = useSelector((state) => state.user.role);
   const username = useSelector((state) => state.user.roll_no);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchIndents = async () => {
@@ -23,6 +34,7 @@ function OutboxTable() {
           },
         });
         setOutbox(response.data.in_file);
+        console.log(response.data.in_file);
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch indents.");
@@ -33,13 +45,11 @@ function OutboxTable() {
     fetchIndents();
   }, []);
 
-  if (loading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text style={{ color: "red" }}>{error}</Text>;
-  }
+  const sortedFiles = [...outbox].sort((a, b) => {
+    if (!sortConfig.key) return 0;
+    const direction = sortConfig.direction === "asc" ? 1 : -1;
+    return a[sortConfig.key] > b[sortConfig.key] ? direction : -direction;
+  });
 
   const formatDate = (isoString) => {
     const date = new Date(isoString);
@@ -53,6 +63,41 @@ function OutboxTable() {
       hour12: true, // Optional: Change to 24-hour format if needed
     });
   };
+
+  const filteredFiles = sortedFiles.filter((file) => {
+    const idString = `${file.branch}-${new Date(file.upload_date).getFullYear()}-
+                      ${(new Date(file.upload_date).getMonth() + 1)
+                        .toString()
+                        .padStart(2, "0")}
+                      -#${file.id}`;
+    return (
+      idString.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      file.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      file.uploader.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      formatDate(file.upload_date)
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      file.receiver_designation
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      file.receiver.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const handleSort = (key) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text style={{ color: "red" }}>{error}</Text>;
+  }
 
   return (
     <Box p="md" style={{ margin: 0 }}>
@@ -74,6 +119,12 @@ function OutboxTable() {
         >
           Outbox
         </Text>
+        <TextInput
+          placeholder="Search files..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ marginBottom: "10px", marginLeft: "auto" }}
+        />
       </Box>
       <Table
         style={{
@@ -84,7 +135,7 @@ function OutboxTable() {
         }}
       >
         <thead>
-          <tr style={{ textAlign: "center" }}>
+          {/* <tr style={{ textAlign: "center" }}>
             <th
               style={{
                 backgroundColor: "white",
@@ -110,6 +161,15 @@ function OutboxTable() {
                 textAlign: "center",
               }}
             >
+              Subject
+            </th>
+            <th
+              style={{
+                backgroundColor: "white",
+                padding: "12px",
+                textAlign: "center",
+              }}
+            >
               Date
             </th>
             <th
@@ -121,71 +181,165 @@ function OutboxTable() {
             >
               Features
             </th>
+          </tr> */}
+          <tr style={{ backgroundColor: "#0000" }}>
+            {[
+              { key: "Indent id", label: "File ID" },
+              { key: "uploader", label: "Uploader" },
+              { key: "receiver", label: "Sent to" },
+              {
+                key: "receiver_designation",
+                label: "Receiver's Designation",
+              },
+              { key: "subject", label: "Subject" },
+              { key: "upload_date", label: "Date" },
+            ].map(({ key, label }) => (
+              <th
+                key={key}
+                onClick={() => handleSort(key)}
+                style={{
+                  cursor: "pointer",
+                  padding: "12px",
+                  width: "15.5%",
+                  border: "1px solid #D9EAF7",
+                  alignItems: "center",
+                  gap: "5px",
+                  textAlign: "center",
+                }}
+              >
+                {label}
+                {sortConfig.key === key ? (
+                  sortConfig.direction === "asc" ? (
+                    <CaretUp size={16} />
+                  ) : (
+                    <CaretDown size={16} />
+                  )
+                ) : (
+                  <ArrowsDownUp size={16} opacity={0.6} />
+                )}
+              </th>
+            ))}
+            <th
+              style={{
+                padding: "12px",
+                width: "8.5%",
+                border: "1px solid #ddd",
+              }}
+            >
+              View File
+            </th>
           </tr>
         </thead>
         <tbody>
-          {outbox.map((row, index) => (
-            <tr
-              key={row.id}
-              style={{ backgroundColor: index % 2 === 0 ? "#f8fafb" : "white" }}
-            >
-              <td
+          {filteredFiles && filteredFiles.length > 0 ? (
+            filteredFiles.map((row, index) => (
+              <tr
+                key={row.id}
                 style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
+                  backgroundColor: index % 2 === 0 ? "#f8fafb" : "white",
                 }}
               >
-                <Text weight={500}>{row.receiver_username}</Text>
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                {row.id}
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                {formatDate(row.upload_date)}
-              </td>
-              <td
-                style={{
-                  padding: "12px",
-                  borderBottom: "1px solid #E0E0E0",
-                  textAlign: "center",
-                }}
-              >
-                <Flex
-                  direction="row"
-                  gap="md"
-                  justify="center"
-                  align="center"
-                  style={{ marginTop: "10px", marginBottom: "10px" }}
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
                 >
-                  <Button
-                    color="green"
-                    style={{ marginRight: "8px" }}
-                    onClick={() =>
-                      navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
-                    }
+                  {row.id}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    border: "1px solid #ddd",
+                    textAlign: "center",
+                  }}
+                >
+                  {row.uploader}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Text weight={500}>{row.receiver}</Text>
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Text weight={500}>{row.receiver_designation}</Text>
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {row.subject === "" ? "No Subject" : row.subject}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  {formatDate(row.upload_date)}
+                </td>
+                <td
+                  style={{
+                    padding: "12px",
+                    borderBottom: "1px solid #E0E0E0",
+                    textAlign: "center",
+                  }}
+                >
+                  <Flex
+                    direction="row"
+                    gap="md"
+                    justify="center"
+                    align="center"
+                    style={{ marginTop: "10px", marginBottom: "10px" }}
                   >
-                    View
-                  </Button>
-                  {/* <Button variant="outline" color="red">
-                    Delete
-                  </Button> */}
-                </Flex>
+                    <Button
+                      color="green"
+                      style={{ marginRight: "8px" }}
+                      onClick={() =>
+                        navigate(`/purchase/Employeeviewfiledindent/${row.id}`)
+                      }
+                    >
+                      View
+                    </Button>
+                  </Flex>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan="7"
+                style={{
+                  textAlign: "center",
+                  padding: "24px",
+                  color: "black",
+                  fontSize: "16px",
+                }}
+              >
+                <strong>No indent found</strong>
+                <div
+                  style={{ marginTop: "4px", fontSize: "14px", color: "black" }}
+                >
+                  Start by creating one to see it listed here.
+                </div>
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </Table>
     </Box>
