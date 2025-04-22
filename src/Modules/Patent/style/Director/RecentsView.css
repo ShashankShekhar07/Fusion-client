@@ -1,0 +1,215 @@
+/* Director/ReviewedApplications.css */
+
+/* Scoped container */
+.director-reviewed-apps-container {
+  position: relative;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* Header styles */
+.director-reviewed-apps-header {
+  padding: 0 32px;
+  margin-bottom: 8px;
+}
+
+.director-reviewed-apps-title {
+  font-weight: 700 !important;
+  text-align: left;
+  margin-left: 0 !important;
+  margin-bottom: 5px !important;
+  font-size: 24px;
+}
+
+/* Description area */
+.director-reviewed-apps-description {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 32px;
+  margin-bottom: 24px;
+}
+
+.director-reviewed-apps-text {
+  text-align: left;
+}
+
+/* Refresh button */
+.director-reviewed-apps-refresh {
+  align-self: flex-start;
+  background-color: #fff;
+  border: 1px solid #0073e6;
+  color: #0073e6;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: auto;
+  margin-top: 12px;
+  margin-bottom: -32px;
+}
+
+.director-reviewed-apps-refresh:hover {
+  background-color: #0073e6;
+  color: #fff;
+}
+
+/* Main content container */
+.director-reviewed-apps-outer {
+  max-width: 100%;
+  padding: 24px 32px;
+  background-color: #f5f7f8;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Table wrapper */
+.director-reviewed-apps-outer .tableWrapper {
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+/* Table styles */
+.director-reviewed-apps-outer .styledTable {
+  width: 100%;
+  font-size: 14px;
+  background-color: #ffffff;
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.director-reviewed-apps-outer .fusionTableHeader th {
+  padding: 16px 20px;
+  text-align: left;
+  background-color: #f5f7f8;
+  font-weight: 600;
+  color: #444;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.director-reviewed-apps-outer .tableRow {
+  background-color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.director-reviewed-apps-outer .tableRow:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.director-reviewed-apps-outer .tableRow:hover {
+  background-color: #f0f4f8;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.director-reviewed-apps-outer .tableRow td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #eaeaea;
+  vertical-align: middle;
+}
+
+.director-reviewed-apps-outer .viewButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.director-reviewed-apps-outer .viewButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loader styles */
+.director-reviewed-apps-outer .loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* Status text colors */
+.director-reviewed-apps-outer .status-granted {
+  color: green;
+  font-weight: 500;
+}
+
+.director-reviewed-apps-outer .status-refused {
+  color: red;
+  font-weight: 500;
+}
+
+.director-reviewed-apps-outer .status-pending {
+  color: blue;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .director-reviewed-apps-description {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .director-reviewed-apps-refresh {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .director-reviewed-apps-header,
+  .director-reviewed-apps-description {
+    padding: 0 20px;
+  }
+  
+  .director-reviewed-apps-outer {
+    padding: 20px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .director-reviewed-apps-header,
+  .director-reviewed-apps-description {
+    padding: 0 16px;
+  }
+  
+  .director-reviewed-apps-outer {
+    padding: 16px;
+    border-radius: 6px;
+  }
+  
+  .director-reviewed-apps-outer .fusionTableHeader th {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .director-reviewed-apps-outer .tableRow td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .director-reviewed-apps-refresh {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

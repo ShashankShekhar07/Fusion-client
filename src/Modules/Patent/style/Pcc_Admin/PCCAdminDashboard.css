@@ -1,0 +1,241 @@
+/* General Styles */
+.dashboard-title {
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin: 0;
+}
+
+/* Combined Section */
+.combined-section {
+  max-width: 100%;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-top: 10px;
+  padding: 24px;
+  background-color: #fff;
+  font-size: 16px;
+  color: #000;
+}
+
+/* Overview Section */
+.overview-section {
+  margin: 0;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.overview-title, .table-title {
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: left;
+  gap: 8px;
+  color: #333;
+}
+
+.overview-icon {
+  color: #4c6ef5;
+  margin-top: 10px;
+}
+
+.overview-text {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.75;
+} 
+
+/* Insights Section */
+.insights-section {
+  margin: 0 auto;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.dashboard-overview-description {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.filter {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.insights-content-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px;
+  margin-top: 16px;
+}
+
+.chart-section {
+  flex: 1;
+  text-align: center;
+}
+
+.table-section {
+  flex: 1;
+  padding: 20px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.legend-label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Download Section */
+.download-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.download-button {
+  color: #0073e6;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  background-color: #0073e6;
+  color: #ffffff;
+}
+
+/* Dashboard Cards */
+.dashboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+  background-color: #fff;
+  padding: 32px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  border-left: 6px solid transparent;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  text-align: left;
+  cursor: pointer;
+  flex: 1 1 calc(50% - 12px); /* Two cards per row on larger screens */
+
+}
+
+.dashboard-card:hover {
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.dashboard-card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Card Divider */
+.card-divider {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  .dashboard-cards {
+    flex: 1 1 100%; /* One card per row on smaller screens */
+  }
+}
+
+.dashboard-button {
+  color: #0073e6;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+  padding: 1px;
+  margin-top: 1rem;
+}
+
+.dashboard-button:hover {
+  background-color: #0073e6;
+  color: #ffffff;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 2fr; /* One card per row for mobile */
+  }
+
+  .dashboard-card {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-grid {
+    grid-template-columns: 2fr; /* One card per row only for very small screens */
+  }
+}
+
+/* Edit and Save Buttons */
+.edit-button, .save-button {
+  color: #0073e6;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.edit-button:hover, .save-button:hover {
+  background-color: #0073e6;
+  color: #ffffff;
+}
+
+.download-csv-button {
+  margin-left: 95%;
+  margin-right: 50px;
+}

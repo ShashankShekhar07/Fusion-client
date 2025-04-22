@@ -1,6 +1,7 @@
 import { Textarea, Text, Button, Flex, Select } from "@mantine/core";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { notifications } from "@mantine/notifications";
 import { updateComplaintStatus } from "../routes/api"; // Adjust the relative path as necessary
 
 function RedirectedComplaintsChangeStatus({ complaint, onBack }) {
@@ -19,7 +20,11 @@ function RedirectedComplaintsChangeStatus({ complaint, onBack }) {
 
   const handleSubmit = async () => {
     if (!status) {
-      alert("Please select an option before submitting.");
+      notifications.show({
+        title: "Incomplete Action",
+        message: "Please select an option before submitting.",
+        color: "red",
+      });
       return;
     }
 
@@ -40,15 +45,25 @@ function RedirectedComplaintsChangeStatus({ complaint, onBack }) {
       );
 
       if (response.success) {
-        alert("Thank you for resolving the complaint");
+        notifications.show({
+          title: "Success",
+          message: "Thank you for resolving the complaint.",
+          color: "green",
+        });
         onBack(); // Call back to refresh the complaints list
       } else {
-        console.error("Error updating complaint status:", response.error);
-        alert("There was an error updating the complaint status.");
+        notifications.show({
+          title: "Error",
+          message: "There was an error updating the complaint status.",
+          color: "red",
+        });
       }
     } catch (error) {
-      console.error("Error in handleSubmit:", error);
-      alert("There was an unexpected error.");
+      notifications.show({
+        title: "Unexpected Error",
+        message: "There was an unexpected error. Please try again.",
+        color: "red",
+      });
     }
   };
 

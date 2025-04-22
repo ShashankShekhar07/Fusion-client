@@ -1,0 +1,158 @@
+/* Centering Header */
+.past-app-status-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+.m_8a5d1357{
+  margin-bottom: 20px !important;
+}
+.m_3eebeb36:where([data-orientation='horizontal']) {
+  border-top: none !important;
+  margin-block: 0.5rem !important; /* You can change this value as needed */
+}
+.form-actions{
+  margin-left: 50px;
+}
+.detail-header{
+  margin-bottom: 10px !important;
+}
+
+
+/* Container Styles */
+.past-app-status-applications-container {
+  margin-left: 50px;
+  margin-top: 0px;
+  max-width: 100%;
+  background-color: #f5f7f8;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+/* Title and Description */
+.past-app-status-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.stati-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.description {
+  font-size: 1rem;
+  color: #5f6368;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Loading and Error States */
+.loading-container, 
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Table Container */
+.outerContainer {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Status Cards Container */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+}
+
+/* Individual Card Styles */
+.status-card {
+  width: calc(48% - 8px);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f5f7f8;
+  /* Paper-like shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.status-card:hover {
+  /* Stronger shadow on hover to enhance floating effect */
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+/* Card Title and Description */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #606060;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* Button Styles */
+.view-button {
+  color: #0073e6;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.view-button:hover {
+  background-color: #f0f7ff;
+  color: #2563eb;
+}
+
+/* Detail View Styles */
+.detail-view-container {
+  padding-top: 0px !important;
+  background-color: transparent;
+  border-radius: 8px;
+  /* Paper-like shadow for detail view */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0), 0 3px 6px rgba(0, 0, 0, 0);
+ margin-top: 0px;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+/* Year Filter Styles */
+/* Year Filter Styles */
+.year-filter {
+  min-width: 200px;
+  max-width: 300px;
+  
+}

@@ -5,11 +5,11 @@ import { CaretCircleLeft, CaretCircleRight } from "@phosphor-icons/react";
 import PropTypes from "prop-types";
 import CustomBreadcrumbs from "../../components/Breadcrumbs";
 import classes from "./ComplaintModule.module.css";
-import ComplaintHistory from "./components/ComplaintHistory";
+
 // Lazy load components
 const Feedback = lazy(() => import("./components/Feedback"));
 const FormPage = lazy(() => import("./components/FormPage"));
-
+const ComplaintHistory = lazy(() => import("./components/ComplaintHistory"));
 const GenerateReport = lazy(() => import("./components/Generate_Report"));
 const ResolvedComplaints = lazy(
   () => import("./components/ResolvedComplaints"),
@@ -30,26 +30,23 @@ const RedirectedComplaints = lazy(
   document.head.appendChild(link);
 })();
 
+// Define role-based tab configurations
 const TAB_CONFIGS = {
-  warden: [{ title: "Generate Report" }],
-  supervisor: [
-    { title: "Redirected Complaints" },
-    { title: "Generate Report" },
-  ],
-  caretaker: [
-    { title: "Lodge a Complaint" },
-    { title: "Complaint History" },
-    { title: "Resolved Complaints" },
+  report: [{ title: "Generate Report" }],
+  staff: [
+    // Updated order: Unresolved Complaints first, Resolved Complaints second
     { title: "Unresolved Complaints" },
+    { title: "Resolved Complaints" },
     { title: "Generate Report" },
   ],
+  sp: [{ title: "Redirected Complaints" }, { title: "Generate Report" }],
+  complaint_admin: [{ title: "Generate Report" }],
   default: [
     { title: "Lodge a Complaint" },
     { title: "Complaint History" },
     { title: "Feedback" },
   ],
 };
-
 function NavigationButton({ direction, onClick }) {
   return (
     <Button
@@ -85,11 +82,13 @@ function ComplaintModuleLayout() {
   const tabsListRef = useRef(null);
   const role = useSelector((state) => state.user.role);
 
+  // Choose the tab configuration based on user role.
   const tabItems = useMemo(() => {
-    if (role.includes("warden")) return TAB_CONFIGS.warden;
-    if (role.includes("supervisor")) return TAB_CONFIGS.supervisor;
-    if (role.includes("caretaker") || role.includes("convener"))
-      return TAB_CONFIGS.caretaker;
+    if (role.includes("complaint_admin")) return TAB_CONFIGS.complaint_admin;
+    if (role.includes("warden") || role.includes("SA"))
+      return TAB_CONFIGS.report;
+    if (role.includes("SP")) return TAB_CONFIGS.sp;
+    if (role.includes("caretaker")) return TAB_CONFIGS.staff;
     return TAB_CONFIGS.default;
   }, [role]);
 
@@ -108,21 +107,24 @@ function ComplaintModuleLayout() {
     }
   };
 
+  // Map tab content based on role
   const tabContentMap = useMemo(
     () => ({
-      warden: {
+      report: {
         0: <GenerateReport />,
       },
-      supervisor: {
+      staff: {
+        // Updated order: Unresolved Complaints first, Resolved Complaints second
+        0: <UnresolvedComplaints />,
+        1: <ResolvedComplaints />,
+        2: <GenerateReport />,
+      },
+      sp: {
         0: <RedirectedComplaints />,
         1: <GenerateReport />,
       },
-      caretaker: {
-        0: <FormPage />,
-        1: <ComplaintHistory />,
-        2: <ResolvedComplaints />,
-        3: <UnresolvedComplaints />,
-        4: <GenerateReport />,
+      complaint_admin: {
+        0: <GenerateReport />,
       },
       default: {
         0: <FormPage />,
@@ -135,16 +137,14 @@ function ComplaintModuleLayout() {
 
   const getTabContent = () => {
     let content;
-
-    if (role.includes("warden")) {
-      content = tabContentMap.warden[activeTab];
-    } else if (role.includes("supervisor")) {
-      content = tabContentMap.supervisor[activeTab];
-    } else if (role.includes("caretaker") || role.includes("convener")) {
-      content = tabContentMap.caretaker[activeTab];
-    } else {
-      content = tabContentMap.default[activeTab];
-    }
+    if (role.includes("complaint_admin"))
+      content = tabContentMap.complaint_admin[activeTab];
+    else if (role.includes("warden") || role.includes("SA"))
+      content = tabContentMap.report[activeTab];
+    else if (role.includes("SP")) content = tabContentMap.sp[activeTab];
+    else if (role.includes("caretaker"))
+      content = tabContentMap.staff[activeTab];
+    else content = tabContentMap.default[activeTab];
 
     return content || <Loader />;
   };

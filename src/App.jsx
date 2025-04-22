@@ -8,6 +8,7 @@ import { Notifications } from "@mantine/notifications";
 import { Layout } from "./components/layout";
 import InventoryIndex from "./Modules/Inventory/components/InventoryIndex";
 import PurchaseRoutes from "./Modules/Purchase/PurchaseRoute.jsx";
+import PatentRoutes from "./Modules/Patent/routes/PatentRoutes";
 
 // eslint-disable-next-line import/no-unresolved
 import { DesignationsProvider } from "./Modules/Iwd/helper/designationContext";
@@ -483,6 +484,7 @@ export default function App() {
 
         <Route path="/healthcenter/*" element={<HealthCenter />} />
         <Route path="/purchase/*" element={<PurchaseRoutes />} />
+        <Route path="/patent/*" element={<PatentRoutes />} />
         <Route path="/accounts/login" element={<LoginPage />} />
         <Route path="/reset-password" element={<ForgotPassword />} />
         <Route

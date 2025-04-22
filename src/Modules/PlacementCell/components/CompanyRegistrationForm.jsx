@@ -9,6 +9,7 @@ import {
   Group,
   Notification,
   Container,
+  Modal,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { MantineReactTable } from "mantine-react-table";
@@ -21,29 +22,8 @@ function CompanyRegistrationForm() {
   const [website, setWebsite] = useState("");
   const [logo, setLogo] = useState(null);
   const [error, setError] = useState("");
-  const [companies, setCompanies] = useState([
-    {
-      id: 1,
-      companyName: "Company A",
-      description: "Description A",
-      address: "Address A",
-      website: "www.companya.com",
-    },
-    {
-      id: 2,
-      companyName: "Company B",
-      description: "Description B",
-      address: "Address B",
-      website: "www.companyb.com",
-    },
-    {
-      id: 3,
-      companyName: "Company C",
-      description: "Description C",
-      address: "Address C",
-      website: "www.companyc.com",
-    },
-  ]);
+  const [companies, setCompanies] = useState([]);
+  const [modalOpened, setModalOpened] = useState(false);
 
   useEffect(() => {
     const fetchRegistrationData = async () => {
@@ -81,6 +61,7 @@ function CompanyRegistrationForm() {
       setError("Please fill all required fields.");
       return;
     }
+
     const newRegistration = {
       companyName,
       description,
@@ -88,6 +69,7 @@ function CompanyRegistrationForm() {
       website,
       logo,
     };
+
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -104,11 +86,27 @@ function CompanyRegistrationForm() {
       if (response.status === 200) {
         notifications.show({
           title: "Success",
-          message: "successfully added!",
+          message: "Successfully added!",
           color: "green",
           position: "top-center",
         });
-        setCompanies([...companies, response.data]);
+
+        const addedCompany = {
+          companyName: newRegistration.companyName,
+          description: newRegistration.description,
+          address: newRegistration.address,
+          website: newRegistration.website,
+          logo: newRegistration.logo,
+          ...response.data,
+        };
+
+        setCompanies([...companies, addedCompany]);
+        setModalOpened(false);
+        setCompanyName("");
+        setDescription("");
+        setAddress("");
+        setWebsite("");
+        setLogo(null);
       } else {
         notifications.show({
           title: "Failed",
@@ -118,10 +116,10 @@ function CompanyRegistrationForm() {
         });
       }
     } catch (err) {
-      console.error("Error adding restriction:", err);
+      console.error("Error adding company:", err);
       notifications.show({
         title: "Error",
-        message: "Failed to add restriction.",
+        message: "Failed to add company.",
         color: "red",
         position: "top-center",
       });
@@ -136,11 +134,40 @@ function CompanyRegistrationForm() {
   ];
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <Container mt="xl" flex={1}>
-        <Title order={2} mb="xl">
-          Company Registration
+    <Container fluid mt={32}>
+      <Container
+        fluid
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+        my={16}
+      >
+        <Title order={2}>Registered Companies</Title>
+        <Group position="right">
+          <Button
+            variant="outline"
+            style={{ marginLeft: "auto", marginRight: 0 }}
+            onClick={() => setModalOpened(true)}
+          >
+            Register New Company
+          </Button>
+        </Group>
+      </Container>
+      <MantineReactTable columns={columns} data={companies} />
+
+      <Modal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        centered
+        size="lg"
+      >
+        <Title order={3} mb={32}>
+          Register New Comapny
         </Title>
+
         {error && (
           <Notification color="red" onClose={() => setError("")}>
             {error}
@@ -154,6 +181,7 @@ function CompanyRegistrationForm() {
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
             required
+            mb={8}
           />
           <Textarea
             label="Company Description"
@@ -161,6 +189,7 @@ function CompanyRegistrationForm() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            mb={8}
           />
           <TextInput
             label="Company Address"
@@ -168,6 +197,7 @@ function CompanyRegistrationForm() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             required
+            mb={8}
           />
           <TextInput
             label="Website URL"
@@ -175,6 +205,7 @@ function CompanyRegistrationForm() {
             value={website}
             onChange={(e) => setWebsite(e.target.value)}
             required
+            mb={8}
           />
           <FileInput
             label="Company Logo"
@@ -182,20 +213,14 @@ function CompanyRegistrationForm() {
             onChange={setLogo}
             placeholder="Upload logo"
             accept="image/*"
+            mb={8}
           />
           <Group position="right" mt="md">
             <Button type="submit">Register Company</Button>
           </Group>
         </form>
-      </Container>
-
-      <Container mt="xl" flex={1}>
-        <Title order={2} mb="xl">
-          Registred Companies
-        </Title>
-        <MantineReactTable columns={columns} data={companies} />
-      </Container>
-    </div>
+      </Modal>
+    </Container>
   );
 }
 

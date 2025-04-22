@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Loader, Center, Paper, Grid, Text } from "@mantine/core";
-import { getUserComplaints } from "../routes/api"; // Import the utility function
+import { getUserComplaints } from "../routes/api";
 import FeedbackForm from "./FeedbackForm";
 import FeedbackList from "./FeedbackList";
 
@@ -14,15 +14,12 @@ function Feedback() {
     const fetchComplaints = async () => {
       setIsLoading(true);
       const token = localStorage.getItem("authToken");
-
       const response = await getUserComplaints(token);
 
       if (response.success) {
-        console.log("Complaints fetched:", response.data);
         setComplaints(response.data);
         setIsError(false);
       } else {
-        console.error("Error fetching complaints:", response.error);
         setIsError(true);
       }
       setIsLoading(false);
@@ -31,7 +28,7 @@ function Feedback() {
     fetchComplaints();
   }, [selectedComplaint]);
 
-  const renderFormTabContent = () => {
+  const renderContent = () => {
     if (isLoading) {
       return (
         <Center>
@@ -39,23 +36,17 @@ function Feedback() {
         </Center>
       );
     }
-
     if (isError || complaints.length === 0) {
       return (
         <Center>
-          {isError ? (
-            <Text color="Red" style={{ fontSize: "14px" }}>
-              Failed to fetch complaints. Please try again.
-            </Text>
-          ) : (
-            <Text style={{ fontSize: "14px" }}>
-              No resolved complaints available
-            </Text>
-          )}
+          <Text color="red" fz="md">
+            {isError
+              ? "Failed to fetch complaints. Please try again."
+              : "No resolved complaints available"}
+          </Text>
         </Center>
       );
     }
-
     if (selectedComplaint == null) {
       return (
         <FeedbackList
@@ -64,7 +55,6 @@ function Feedback() {
         />
       );
     }
-
     return (
       <FeedbackForm
         complaint={selectedComplaint}
@@ -74,7 +64,15 @@ function Feedback() {
   };
 
   return (
-    <Grid mt="xl" style={{ paddingInline: "49px", width: "100%" }}>
+    <Grid
+      mt="xl"
+      style={{ paddingInline: "49px", width: "100%" }}
+      sx={(theme) => ({
+        [theme.fn.smallerThan("sm")]: {
+          paddingInline: theme.spacing.md,
+        },
+      })}
+    >
       <Paper
         radius="md"
         px="lg"
@@ -87,8 +85,15 @@ function Feedback() {
           minHeight: "45vh",
         }}
         withBorder
+        sx={(theme) => ({
+          [theme.fn.smallerThan("sm")]: {
+            width: selectedComplaint ? "90vw" : "100%",
+            maxHeight: "auto",
+            minHeight: "auto",
+          },
+        })}
       >
-        {renderFormTabContent()}
+        {renderContent()}
       </Paper>
     </Grid>
   );

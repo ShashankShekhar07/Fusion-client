@@ -1,0 +1,175 @@
+/* DownloadsPage.css */
+
+/* Use the same container styling as ManageAttorneyAssignment */
+.manage-attorney-container {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 0;
+  margin-left: 0; /* Ensure content is aligned to the left */
+}
+
+/* Title styling */
+.downloads-title {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size: 26px;
+  color: #333;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* Description styling */
+.downloads-description {
+  font-size: 14px;
+  color: #555;
+  text-align: left;
+  margin-bottom: 32px;
+  margin-top: -25px;
+}
+
+/* Card styling for table */
+.table-card {
+  padding: 24px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Enable horizontal scrolling on small screens */
+}
+
+/* Table styling */
+.downloads-container {
+  padding: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.downloads-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: transparent;
+}
+
+.downloads-table th,
+.downloads-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.downloads-table th {
+  background-color: #f5f7f8;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.downloads-table td {
+  text-align: left;
+  vertical-align: middle;
+}
+
+.downloads-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+/* Button styling */
+.download-button, .delete-button {
+  min-width: 120px;
+  transition: all 0.2s ease;
+}
+
+.download-button:hover, .delete-button:hover {
+  transform: translateY(-1px);
+}
+
+/* Desktop-specific styles */
+@media (min-width: 769px) {
+  .manage-attorney-container {
+    margin-left: 30px; /* Shift container to the right */
+  }
+}
+
+/* Responsive styles for smaller screens */
+@media (max-width: 768px) {
+  .manage-attorney-container {
+    padding: 1rem;
+  }
+
+  .downloads-container {
+    padding: 0.5rem;
+  }
+
+  .add-document-form {
+    padding: 1rem;
+  }
+
+  .downloads-table th,
+  .downloads-table td {
+    padding: 0.75rem;
+  }
+
+  .page-heading-title {
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-heading-title {
+    font-size: 20px;
+  }
+
+  .description {
+    font-size: 11px;
+  }
+
+  .downloads-container {
+    padding: 0.5rem;
+  }
+
+  .add-document-form {
+    padding: 0.75rem;
+  }
+
+  .downloads-table th,
+  .downloads-table td {
+    padding: 0.5rem;
+  }
+
+  .download-button, .delete-button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}
+
+.add-document-form {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.add-document-form-title {
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.add-document-button {
+  color: #4c6ef5;
+  background-color: #fff;
+  border-color: #4c6ef5;
+}
+
+.add-document-button:hover {
+  background-color: #4c6ef5;
+  color: #fff;
+}
+

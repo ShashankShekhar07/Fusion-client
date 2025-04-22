@@ -1,0 +1,111 @@
+/* Centering Header */
+.status-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+/* Container Styles */
+.status-container {
+  padding: 30px;
+  max-width: 100%;
+  background-color: #f9fafb;
+}
+
+/* Title and Description */
+.status-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 700;
+  text-align: left;
+}
+.stati-title{
+  font-size: 2rem;
+    color: #333;
+    margin-bottom: 16px;
+    font-weight: 700;
+  text-align: left;
+}
+
+.description {
+  font-size: 1rem;
+  color: #5f6368;
+  margin-bottom: 24px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Status Cards Container */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+}
+
+/* Individual Card Styles */
+.status-card {
+  width: calc(48% - 8px);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  /* Paper-like shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.status-card:hover {
+  /* Stronger shadow on hover to enhance floating effect */
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.15);
+  
+  transform: translateY(-5px);
+}
+
+/* Card Title and Description */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #606060;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* Button Styles */
+.view-button {
+  color: #0073e6;
+    background-color: #ffffff;
+    border: 1px solid #0073e6;
+    font-weight: 500;
+    padding: 1px;
+}
+
+.view-button:hover {
+  background-color: #2563eb;
+}
+
+/* Detail View Styles */
+.detail-view-container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  /* Paper-like shadow for detail view */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.07);
+  margin-top: 20px;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  
+  transition: color 0.2s, border-color 0.2s;
+}
+
+

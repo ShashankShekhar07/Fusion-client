@@ -28,12 +28,38 @@ function SendNotificationForm() {
   };
 
   const handleSubmit = async () => {
+    if (formData.sendTo === "Student" && !formData.recipient) {
+      notifications.show({
+        title: "Error",
+        message: "Please enter a valid Roll No for the student.",
+        color: "red",
+        position: "top-center",
+      });
+      return;
+    }
+
     try {
       const token = localStorage.getItem("authToken");
       await axios.post(sendNotificationRoute, formData, {
         headers: {
           Authorization: `Token ${token}`,
         },
+      });
+
+      notifications.show({
+        title: "Success",
+        message: "Notification sent successfully.",
+        color: "green",
+        position: "top-center",
+      });
+
+      setFormData({
+        sendTo: "Student",
+        recipient: "",
+        date: new Date(),
+        time: "",
+        type: "",
+        description: "",
       });
     } catch (error) {
       console.error("Error sending notification:", error);
@@ -67,16 +93,19 @@ function SendNotificationForm() {
           placeholder="Select recipient"
           value={formData.sendTo}
           onChange={(value) => handleChange("sendTo", value)}
-          data={["Student", "Faculty", "All"]}
+          data={["Student", "All"]} 
         />
-        <TextInput
-          label="Student Roll No"
-          placeholder="Enter student Roll No "
-          value={formData.recipient}
-          onChange={(event) =>
-            handleChange("recipient", event.currentTarget.value)
-          }
-        />
+        {formData.sendTo === "Student" && ( 
+          <TextInput
+            label="Student Roll No"
+            placeholder="Enter student Roll No"
+            value={formData.recipient}
+            onChange={(event) =>
+              handleChange("recipient", event.currentTarget.value)
+            }
+            required
+          />
+        )}
       </Group>
 
       <Group mt="md">

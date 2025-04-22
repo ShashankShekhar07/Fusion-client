@@ -6,10 +6,9 @@
 }
 
 .fusionCaretCircleIcon {
-  font-size: 2rem;
-  @media (min-width: mantine-breakpoint-md) {
-    font-size: 1.5rem;
-  }
+  width: 24px;
+  height: 24px;
+  color: #228be6;
 }
 
 .fusionCaretIcon {
@@ -49,4 +48,124 @@
 
 .selectoptions:hover {
   background-color: #15abff10; /* Transparent blue hover background */
+}
+
+.tabsContainer {
+  flex: 1;
+  overflow: hidden;
+  margin: 0 4px;
+}
+
+.activeTab {
+  color: #228be6 !important;
+  border-color: #228be6 !important;
+}
+
+/* Add new styles for the tabs layout */
+.tabsWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  position: relative;
+  padding: 0 4px;
+}
+
+.tabsScrollArea {
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  max-width: calc(100% - 70px); /* Account for navigation buttons */
+  min-width: 200px;
+  white-space: nowrap;
+}
+
+.tabsScrollArea::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.navigationButton {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.tabsList {
+  display: inline-flex;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  min-width: fit-content;
+  border-bottom: 1px solid #e9ecef;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.tabsList [role="tab"] {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.activeTab {
+  color: #228be6 !important;
+  border-color: #228be6 !important;
+}
+
+/* Responsive styles */
+@media (max-width: 1200px) {
+  .tabsScrollArea {
+    max-width: calc(100% - 80px);
+  }
+}
+
+@media (max-width: 768px) {
+  .tabsWrapper {
+    gap: 4px;
+    padding: 0 2px;
+  }
+
+  .tabsScrollArea {
+    max-width: calc(100% - 70px);
+    min-width: 150px;
+  }
+
+  .navigationButton {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+  }
+
+  .fusionCaretCircleIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tabsList {
+    gap: 4px;
+    padding: 0 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tabsScrollArea {
+    max-width: calc(100% - 60px);
+    min-width: 120px;
+  }
+
+  .navigationButton {
+    width: 24px;
+    height: 24px;
+  }
+
+  .fusionCaretCircleIcon {
+    width: 18px;
+    height: 18px;
+  }
 }

@@ -12,8 +12,7 @@ import {
   Chip,
   MultiSelect,
 } from "@mantine/core";
-import { DatePicker, TimeInput } from "@mantine/dates";
-import { Calendar } from "@phosphor-icons/react";
+import { DateTimePicker } from "@mantine/dates";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import {
@@ -22,7 +21,7 @@ import {
   fetchFieldsSubmitformRoute,
 } from "../../../routes/placementCellRoutes";
 
-function AddPlacementEventForm() {
+function AddPlacementEventForm({ onClose }) {
   const [company, setCompany] = useState("");
   const [date, setDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -57,7 +56,7 @@ function AddPlacementEventForm() {
   const getCompanyId = (companyName) => {
     const _company = companies.find((c) => c.companyName === companyName);
     setCompany(_company.companyName);
-    return _company ? company.id : null;
+    return _company ? _company.id : null;
   };
 
   useEffect(() => {
@@ -151,13 +150,25 @@ function AddPlacementEventForm() {
       return;
     }
     const companyId = getCompanyId(selectedCompany);
-
     const matchingIds = selectedFields
       .map((value) => {
         const field = tpoFields.find((f) => f.value === value);
+        if (!field) {
+          console.error(`Field not found for value: ${value}`);
+        }
         return field ? field.id : null;
       })
-      .filter((id) => id !== null);
+      .filter((id) => id !== null); // Filter out invalid/null IDs
+
+    if (matchingIds.length === 0) {
+      notifications.show({
+        title: "Error",
+        message: "No valid fields selected. Please select valid fields.",
+        color: "red",
+        position: "top-center",
+      });
+      return;
+    }
 
     const formData = new FormData();
     formData.append("placement_type", placementType);
@@ -190,6 +201,8 @@ function AddPlacementEventForm() {
 
     formData.append("selected_fields", selectedFields.join(", "));
 
+    console.log("\n formData", formData);
+
     try {
       await axios.post(addPlacementEventForm, formData, {
         headers: {
@@ -197,6 +210,9 @@ function AddPlacementEventForm() {
           Authorization: `Token ${token}`,
         },
       });
+      if (onClose) {
+        onClose();
+      }
       notifications.show({
         title: "Event Added",
         message: "Placement Event has been added successfully.",
@@ -236,56 +252,24 @@ function AddPlacementEventForm() {
           />
         </Grid.Col>
 
-        <Grid.Col span={4} style={{ position: "relative" }}>
-          <TextInput
-            label="Date of Drive"
-            placeholder="Pick date"
-            value={date ? date.toLocaleDateString() : ""}
-            readOnly
-            rightSection={
-              <ActionIcon onClick={() => setDatePickerOpened((prev) => !prev)}>
-                <Calendar size={16} />
-              </ActionIcon>
-            }
+        <Grid.Col span={6} style={{ position: "relative" }}>
+          <DateTimePicker
+            label="Start Date and Time"
+            placeholder="Pick start date and time"
+            value={date}
+            onChange={(selectedDate) => setDate(selectedDate)}
+            required
           />
-          {datePickerOpened && (
-            <DatePicker
-              value={date}
-              onChange={(selectedDate) => {
-                setDate(selectedDate);
-                setDatePickerOpened(false);
-              }}
-              onBlur={() => setDatePickerOpened(false)}
-              style={{ zIndex: 1 }}
-            />
-          )}
         </Grid.Col>
 
-        <Grid.Col span={4} style={{ position: "relative" }}>
-          <TextInput
-            label="End Date"
-            placeholder="Pick end date"
-            value={endDate ? endDate.toLocaleDateString() : ""}
-            readOnly
-            rightSection={
-              <ActionIcon
-                onClick={() => setEndDatePickerOpened((prev) => !prev)}
-              >
-                <Calendar size={16} />
-              </ActionIcon>
-            }
+        <Grid.Col span={6} style={{ position: "relative" }}>
+          <DateTimePicker
+            label="End Date and Time"
+            placeholder="Pick end date and time"
+            value={endDate}
+            onChange={(selectedDate) => setEndDate(selectedDate)}
+            required
           />
-          {endDatePickerOpened && (
-            <DatePicker
-              value={endDate}
-              onChange={(selectedDate) => {
-                setEndDate(selectedDate);
-                setEndDatePickerOpened(false);
-              }}
-              onBlur={() => setEndDatePickerOpened(false)}
-              style={{ zIndex: 1 }}
-            />
-          )}
         </Grid.Col>
 
         <Grid.Col span={4}>
@@ -305,37 +289,7 @@ function AddPlacementEventForm() {
             onChange={(e) => setCtc(e.target.value)}
           />
         </Grid.Col>
-
-        <Grid.Col span={4}>
-          <TimeInput
-            label="Start Time"
-            placeholder="Select time"
-            value={time ? new Date(`1970-01-01T${time}:00`) : null}
-            onChange={(value) => {
-              if (value instanceof Date && !Number.isNaN(value)) {
-                setTime(value.toTimeString().slice(0, 5));
-              }
-            }}
-            format="24"
-          />
-        </Grid.Col>
-
-        <Grid.Col span={4}>
-          <TimeInput
-            label="End Time"
-            placeholder="Select end time"
-            value={
-              endDateTime ? new Date(`1970-01-01T${endDateTime}:00`) : null
-            }
-            onChange={(value) => {
-              if (value instanceof Date && !Number.isNaN(value)) {
-                setEndDateTime(value.toTimeString().slice(0, 5)); // Store as HH:mm
-              }
-            }}
-            format="24"
-          />
-        </Grid.Col>
-
+        
         <Grid.Col span={4}>
           <Select
             label="Placement Type"

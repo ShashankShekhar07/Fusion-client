@@ -30,6 +30,7 @@ import {
   User as ProfileIcon,
   Gear as SettingsIcon,
   AmazonLogo as CourseManagementIcon,
+  Scroll as PatentIcon,
   CaretRight,
   CaretLeft,
 } from "@phosphor-icons/react";
@@ -65,6 +66,7 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
     "other_academics",
     "hr",
     "course_management",
+    "patent_management",
   ];
 
   const Modules = [
@@ -199,6 +201,12 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
       icon: <CourseManagementIcon size={18} />,
       url: "/course-management",
     },
+    {
+      label: "Patent Management",
+      id: "patent_management",
+      icon: <PatentIcon size={18} />,
+      url: "/patent/",
+    },
   ];
 
   const otherItems = [
@@ -237,6 +245,36 @@ function SidebarContent({ isCollapsed, toggleSidebar }) {
         path = "/healthcenter/compounder/patient-log";
       } else if (role === "student" || role === "Professor") {
         path = "/healthcenter/student/history";
+      }
+    }
+
+    const applicantRoles = [
+      "student",
+      "alumini",
+      "Professor",
+      "Associate Professor",
+      "Assistant Professor",
+      "Research Engineer",
+      "HOD (CSE)",
+      "HOD (ECE)",
+      "HOD (ME)",
+      "HOD (NS)",
+      "HOD (Design)",
+      "HOD (Liberal Arts)",
+      "Dean Academic",
+      "dean_s",
+      "dean_rspc",
+      "Dean (P&D)",
+      "Dean (R&D)",
+    ];
+
+    if (item.id === "patent_management") {
+      if (role === "Director") {
+        path = "/patent/director";
+      } else if (role === "PCC Admin") {
+        path = "/patent/pccAdmin";
+      } else if (applicantRoles.includes(role)) {
+        path = "/patent/applicant";
       }
     }
 

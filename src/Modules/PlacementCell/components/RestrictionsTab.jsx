@@ -1,37 +1,39 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/no-unstable-nested-components */
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Card,
   Container,
   Title,
   Button,
   Select,
   TextInput,
   Grid,
-  Pagination,
-  Alert,
+  Modal,
   Chip,
   Text,
-  ActionIcon,
   Group,
-  Modal,
+  ActionIcon,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { Pencil, Trash } from "@phosphor-icons/react";
 import axios from "axios";
-import { MantineReactTable } from "mantine-react-table";
+import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 import { fetchRestrictionsRoute } from "../../../routes/placementCellRoutes";
+
+const columns = [
+  { accessorKey: "criteria", header: "Criteria" },
+  { accessorKey: "condition", header: "Condition" },
+  { accessorKey: "value", header: "Value" },
+  { accessorKey: "description", header: "Description" },
+];
 
 function RestrictionsTab() {
   const [restrictions, setRestrictions] = useState([]);
-  const [activePage, setActivePage] = useState(1);
-  const recordsPerPage = 10;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [criteria, setCriteria] = useState("");
   const [condition, setCondition] = useState("");
   const [values, setValues] = useState([]);
   const [editingRestriction, setEditingRestriction] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const conditionOptions = {
     cgpa: [
@@ -64,22 +66,7 @@ function RestrictionsTab() {
         });
 
         if (response.status === 200) {
-          setRestrictions([]);
-          response.data.forEach((element) => {
-            const newField = {
-              criteria: element.criteria,
-              condition: element.condition,
-              value: element.value,
-              description: element.description,
-            };
-            setRestrictions((prevFields) => [...prevFields, newField]);
-          });
-        } else if (response.status === 406) {
-          notifications.show({
-            title: "Error fetching data",
-            message: `Error fetching data: ${response.status}`,
-            color: "red",
-          });
+          setRestrictions(response.data);
         } else {
           notifications.show({
             title: "Error fetching data",
@@ -88,11 +75,14 @@ function RestrictionsTab() {
           });
         }
       } catch (error) {
+        setIsError(true);
         notifications.show({
           title: "Failed to fetch data",
-          message: "Failed to fetch feilds list",
+          message: "Failed to fetch restrictions list",
           color: "red",
         });
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchRestrictionsList();
@@ -101,31 +91,27 @@ function RestrictionsTab() {
   const getRuleDescription = () => {
     if (!criteria || !condition || values.length === 0) return "";
 
-    let conditionText = "";
-
     if (criteria === "cgpa") {
-      conditionText =
-        condition === "greater_than"
-          ? `Students with CGPA > ${values[0]} are not allowed to participate in further drives.`
-          : `Students with CGPA < ${values[0]} are not allowed to participate in further drives.`;
-    } else if (criteria === "company") {
-      conditionText =
-        condition === "equal"
-          ? `Students placed in ${values.join(", ")} are not allowed to participate in further drives.`
-          : `Students not placed in ${values.join(", ")} are not allowed to participate in further drives.`;
-    } else if (criteria === "year") {
-      conditionText =
-        condition === "greater_than"
-          ? `Students in year > ${values[0]} are not allowed to participate in further drives.`
-          : `Students in year < ${values[0]} are not allowed to participate in further drives.`;
-    } else if (criteria === "ctc") {
-      conditionText =
-        condition === "greater_than"
-          ? `Students with CTC > ${values[0]} are not allowed to participate in further drives.`
-          : `Students with CTC < ${values[0]} are not allowed to participate in further drives.`;
+      return condition === "greater_than"
+        ? `Students with CGPA > ${values[0]} are not allowed to participate in further drives.`
+        : `Students with CGPA < ${values[0]} are not allowed to participate in further drives.`;
     }
-
-    return conditionText;
+    if (criteria === "company") {
+      return condition === "equal"
+        ? `Students placed in ${values.join(", ")} are not allowed to participate in further drives.`
+        : `Students not placed in ${values.join(", ")} are not allowed to participate in further drives.`;
+    }
+    if (criteria === "year") {
+      return condition === "greater_than"
+        ? `Students in year > ${values[0]} are not allowed to participate in further drives.`
+        : `Students in year < ${values[0]} are not allowed to participate in further drives.`;
+    }
+    if (criteria === "ctc") {
+      return condition === "greater_than"
+        ? `Students with CTC > ${values[0]} are not allowed to participate in further drives.`
+        : `Students with CTC < ${values[0]} are not allowed to participate in further drives.`;
+    }
+    return "";
   };
 
   const resetForm = () => {
@@ -155,12 +141,11 @@ function RestrictionsTab() {
         color: "green",
       });
     } else {
-      const newRestriction = { ...restrictionData, id: Math.random() };
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.post(
           fetchRestrictionsRoute,
-          newRestriction,
+          restrictionData,
           {
             headers: {
               Authorization: `Token ${token}`,
@@ -171,17 +156,18 @@ function RestrictionsTab() {
         if (response.status === 200) {
           notifications.show({
             title: "Success",
-            message: "successfully added!",
+            message: "Restriction added successfully!",
             color: "green",
-            position: "top-center",
           });
-          setRestrictions([...restrictions, newRestriction]);
+          setRestrictions([
+            ...restrictions,
+            { ...restrictionData, id: response.data.id },
+          ]);
         } else {
           notifications.show({
             title: "Failed",
-            message: `Failed to add`,
+            message: "Failed to add restriction.",
             color: "red",
-            position: "top-center",
           });
         }
       } catch (error) {
@@ -190,7 +176,6 @@ function RestrictionsTab() {
           title: "Error",
           message: "Failed to add restriction.",
           color: "red",
-          position: "top-center",
         });
       }
     }
@@ -198,13 +183,28 @@ function RestrictionsTab() {
     resetForm();
   };
 
-  const handleDelete = (id) => {
-    setRestrictions(restrictions.filter((r) => r.id !== id));
-    notifications.show({
-      title: "Success",
-      message: "Restriction deleted successfully!",
-      color: "green",
-    });
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await axios.delete(`${fetchRestrictionsRoute}/${id}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+
+      setRestrictions((prev) => prev.filter((r) => r.id !== id));
+      notifications.show({
+        title: "Success",
+        message: "Restriction deleted successfully!",
+        color: "green",
+      });
+    } catch (error) {
+      notifications.show({
+        title: "Error",
+        message: "Failed to delete restriction.",
+        color: "red",
+      });
+    }
   };
 
   const handleEdit = (restriction) => {
@@ -215,87 +215,85 @@ function RestrictionsTab() {
     setIsModalOpen(true);
   };
 
-  const columns = useMemo(
-    () => [
-      { accessorKey: "criteria", header: "Criteria", size: 200 },
-      { accessorKey: "condition", header: "Condition", size: 150 },
-      { accessorKey: "value", header: "Value", size: 150 },
-      { accessorKey: "description", header: "Description", size: 250 },
-      {
-        accessorKey: "actions",
+  const table = useMantineReactTable({
+    columns,
+    data: restrictions,
+    enableEditing: false,
+    getRowId: (row) => row.id,
+    enableRowActions: true,
+    positionActionsColumn: "last",
+    displayColumnDefOptions: {
+      "mrt-row-actions": {
         header: "Actions",
-        size: 120,
-        Cell: ({ row }) => (
-          <Group spacing="xs">
-            <ActionIcon onClick={() => handleEdit(row.original)}>
-              <Pencil size={16} />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => handleDelete(row.original.id)}
-              color="red"
-            >
-              <Trash size={16} />
-            </ActionIcon>
-          </Group>
-        ),
       },
-    ],
-    [],
-  );
+    },
+    renderRowActions: ({ row }) => (
+      <Group spacing="xs">
+        {/* Edit Button */}
+        <ActionIcon
+          color="blue"
+          onClick={() => handleEdit(row.original)}
+          title="Edit Restriction"
+        >
+          <Pencil size={18} />
+        </ActionIcon>
 
-  const paginatedRestrictions = restrictions.slice(
-    (activePage - 1) * recordsPerPage,
-    activePage * recordsPerPage,
-  );
+        {/* Delete Button */}
+        <ActionIcon
+          color="red"
+          onClick={() => handleDelete(row.original.id)}
+          title="Delete Restriction"
+        >
+          <Trash size={18} />
+        </ActionIcon>
+      </Group>
+    ),
+    mantineToolbarAlertBannerProps: isError
+      ? { color: "red", children: "Error loading data" }
+      : undefined,
+    state: {
+      isLoading,
+      showAlertBanner: isError,
+    },
+  });
 
   return (
-    <Container>
-      <Card
-        shadow="sm"
-        padding="lg"
-        radius="lg"
-        withBorder
+    <Container fluid mt={32}>
+      <Container
+        fluid
         style={{
           display: "flex",
-          justifyContent: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
+        my={16}
       >
-        <Title order={3} align="center" style={{ marginBottom: "20px" }}>
-          Restrictions
-        </Title>
-        <Button
-          onClick={() => setIsModalOpen(true)}
-          style={{ marginBottom: "20px", width: "10rem" }}
-        >
-          Add Restriction
-        </Button>
+        <Title order={2}>Restrictions</Title>
+        <Group position="right">
+          <Button
+            variant="outline"
+            onClick={() => {
+              resetForm();
+              setEditingRestriction(null);
+              setIsModalOpen(true);
+            }}
+          >
+            Add Restriction
+          </Button>
+        </Group>
+      </Container>
 
-        {restrictions.length > 0 ? (
-          <MantineReactTable columns={columns} data={paginatedRestrictions} />
-        ) : (
-          <Alert color="yellow">No restrictions available</Alert>
-        )}
-
-        <Pagination
-          page={activePage}
-          onChange={setActivePage}
-          total={Math.ceil(restrictions.length / recordsPerPage)}
-          style={{ marginTop: "20px" }}
-        />
-      </Card>
+      <MantineReactTable table={table} />
 
       <Modal
         opened={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Add/Edit Restriction"
-        size="lg"
+        title={editingRestriction ? "Edit Restriction" : "Add Restriction"}
         centered
+        size="lg"
       >
-        <Card style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <Title order={3} align="center" style={{ marginBottom: "20px" }}>
-            {editingRestriction ? "Edit Restriction" : "Add Restriction"}
-          </Title>
+        <Container fluid>
           <Grid gutter="lg">
             <Grid.Col span={12}>
               <Select
@@ -342,26 +340,20 @@ function RestrictionsTab() {
               </div>
             </Grid.Col>
 
-            {/* Rule Preview Chip */}
-            <Grid.Col span={12}>
-              <div style={{ marginTop: 20 }}>
-                <Text size="sm" style={{ marginBottom: 5 }}>
-                  {" "}
-                  Rule Preview:{" "}
-                </Text>
-                {criteria && condition && values.length > 0 && (
-                  <Chip color="teal">{getRuleDescription()}</Chip>
-                )}
-              </div>
+            <Grid.Col span={12} mt={4}>
+              <Text size="sm" style={{ marginBottom: 5 }}>
+                Rule Preview:
+              </Text>
+              {criteria && condition && values.length > 0 && (
+                <Chip color="teal">{getRuleDescription()}</Chip>
+              )}
             </Grid.Col>
 
-            <Grid.Col span={12}>
-              <Button onClick={handleSubmit} fullWidth>
-                Submit
-              </Button>
+            <Grid.Col display="flex" mt={16}>
+              <Button onClick={handleSubmit}>Submit</Button>
             </Grid.Col>
           </Grid>
-        </Card>
+        </Container>
       </Modal>
     </Container>
   );

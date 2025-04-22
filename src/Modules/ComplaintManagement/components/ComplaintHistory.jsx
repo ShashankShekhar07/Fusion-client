@@ -43,7 +43,7 @@ function ComplaintHistory() {
 
       if (response.success) {
         const { data } = response;
-        const pending = data.filter((c) => c.status === 0);
+        const pending = data.filter((c) => c.status === 0 || c.status === 1);
         const resolved = data.filter((c) => c.status === 2);
         const declined = data.filter((c) => c.status === 3);
 

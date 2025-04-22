@@ -26,7 +26,7 @@ function ResolvedComplaints() {
     const fetchResolvedComplaints = async () => {
       setIsLoading(true);
       try {
-        const response = await getComplaintsByRole("caretaker", token); // Use the API function
+        const response = await getComplaintsByRole("caretaker", token);
         if (response.success) {
           const filteredComplaints = response.data.filter(
             (complaint) => complaint.status === 2,
@@ -198,17 +198,32 @@ function FeedbackDetails({ complaint, onBack }) {
   };
 
   return (
-    <Flex direction="column" gap="xs">
-      <Text size="24px" style={{ weight: "bold" }}>
+    <Flex
+      direction="column"
+      gap="md"
+      style={{ padding: "1rem", height: "100%" }}
+    >
+      <Text size="24px" style={{ fontWeight: "bold" }}>
         Feedback Details
       </Text>
-      <Grid columns="2" style={{ width: "100%" }}>
+      <Grid
+        columns={2}
+        style={{
+          width: "100%",
+          gap: "1rem",
+        }}
+        sx={(theme) => ({
+          [theme.fn.smallerThan("sm")]: {
+            gridTemplateColumns: "1fr",
+          },
+        })}
+      >
         <Grid.Col span={1}>
           <Flex direction="column" gap="xs">
             <Text size="14px">
               <b>Complainer ID:</b>
             </Text>
-            <Text size="14px">{complaint.complainer}</Text>
+            <Text size="14px">{complaint.complainer_id}</Text>
           </Flex>
         </Grid.Col>
         <Grid.Col span={1}>
@@ -216,11 +231,9 @@ function FeedbackDetails({ complaint, onBack }) {
             <Text size="14px">
               <b>Complaint ID:</b>
             </Text>
-            <Text size="14px">{complaint.id}</Text>
+            <Text size="14px">{complaint.complaint_id}</Text>
           </Flex>
         </Grid.Col>
-      </Grid>
-      <Grid columns="2" style={{ width: "100%" }}>
         <Grid.Col span={1}>
           <Flex direction="column" gap="xs">
             <Text size="14px">
@@ -262,8 +275,8 @@ function FeedbackDetails({ complaint, onBack }) {
           {complaint.feedback || "No feedback provided"}
         </Text>
       </Flex>
-      <Flex direction="row-reverse" gap="xs">
-        <Button variant="filled" color="black" onClick={onBack}>
+      <Flex justify="flex-end" style={{ marginTop: "auto" }}>
+        <Button onClick={onBack} radius="md" size="md">
           Back
         </Button>
       </Flex>
@@ -274,6 +287,7 @@ function FeedbackDetails({ complaint, onBack }) {
 FeedbackDetails.propTypes = {
   complaint: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    complaint_id: PropTypes.string.isRequired, // Added missing prop validation
     complaint_type: PropTypes.string.isRequired,
     complaint_date: PropTypes.string.isRequired,
     complaint_finish: PropTypes.string,
@@ -284,6 +298,7 @@ FeedbackDetails.propTypes = {
     feedback: PropTypes.string,
     comment: PropTypes.string,
     complainer: PropTypes.string,
+    complainer_id: PropTypes.string.isRequired,
   }).isRequired,
   onBack: PropTypes.func.isRequired,
 };

@@ -1,0 +1,75 @@
+/* Page title */
+.draft-header-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+  letter-spacing: 0.5px;
+  padding-left: 50px;
+  margin-bottom: 10px;
+  margin-top: -20px;
+}
+
+/* Saved drafts container for flex layout */
+.draft-app-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 550px;
+  height: auto;
+  padding-left: 50px;
+}
+
+/* Saved draft card */
+.saved-draft-card {
+  flex: 1;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.saved-draft-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Responsive behavior for smaller screens */
+@media (max-width: 768px) {
+  .draft-app-container {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .saved-draft-card {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .draft-header-text {
+    padding-left: 10px;
+  }
+}
+
+/* Empty state card - matches draft card styling */
+.empty-state-card {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  transition: none;
+  transform: none;
+}
+
+.empty-state-card:hover {
+  transform: none;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjust the container for empty state */
+.draft-app-container:has(.empty-state-card) {
+  justify-content: center;
+}

@@ -83,6 +83,7 @@ function JoiningReportAndIDCardApprovalModal({
                 <Button
                   color="green"
                   style={{ borderRadius: "8px" }}
+                  size="xs"
                   onClick={() => handleStaffDecision("approve")}
                 >
                   <ThumbsUp size={26} style={{ marginRight: "3px" }} />
@@ -92,6 +93,7 @@ function JoiningReportAndIDCardApprovalModal({
                   color="red"
                   style={{ borderRadius: "8px" }}
                   onClick={() => handleStaffDecision("reject")}
+                  size="xs"
                   variant="outline"
                 >
                   <ThumbsDown size={26} style={{ marginRight: "3px" }} />

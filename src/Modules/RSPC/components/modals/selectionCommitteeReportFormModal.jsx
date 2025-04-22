@@ -19,6 +19,7 @@ import axios from "axios";
 import { Trash, FileText, ThumbsUp, ThumbsDown } from "@phosphor-icons/react";
 import classes from "../../styles/formStyle.module.css";
 import { staffSelectionReportRoute } from "../../../../routes/RSPCRoutes";
+import ConfirmationModal from "../../helpers/confirmationModal";
 
 function SelectionCommitteeReportFormModal({ opened, onClose, staffData }) {
   const [successAlertVisible, setSuccessAlertVisible] = useState(false);
@@ -29,6 +30,7 @@ function SelectionCommitteeReportFormModal({ opened, onClose, staffData }) {
   const [alertBody, setAlertBody] = useState(
     "The selection committee's report could not be successfully registered! Please verify the filled details and submit the form again.",
   );
+  const [confirmationModalOpened, setConfirmationModalOpened] = useState(false);
 
   const [finalSelection, setFinalSelection] = useState([
     {
@@ -145,6 +147,10 @@ function SelectionCommitteeReportFormModal({ opened, onClose, staffData }) {
       }, 2500);
     }
   };
+  const handleFormSubmit = () => {
+    if (form.validate().hasErrors) return;
+    setConfirmationModalOpened(true);
+  };
 
   return (
     <Modal
@@ -157,7 +163,7 @@ function SelectionCommitteeReportFormModal({ opened, onClose, staffData }) {
         },
       }}
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleFormSubmit)}>
         {staffData &&
         Object.keys(staffData).length > 0 &&
         "sid" in staffData ? (
@@ -931,6 +937,16 @@ function SelectionCommitteeReportFormModal({ opened, onClose, staffData }) {
           </Text>
         )}
       </form>
+
+      <ConfirmationModal
+        opened={confirmationModalOpened}
+        onClose={() => setConfirmationModalOpened(false)}
+        onConfirm={() => {
+          setConfirmationModalOpened(false);
+          form.onSubmit(handleSubmit)();
+        }}
+      />
+
       {(successAlertVisible || failureAlertVisible) && (
         <div className={classes.overlay}>
           <Alert

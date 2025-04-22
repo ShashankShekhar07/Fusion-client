@@ -14,6 +14,7 @@ import {
   MultiSelect,
 } from "@mantine/core";
 import { DateInput, TimeInput } from "@mantine/dates";
+import { notifications } from "@mantine/notifications";
 import PropTypes from "prop-types";
 
 function EditPlacementForm({ isOpen, onClose, placementData, onSubmit }) {
@@ -65,6 +66,15 @@ function EditPlacementForm({ isOpen, onClose, placementData, onSubmit }) {
       description: descriptionInput,
       role,
     });
+
+    notifications.show({
+      title: "Success",
+      message: "Placement event updated successfully!",
+      color: "green",
+      position: "top-center",
+    });
+
+    onClose();
   };
 
   return (

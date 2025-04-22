@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import AddPlacementEventForm from "./AddPlacementEventForm";
 import PlacementScheduleCard from "./PlacementScheduleCard";
 import { fetchPlacementScheduleRoute } from "../../../routes/placementCellRoutes";
+import { notifications } from "@mantine/notifications";
 
 const getCookie = (name) => {
   const value = `; ${document.cookie}`;
@@ -68,7 +69,7 @@ function PlacementScheduleGrid({ data, itemsPerPage, cardsPerRow }) {
         total={Math.ceil(data.length / itemsPerPage)}
         mt="xl"
         position="right"
-        style={{ position: "fixed", bottom: 32 }}
+        // style={{ position: "fixed", bottom: 32 }}
       />
     </Container>
   );
@@ -111,7 +112,12 @@ function PlacementSchedule() {
           "Error details:",
           err.response ? err.response.data : err.message,
         );
-        setError(err.message);
+        setError("Failed to fetch placement schedules.");
+        notifications.show({
+          title: "Error",
+          message: "Failed to fetch placement schedules.",
+          color: "red",
+        });
       } finally {
         setLoading(false);
       }
@@ -122,19 +128,29 @@ function PlacementSchedule() {
 
   const today = dayjs();
 
-  const activeEvents = placementData.filter((item) =>
-    dayjs(item.placement_date).isAfter(today, "day"),
-  );
-  const closedEvents = placementData.filter((item) =>
-    dayjs(item.placement_date).isBefore(today, "day"),
-  );
+  const activeEvents = placementData.filter((event) => {
+    // const endDateTime = new Date(`${event.schedule}T${event.time}`);
+    const startDate = new Date(event.placement_date);
+    return startDate <= new Date();
+    // && endDateTime > new Date()
+  });
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const closedEvents = placementData.filter((event) => {
+    const endDateTime = new Date(`${event.schedule_at}T${event.time}`);
+    return endDateTime <= new Date();
+  });
 
   const handleAddEvent = () => {
     setIsModalOpen(true);
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <>
@@ -159,22 +175,37 @@ function PlacementSchedule() {
         <Tabs defaultValue="active" variant="pills" style={{ marginLeft: 16 }}>
           <Tabs.List>
             <Tabs.Tab value="active">Active</Tabs.Tab>
-            {role !== "student" && <Tabs.Tab value="closed">Closed</Tabs.Tab>}
+            {role === "placement officer" && (
+              <Tabs.Tab value="closed">Closed</Tabs.Tab>
+            )}
           </Tabs.List>
 
           <Tabs.Panel value="active" pt="md">
-            <PlacementScheduleGrid
-              data={activeEvents}
-              itemsPerPage={10}
-              cardsPerRow={2}
-            />
+            {activeEvents.length > 0 ? (
+              <PlacementScheduleGrid
+                data={activeEvents}
+                itemsPerPage={10}
+                cardsPerRow={2}
+              />
+            ) : (
+              <div style={{ textAlign: "center", marginTop: "20px" }}>
+                No active placement schedules available.
+              </div>
+            )}
           </Tabs.Panel>
+
           <Tabs.Panel value="closed" pt="md">
-            <PlacementScheduleGrid
-              data={closedEvents}
-              itemsPerPage={10}
-              cardsPerRow={5}
-            />
+            {closedEvents.length > 0 ? (
+              <PlacementScheduleGrid
+                data={closedEvents}
+                itemsPerPage={10}
+                cardsPerRow={2}
+              />
+            ) : (
+              <div style={{ textAlign: "center", marginTop: "20px" }}>
+                No closed placement schedules available.
+              </div>
+            )}
           </Tabs.Panel>
         </Tabs>
       </Container>

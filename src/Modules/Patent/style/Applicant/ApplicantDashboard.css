@@ -1,0 +1,302 @@
+/* General Page Styling */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  color: #2d3748;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* Title Styling */
+.title-dashboard {
+  font-size: 26px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Feature Box Container */
+.feature-box-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* Individual Feature Box */
+.feature-box-with-hover {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #f5f7fa;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.feature-box-with-hover:hover {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Feature Icon */
+.feature-icon {
+  margin-right: 16px;
+  color: #0073e6;
+}
+
+/* Feature Title */
+.feature-box-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #2d3748;
+}
+
+/* Content Below Title */
+.content-container {
+  max-width: 95%;
+  font-size: 16px;
+  color: #2d3748;
+  margin-bottom: 32px;
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Title */
+.dashboard-section-title {
+  font-size: 1.5rem;
+  font-weight: 550;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.workflow-container {
+  max-width: 100%;
+  margin-bottom: 32px;
+  margin-top: 32px;
+}
+
+/* Mobile Progress Bar Container */
+.mobile-progress-container {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+/* Vertical Progress Bar */
+.mobile-progress-bar {
+  height: 300px;
+  width: 20px;
+
+}
+
+/* Progress Labels */
+.mobile-progress-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mobile-progress-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-progress-dot {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide Mobile Progress Bar on Larger Screens */
+@media (min-width: 768px) {
+  .mobile-progress-container {
+    display: none;
+  }
+}
+
+/* Hide Horizontal Progress Bar on Smaller Screens */
+@media (max-width: 767px) {
+  .status-progress-container {
+    display: none;
+  }
+}
+
+
+/* Downloads Section Styles */
+.downloads-container {
+  margin-top: 2rem;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.downloads-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.downloads-description {
+  color: #718096;
+  font-size: 0.875rem;
+}
+
+.downloads-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.downloads-table th {
+  background-color: #f7fafc;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #4a5568;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.downloads-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+}
+
+.download-button {
+  transition: all 0.2s ease;
+  max-width: 180px;
+  margin: 0 auto;
+  display: block;
+}
+
+.download-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Styling */
+.downloads-container {
+  max-width: 100%;
+}
+
+.downloads-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.downloads-table th,
+.downloads-table td {
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.downloads-table th {
+  background-color: #f1f3f5;
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow-container {
+    width: 100%;
+  }
+
+  .downloads-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.download-button-table {
+  color: #0073e6;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+}
+
+.download-button-table:hover {
+  background-color: #0073e6;
+  color: #ffffff;
+}
+
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 32px 0;
+}
+
+
+/* Dashboard Cards */
+.dashboard-cards {
+  background-color: #fff;
+  padding: 32px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  border-left: 6px solid transparent;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  text-align: left;
+  cursor: pointer;
+  flex: 1 1 calc(50% - 12px); /* Two cards per row on larger screens */
+
+}
+
+/* Mark as Read button */
+.markReadButton {
+  margin-top: 16px;
+  background-color: #fff;
+  color: #0073e6;
+  font-weight: 500;
+}
+
+.markReadButton:hover {
+  background-color: #0073e6;
+  color: #F7FAFC;
+}
+
+/* Card Title */
+.dashboard-card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Card Divider */
+.card-divider {
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  .dashboard-cards {
+    flex: 1 1 100%; /* One card per row on smaller screens */
+  }
+}

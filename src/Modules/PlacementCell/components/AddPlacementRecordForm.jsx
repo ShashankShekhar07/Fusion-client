@@ -1,4 +1,5 @@
 import "@mantine/dates/styles.css";
+import "@mantine/core/styles.css";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import {
@@ -9,6 +10,7 @@ import {
   Container,
   Modal,
   Title,
+  Flex,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { fetchPlacementStatsRoute } from "../../../routes/placementCellRoutes";
@@ -88,18 +90,17 @@ function AddPlacementRecordForm({ opened, onClose }) {
   };
 
   return (
-    <Container>
-      <Modal opened={opened} onClose={onClose} size="lg" centered>
-        {/* Grouping input fields */}
-
+    <Modal opened={opened} onClose={onClose} size="lg" centered>
+      <Container fluid p={16}>
         <Title order={3} mb={32}>
           Add Placement Record
         </Title>
-        <Group
-          grow
-          spacing="md"
-          direction="column"
-          breakpoints={{ sm: { direction: "row" } }}
+        <Flex
+          direction="row"
+          wrap="wrap"
+          gap="lg"
+          justify="space-between"
+          align="flex-start"
         >
           <TextInput
             label="Company Name"
@@ -107,6 +108,7 @@ function AddPlacementRecordForm({ opened, onClose }) {
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
             required
+            style={{ flex: "1 1 calc(50% - 16px)" }} 
           />
           <TextInput
             label="Roll No."
@@ -114,22 +116,16 @@ function AddPlacementRecordForm({ opened, onClose }) {
             value={rollNo}
             onChange={(e) => setRollNo(e.target.value)}
             required
+            style={{ flex: "1 1 calc(50% - 16px)" }}
           />
-        </Group>
 
-        <Group
-          grow
-          spacing="md"
-          direction="column"
-          breakpoints={{ sm: { direction: "row" } }}
-          style={{ marginTop: "20px" }}
-        >
           <TextInput
             label="CTC in LPA"
             placeholder="Enter CTC"
             value={ctc}
             onChange={(e) => setCtc(e.target.value)}
             required
+            style={{ flex: "1 1 calc(50% - 16px)" }}
           />
           <TextInput
             label="Year"
@@ -137,42 +133,42 @@ function AddPlacementRecordForm({ opened, onClose }) {
             value={year}
             onChange={(e) => setYear(e.target.value)}
             required
+            style={{ flex: "1 1 calc(50% - 16px)" }}
           />
-        </Group>
 
-        <Select
-          label="Placement Type"
-          placeholder="Select placement type"
-          data={["PBI", "Placement"]}
-          value={placementType}
-          onChange={setPlacementType}
-          style={{ marginTop: "20px" }}
-          required
-        />
+          <Select
+            label="Placement Type"
+            placeholder="Select placement type"
+            data={["PBI", "Placement"]}
+            value={placementType}
+            onChange={setPlacementType}
+            required
+            style={{ flex: "1 1 calc(50% - 16px)" }}
+          />
+          <TextInput
+            label="Test Type"
+            placeholder="Enter test type"
+            value={testType}
+            onChange={(e) => setTestType(e.target.value)}
+            required
+            style={{ flex: "1 1 calc(50% - 16px)" }}
+          />
 
-        <TextInput
-          label="Test Type"
-          placeholder="Enter test type"
-          value={testType}
-          onChange={(e) => setTestType(e.target.value)}
-          style={{ marginTop: "20px" }}
-          required
-        />
-
-        <TextInput
-          label="Test Score"
-          placeholder="Enter test score"
-          value={testScore}
-          onChange={(e) => setTestScore(e.target.value)}
-          style={{ marginTop: "20px" }}
-          required
-        />
+          <TextInput
+            label="Test Score"
+            placeholder="Enter test score"
+            value={testScore}
+            onChange={(e) => setTestScore(e.target.value)}
+            required
+            style={{ flex: "1 1 calc(50% - 16px)" }}
+          />
+        </Flex>
 
         <Group position="right" style={{ marginTop: "20px" }}>
           <Button onClick={handleSubmit}>Add Record</Button>
         </Group>
-      </Modal>
-    </Container>
+      </Container>
+    </Modal>
   );
 }
 

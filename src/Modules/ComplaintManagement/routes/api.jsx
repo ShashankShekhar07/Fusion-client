@@ -5,8 +5,8 @@ const hostAdd = host;
 
 // Function to lodge a complaint
 export const lodgeComplaint = async (role, complaintData, token) => {
-  const url = role.includes("supervisor")
-    ? `${hostAdd}/complaint/supervisor/lodge/`
+  const url = role.includes("service_provider")
+    ? `${hostAdd}/complaint/service_provider/lodge/`
     : role.includes("caretaker") || role.includes("convener")
       ? `${hostAdd}/complaint/caretaker/lodge/`
       : `${hostAdd}/complaint/user/`;
@@ -44,8 +44,8 @@ export const getComplaintDetails = async (complaintId, token) => {
 
 // Function to fetch complaints by role
 export const getComplaintsByRole = async (role, token) => {
-  const url = role.includes("supervisor")
-    ? `${hostAdd}/complaint/supervisor/`
+  const url = role.includes("service_provider")
+    ? `${hostAdd}/complaint/service_provider/`
     : role.includes("caretaker") || role.includes("convener")
       ? `${hostAdd}/complaint/caretaker/`
       : `${hostAdd}/complaint/user/`;
@@ -121,18 +121,23 @@ export const forwardComplaint = async (complaintId, token) => {
 };
 
 // Function to update complaint status
-export const updateComplaintStatus = async (complaintId, data, token) => {
+export const updateComplaintStatus = async (complaintId, formData, token) => {
+  console.log("Received Data in API Function:", formData);
+
   const url = `${host}/complaint/caretaker/pending/${complaintId}/`;
 
   try {
-    const response = await axios.post(url, data, {
+    const response = await axios.post(url, formData, {
       headers: {
         Authorization: `Token ${token}`,
+        "Content-Type": "multipart/form-data",
       },
     });
+    console.log("API Response:", response.data);
     return { success: true, data: response.data };
   } catch (error) {
     const errorResponse = error.response?.data || error.message;
+    console.error("Error from API:", errorResponse);
     return { success: false, error: errorResponse };
   }
 };

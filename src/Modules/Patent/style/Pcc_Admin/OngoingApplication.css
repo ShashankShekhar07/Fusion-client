@@ -1,0 +1,151 @@
+/* Centering Header */
+.status-header {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+.m_4081bf90 {
+  margin-top: 10px;
+  margin-left: 59px;
+}
+.status-update-group{
+  margin-left: 0px;
+}
+/* Container Styles */
+.ongoing-app-status-applications-container {
+  margin-left: 50px;
+  margin-right: 50px;
+  border: 1px solid #000;
+  max-width: 100%;
+  background-color: transparent;
+}
+
+/* Title and Description */
+.ongoing-app-status-title {
+  font-size: 24px;
+  margin: 0;
+  font-weight: 600;
+  text-align: left;
+}
+
+.stati-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.description {
+  font-size: 1rem;
+  color: #5f6368;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+/* Loading and Error States */
+.loading-container, 
+.error-container,
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Table Container */
+.ongoing-app-outerContainer {
+  padding-top: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Status Cards Container */
+.status-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+}
+
+/* Individual Card Styles */
+.status-card {
+  width: calc(48% - 8px);
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  /* Paper-like shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.status-card:hover {
+  /* Stronger shadow on hover to enhance floating effect */
+  box-shadow: 0px 8px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+/* Card Title and Description */
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  font-size: 0.95rem;
+  color: #606060;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+/* Button Styles */
+.view-button {
+  color: #0073e6;
+  background-color: #ffffff;
+  border: 1px solid #0073e6;
+  font-weight: 500;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.view-button:hover {
+  background-color: #f0f7ff;
+  color: #2563eb;
+}
+
+/* Detail View Styles */
+.detail-view-container {
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 8px;
+  /* Paper-like shadow for detail view */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.07);
+  margin-top: 20px;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+/* Year Filter Styles */
+/* Year Filter Styles */
+.year-filter {
+  min-width: 200px;
+  max-width: 300px;
+  
+}

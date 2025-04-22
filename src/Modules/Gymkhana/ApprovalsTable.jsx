@@ -501,7 +501,7 @@ function EventApprovals({ clubName }) {
       );
     }
     if (
-      (selectedEvent.status === "COUNSELLOR" &&
+      (selectedEvent.status === "COUNSELLOR" &&      
         userRole === "Tech_Counsellor") ||
       userRole === "Sports_Counsellor" ||
       userRole === "Cultural_Counsellor"

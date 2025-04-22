@@ -18,7 +18,9 @@ import {
 import { User, ThumbsUp, ThumbsDown, Trash } from "@phosphor-icons/react";
 import { useForm } from "@mantine/form";
 import axios from "axios";
+import ConfirmationModal from "../../helpers/confirmationModal";
 import classes from "../../styles/formStyle.module.css";
+
 import {
   fetchProfIDsRoute,
   projectFormSubmissionRoute,
@@ -30,6 +32,7 @@ function ProjectAdditionForm({ setActiveTab }) {
   const [coPIs, setCoPIs] = useState([]);
   const [showCoPISection, setShowCoPISection] = useState(false);
   const [totalBudget, setTotalBudget] = useState(0);
+  const [confirmationModalOpened, setConfirmationModalOpened] = useState(false);
 
   const [profIDs, setProfIDs] = useState([]);
   useEffect(() => {
@@ -216,10 +219,14 @@ function ProjectAdditionForm({ setActiveTab }) {
       }, 2500);
     }
   };
+  const handleFormSubmit = () => {
+    if (form.validate().hasErrors) return;
+    setConfirmationModalOpened(true);
+  };
 
   return (
     <>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleFormSubmit)}>
         <Paper padding="lg" shadow="s" className={classes.formContainer}>
           <Title order={2} className={classes.formTitle}>
             Add New Project Proposal
@@ -603,6 +610,15 @@ function ProjectAdditionForm({ setActiveTab }) {
           </div>
         </Paper>
       </form>
+
+      <ConfirmationModal
+        opened={confirmationModalOpened}
+        onClose={() => setConfirmationModalOpened(false)}
+        onConfirm={() => {
+          setConfirmationModalOpened(false);
+          form.onSubmit(handleSubmit)();
+        }}
+      />
 
       {(successAlertVisible || failureAlertVisible) && (
         <div className={classes.overlay}>

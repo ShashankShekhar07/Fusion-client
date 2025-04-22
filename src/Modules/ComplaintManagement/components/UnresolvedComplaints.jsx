@@ -81,6 +81,20 @@ function UnresolvedComplaints() {
     return `${day}-${month}-${year}, ${hours}:${minutes}`; // Format: DD-MM-YYYY HH:MM
   };
 
+  const calculateDaysElapsed = (complaintDate) => {
+    const lodgeDate = new Date(complaintDate);
+    const currentDate = new Date();
+    const diffTime = Math.abs(currentDate - lodgeDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+
+  const getSeverityColor = (days) => {
+    if (days <= 2) return "#4CAF50"; // Green for recent complaints
+    if (days <= 5) return "#FFC107"; // Yellow for moderate urgency
+    return "#FF5252"; // Red for high urgency
+  };
+
   return (
     <Grid mt="xl" style={{ paddingInline: "49px", width: "100%" }}>
       <Paper
@@ -165,6 +179,19 @@ function UnresolvedComplaints() {
                       >
                         {complaint.complaint_type.toUpperCase()}
                       </Text>
+                      <Badge
+                        style={{
+                          borderRadius: "50px", // Match the complaint_type box
+                          padding: "10px 20px", // Match the padding
+                          fontSize: "14px",
+                          backgroundColor: getSeverityColor(
+                            calculateDaysElapsed(complaint.complaint_date),
+                          ),
+                          color: "white",
+                        }}
+                      >
+                        {calculateDaysElapsed(complaint.complaint_date)} days
+                      </Badge>
                     </Flex>
                     <Badge
                       color={complaint.status === 1 ? "green" : "red"}

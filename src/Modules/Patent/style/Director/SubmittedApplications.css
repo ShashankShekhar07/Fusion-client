@@ -1,0 +1,199 @@
+/* Director/SubmittedApplications.css */
+
+/* Scoped container */
+.director-submitted-apps-container {
+  position: relative;
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* Header styles */
+.director-submitted-apps-header {
+  padding: 0 32px;
+  margin-bottom: 8px;
+}
+
+.director-submitted-apps-title {
+  font-weight: 700 !important;
+  text-align: left ;
+  margin-left: 0 !important;
+  margin-bottom: 5px !important;
+  font-size: 24px ;
+}
+
+/* Description area */
+.director-submitted-apps-description {
+  display: flex;
+  flex-direction: column;
+  gap: 16px ;
+  padding: 0 32px;
+  margin-bottom: 24px !important;
+}
+
+.director-submitted-apps-text {
+  text-align: left;
+}
+
+/* Refresh button */
+.director-submitted-apps-refresh {
+  align-self: flex-start;
+  background-color: #fff;
+  border: 1px solid #0073e6;
+  color: #0073e6;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: auto;
+  margin-top: 12px;
+  margin-bottom: -32px;
+}
+
+.director-submitted-apps-refresh:hover {
+  background-color: #0073e6;
+  color: #fff;
+}
+
+/* Main content container */
+.director-submitted-apps-outer {
+  max-width: 100%;
+  padding: 24px 32px;
+  background-color: #f5f7f8;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Table wrapper */
+.director-submitted-apps-outer .tableWrapper {
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+/* Table styles */
+.director-submitted-apps-outer .styledTable {
+  width: 100%;
+  font-size: 14px;
+  background-color: #ffffff;
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.director-submitted-apps-outer .fusionTableHeader th {
+  padding: 16px 20px;
+  text-align: left;
+  background-color: #f5f7f8;
+  font-weight: 600;
+  color: #444;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.director-submitted-apps-outer .tableRow {
+  background-color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.director-submitted-apps-outer .tableRow:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.director-submitted-apps-outer .tableRow:hover {
+  background-color: #f0f4f8;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.director-submitted-apps-outer .tableRow td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #eaeaea;
+  vertical-align: middle;
+}
+
+.director-submitted-apps-outer .viewButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.director-submitted-apps-outer .viewButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loader styles */
+.director-submitted-apps-outer .loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .director-submitted-apps-description {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .director-submitted-apps-refresh {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .director-submitted-apps-header,
+  .director-submitted-apps-description {
+    padding: 0 20px;
+  }
+  
+  .director-submitted-apps-outer {
+    padding: 20px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .director-submitted-apps-header,
+  .director-submitted-apps-description {
+    padding: 0 16px;
+  }
+  
+  .director-submitted-apps-outer {
+    padding: 16px;
+    border-radius: 6px;
+  }
+  
+  .director-submitted-apps-outer .fusionTableHeader th {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .director-submitted-apps-outer .tableRow td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  
+  .director-submitted-apps-refresh {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

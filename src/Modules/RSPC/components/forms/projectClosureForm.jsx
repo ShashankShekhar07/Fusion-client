@@ -18,11 +18,13 @@ import { useForm } from "@mantine/form";
 import axios from "axios";
 import classes from "../../styles/formStyle.module.css";
 import { projectClosureRoute } from "../../../../routes/RSPCRoutes";
+import ConfirmationModal from "../../helpers/confirmationModal";
 
 function ProjectClosureForm({ projectData }) {
   const [file, setFile] = useState(null);
   const [successAlertVisible, setSuccessAlertVisible] = useState(false);
   const [failureAlertVisible, setFailureAlertVisible] = useState(false);
+  const [confirmationModalOpened, setConfirmationModalOpened] = useState(false);
   const navigate = useNavigate();
 
   const form = useForm({
@@ -64,10 +66,14 @@ function ProjectClosureForm({ projectData }) {
       }, 2500);
     }
   };
+  const handleFormSubmit = () => {
+    if (form.validate().hasErrors) return;
+    setConfirmationModalOpened(true);
+  };
 
   return (
     <>
-      <form onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleFormSubmit)}>
         {projectData &&
         Object.keys(projectData).length > 0 &&
         "pi_id" in projectData ? (
@@ -231,6 +237,15 @@ function ProjectClosureForm({ projectData }) {
           </Text>
         )}
       </form>
+
+      <ConfirmationModal
+        opened={confirmationModalOpened}
+        onClose={() => setConfirmationModalOpened(false)}
+        onConfirm={() => {
+          setConfirmationModalOpened(false);
+          form.onSubmit(handleSubmit)();
+        }}
+      />
 
       {(successAlertVisible || failureAlertVisible) && (
         <div className={classes.overlay}>

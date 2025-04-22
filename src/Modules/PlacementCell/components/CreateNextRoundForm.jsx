@@ -9,11 +9,17 @@ import {
   Textarea,
   Container,
   Title,
+  Flex,
+  ActionIcon
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { submitNextRoundDetailsRoute } from "../../../routes/placementCellRoutes";
+import { useNavigate } from "react-router-dom";
+import { IconArrowLeft } from "@tabler/icons-react"; // Import the back arrow icon
+
 
 function CreateNextRoundForm() {
+  const navigate = useNavigate();
   const [modalOpened, setModalOpened] = useState(false);
   const [roundNumber, setRoundNumber] = useState();
   const [date, setDate] = useState("");
@@ -88,8 +94,19 @@ function CreateNextRoundForm() {
   };
 
   return (
-    <Container fluid style={{ display: "flex", alignContent: "flex-end" }}>
-      <Button onClick={() => setModalOpened(true)}>Create Next Round</Button>
+    <>
+      <Flex justify="space-between" mb="lg">
+      <ActionIcon
+          onClick={() => navigate(-1)}
+          color="blue"
+          size="lg"
+          variant="light"
+        >
+          <IconArrowLeft size={20} />
+        </ActionIcon>
+        <Button onClick={() => setModalOpened(true)}>Create Next Round</Button>
+      </Flex>
+
       <Modal
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
@@ -145,7 +162,7 @@ function CreateNextRoundForm() {
           </form>
         </Container>
       </Modal>
-    </Container>
+    </>
   );
 }
 

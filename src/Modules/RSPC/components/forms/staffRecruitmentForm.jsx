@@ -50,6 +50,7 @@ import {
   fetchStaffRoute,
 } from "../../../../routes/RSPCRoutes";
 import SelectionCommitteeReportFormModal from "../modals/selectionCommitteeReportFormModal";
+import ConfirmationModal from "../../helpers/confirmationModal";
 
 function StaffRecruitmentForm({ projectData }) {
   const [scrolled, setScrolled] = useState(false);
@@ -59,6 +60,7 @@ function StaffRecruitmentForm({ projectData }) {
   const role = useSelector((state) => state.user.role);
   const [viewModalOpened, setViewModalOpened] = useState(false);
   const [reportModalOpened, setReportModalOpened] = useState(false);
+  const [confirmationModalOpened, setConfirmationModalOpened] = useState(false);
 
   const handleViewClick = (row) => {
     setSelectedStaff(row);
@@ -428,6 +430,10 @@ function StaffRecruitmentForm({ projectData }) {
       }, 2500);
     }
   };
+  const handleFormSubmit = () => {
+    if (form.validate().hasErrors) return;
+    setConfirmationModalOpened(true);
+  };
 
   return (
     <>
@@ -623,7 +629,7 @@ function StaffRecruitmentForm({ projectData }) {
         </ScrollArea>
 
         {showForm && (
-          <form onSubmit={form.onSubmit(handleSubmit)}>
+          <form onSubmit={form.onSubmit(handleFormSubmit)}>
             {loading ? (
               <Container py="xl">
                 <Loader size="lg" />
@@ -1357,6 +1363,15 @@ function StaffRecruitmentForm({ projectData }) {
           </form>
         )}
       </div>
+
+      <ConfirmationModal
+        opened={confirmationModalOpened}
+        onClose={() => setConfirmationModalOpened(false)}
+        onConfirm={() => {
+          setConfirmationModalOpened(false);
+          form.onSubmit(handleSubmit)();
+        }}
+      />
 
       <StaffViewModal
         opened={viewModalOpened}

@@ -1,0 +1,88 @@
+/* Container for the form */
+.form-container {
+  width: 1300px;
+  margin: auto;
+  background-color: #ffffff; /* White background for contrast */
+  border-radius: 10px; /* Rounded corners */
+  padding: 30px; /* Padding around the content */
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Header styles */
+.header {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2d3748; /* Dark gray for text */
+  margin-bottom: 10px; /* Space below header */
+}
+
+.sub-header {
+  font-size: 16px;
+  color: #4a5568; /* Slightly lighter gray */
+  margin-bottom: 20px; /* Space below sub-header */
+}
+
+/* Section title styles */
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2d3748; /* Dark gray */
+  margin-top: 20px; /* Space above section titles */
+}
+
+/* Question title styles */
+.question-title {
+  font-size: 18px;
+  color: #2d3748; /* Dark gray */
+  margin-top: 15px; /* Space above question titles */
+}
+
+/* Input field styles */
+.textarea,
+.text-input {
+  margin-bottom: 20px; /* Space below each input field */
+}
+
+/* Button container styling */
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+}
+
+/* Action button styling */
+.action-button {
+    flex-grow: 1; /* Allow buttons to grow equally */
+    margin-right: 10px; /* Space between buttons */
+    transition: background-color .3s ease, transform .2s ease; /* Animation for hover and click effects */
+    border-radius: 5px; /* Rounded corners for buttons */
+    padding: 10px; /* Padding inside buttons */
+    border: none; /* Remove default border */
+}
+
+.action-button:hover {
+    background-color: rgba(0,0,0,0.05); /* Light hover effect for buttons */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Remove margin from last button to avoid extra space at the end */
+.action-button:last-child {
+    margin-right: 0; 
+}
+
+/* Textarea styling for better appearance */
+textarea {
+    border-radius: 5px; /* Rounded corners for text areas */
+    border: 1px solid #cbd5e0; /* Light gray border color for text areas */
+    padding: 10px; /* Padding inside text areas */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+textarea::placeholder {
+    color: #a0aec0; /* Placeholder text color */
+}
+
+textarea:hover,
+textarea:focus {
+    border-color: #3182ce; /* Change border color on hover and focus to blue */
+    outline: none; /* Remove default outline on focus */
+}
