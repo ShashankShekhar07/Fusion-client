@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  MantineProvider,
-  Table,
-  Button,
-  Text,
-  Box,
-  Flex,
-  TextInput,
-} from "@mantine/core";
+import { Table, Button, Text, Box, Flex, TextInput, Card } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { CaretUp, CaretDown, ArrowsDownUp } from "@phosphor-icons/react";
 import { outboxViewRoute2 } from "../../routes/purchaseRoutes";
 
-function OutboxTable() {
+export default function Outboxfunc() {
   const [outbox, setOutbox] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -98,9 +90,22 @@ function OutboxTable() {
   if (error) {
     return <Text style={{ color: "red" }}>{error}</Text>;
   }
-
   return (
-    <Box p="md" style={{ margin: 0 }}>
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{
+        backgroundColor: "#F5F7F8",
+        position: "absolute",
+        height: "70vh",
+        width: "90vw",
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+      }}
+    >
       <Box
         mb="md"
         style={{
@@ -342,38 +347,6 @@ function OutboxTable() {
           )}
         </tbody>
       </Table>
-    </Box>
-  );
-}
-
-export default function Outbox() {
-  return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-          overflow: "auto",
-        }}
-      >
-        <Box
-          style={{
-            maxWidth: "1440px",
-            width: "100%",
-            backgroundColor: "white",
-            borderRadius: "12px",
-            padding: "16px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-            overflowX: "auto",
-            overflowY: "auto",
-            maxHeight: "80vh",
-          }}
-        >
-          <OutboxTable />
-        </Box>
-      </Box>
-    </MantineProvider>
+    </Card>
   );
 }

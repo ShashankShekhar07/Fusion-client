@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  MantineProvider,
-  Table,
-  Button,
-  Text,
-  Box,
-  TextInput,
-} from "@mantine/core";
+import { Table, Button, Text, Box, TextInput, Card } from "@mantine/core";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CaretUp, CaretDown, ArrowsDownUp } from "@phosphor-icons/react";
 import { viewIndentByUsernameAndRoleRoute2 } from "../../routes/purchaseRoutes";
 
-function InboxTable() {
+export default function Outboxfunc() {
   const [inbox, setInbox] = useState([]); // State for indents data
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error handling
@@ -108,9 +101,21 @@ function InboxTable() {
   console.log(inbox);
 
   return (
-    <Box p="md">
-      {" "}
-      {/* Removed margin-top completely */}
+    <Card
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      withBorder
+      style={{
+        backgroundColor: "#F5F7F8",
+        position: "absolute",
+        height: "70vh",
+        width: "90vw",
+        display: "flex",
+        flexDirection: "column",
+        overflowY: "auto",
+      }}
+    >
       <Box
         mb="md"
         style={{
@@ -145,63 +150,6 @@ function InboxTable() {
         }}
       >
         <thead>
-          {/* <tr> */}
-          {/* <th
-              style={{
-                backgroundColor: "white",
-                padding: "12px",
-                textAlign: "center",
-              }}
-              onClick={()=>handleSort(key)}
-            >
-              Received as
-            </th> */}
-          {/* <th
-              style={{
-                backgroundColor: "white",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              Send by
-            </th>
-            <th
-              style={{
-                backgroundColor: "white",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              File Id
-            </th>
-            <th
-              style={{
-                backgroundColor: "white",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              Subject
-            </th>
-            <th
-              style={{
-                backgroundColor: "white",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              Date
-            </th>
-            <th
-              style={{
-                backgroundColor: "white",
-                padding: "12px",
-                textAlign: "center",
-              }}
-            >
-              Features
-            </th>
-          </tr> */}
           <tr style={{ backgroundColor: "#D9EAF7" }}>
             {[
               { key: "uploader", label: "Uploader" },
@@ -342,40 +290,6 @@ function InboxTable() {
           )}
         </tbody>
       </Table>
-    </Box>
+    </Card>
   );
 }
-
-function Inbox() {
-  return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center", // Center horizontally
-          alignItems: "center", // Center vertically
-          height: "80vh", // Full viewport height
-          overflow: "auto", // Ensure scroll if content exceeds viewport
-        }}
-      >
-        <Box
-          style={{
-            maxWidth: "1440px", // Increased max width by 20%
-            width: "100%", // Make it responsive
-            backgroundColor: "white",
-            borderRadius: "12px", // Add border radius to outer Box
-            padding: "16px", // Optional padding
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)", // Optional shadow
-            overflowX: "auto", // Horizontal scroll bar
-            overflowY: "auto", // Vertical scroll bar
-            maxHeight: "80vh", // Limit height to 80% of the viewport
-          }}
-        >
-          <InboxTable />
-        </Box>
-      </Box>
-    </MantineProvider>
-  );
-}
-
-export default Inbox;

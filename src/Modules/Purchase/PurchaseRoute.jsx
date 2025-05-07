@@ -23,7 +23,7 @@ export default function PurchaseRoutes() {
         element={
           <Layout>
             <PurchaseNavbar />
-            <div style={{ margin: "32px" }}>
+            <div style={{}}>
               <IndentForm />
             </div>
           </Layout>
@@ -34,7 +34,7 @@ export default function PurchaseRoutes() {
         element={
           <Layout>
             <PurchaseNavbar />
-            <div style={{ margin: "32px" }}>
+            <div style={{}}>
               <FiledIndents />
             </div>
           </Layout>
@@ -45,7 +45,7 @@ export default function PurchaseRoutes() {
         element={
           <Layout>
             <PurchaseNavbar />
-            <div style={{ margin: "32px" }}>
+            <div style={{}}>
               <Inbox />
             </div>
           </Layout>
@@ -65,7 +65,7 @@ export default function PurchaseRoutes() {
         element={
           <Layout>
             <PurchaseNavbar />
-            <div style={{ margin: "32px" }}>
+            <div style={{}}>
               <SavedIndents />
             </div>
           </Layout>
@@ -76,7 +76,7 @@ export default function PurchaseRoutes() {
         element={
           <Layout>
             <PurchaseNavbar />
-            <div style={{ margin: "32px" }}>
+            <div style={{}}>
               <Archieved />
             </div>
           </Layout>
@@ -87,7 +87,7 @@ export default function PurchaseRoutes() {
         element={
           <Layout>
             <PurchaseNavbar />
-            <div style={{ margin: "32px" }}>
+            <div style={{}}>
               <Outbox />
             </div>
           </Layout>

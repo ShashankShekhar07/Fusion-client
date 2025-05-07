@@ -21,6 +21,7 @@ import {
   Center,
   Loader,
   Modal,
+  Table,
 } from "@mantine/core";
 import {
   IconFileDescription,
@@ -32,9 +33,10 @@ import {
   IconArrowForward,
   IconFileDownload,
   IconCalendarTime,
-  IconHistory,
+  // IconHistory,
   IconThumbUp,
 } from "@tabler/icons-react";
+import { showNotification } from "@mantine/notifications";
 import { Paperclip } from "@phosphor-icons/react";
 
 import dayjs from "dayjs";
@@ -92,6 +94,25 @@ export default function NewForwardIndent() {
     } catch (err) {
       console.error("Error fetching history:", err);
     }
+  };
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true, // Optional: Change to 24-hour format if needed
+    });
+  };
+  const [selectedRemarks, setSelectedRemarks] = useState("");
+  const [opened, setOpened] = useState(false);
+  const handleOpenRemarksModal = (x) => {
+    setSelectedRemarks(x);
+    setOpened(true);
   };
 
   const fetchIndentDetails = async () => {
@@ -251,6 +272,30 @@ export default function NewForwardIndent() {
   // };
 
   const handleSubmit = async () => {
+    if (!formValues.remark) {
+      showNotification({
+        title: "Validation Error",
+        message: "Remarks are required!",
+        color: "red",
+      });
+      return;
+    }
+    if (!selectedUser) {
+      showNotification({
+        title: "Validation Error",
+        message: "Please select a receiver!",
+        color: "red",
+      });
+      return;
+    }
+    if (!formValues.receiverDesignation) {
+      showNotification({
+        title: "Validation Error",
+        message: "Please select a receiver designation!",
+        color: "red",
+      });
+      return;
+    }
     const data = new FormData();
     data.append("file", file);
     data.append("remarks", formValues.remark);
@@ -289,7 +334,7 @@ export default function NewForwardIndent() {
   }
 
   return (
-    <Container size="xl" py="xl">
+    <Container size="100%" py="xl">
       <Modal
         opened={confirmForwardOpen}
         onClose={() => setConfirmForwardOpen(false)}
@@ -321,7 +366,7 @@ export default function NewForwardIndent() {
             </div>
           </Group>
           <Group>
-            <Button
+            {/* <Button
               variant="light"
               color="blue"
               size="md"
@@ -329,7 +374,7 @@ export default function NewForwardIndent() {
               onClick={() => setHistoryDrawerOpen(true)}
             >
               View Indent History
-            </Button>
+            </Button> */}
             {role !== "Professor" && (
               <Button
                 variant="light"
@@ -474,7 +519,7 @@ export default function NewForwardIndent() {
                     color="green"
                     size={isMobile ? "xs" : "sm"}
                     onClick={() =>
-                      navigate("/purchase/stock_entry/", {
+                      navigate("/inventory", {
                         state: {
                           file: indent.file,
                           department: indent.department,
@@ -582,6 +627,214 @@ export default function NewForwardIndent() {
         ))}
       </Accordion>
 
+      <Title order={4} mt="xl" mb="md">
+        Tracking History
+      </Title>
+      <Box
+        style={{
+          border: "1px solid #ddd",
+          borderRadius: "8px",
+          overflowY: "auto",
+          overflowX: "auto",
+          backgroundColor: "#fff",
+        }}
+      >
+        <Table
+          highlightOnHover
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            tableLayout: "fixed",
+            fontSize: "12px", // Reduced font size
+          }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{
+                  padding: "8px", // Reduced padding
+                  width: "9%",
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                Date
+              </th>
+              <th
+                style={{
+                  padding: "8px", // Reduced padding
+                  width: "13%",
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                Sender
+              </th>
+              <th
+                style={{
+                  padding: "8px", // Reduced padding
+                  width: "13%",
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                Receiver
+              </th>
+              <th
+                style={{
+                  padding: "8px", // Reduced padding
+                  width: "13%",
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                Designation
+              </th>
+              <th
+                style={{
+                  padding: "8px", // Reduced padding
+                  width: "20%",
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                Remarks
+              </th>
+              <th
+                style={{
+                  padding: "8px", // Reduced padding
+                  width: "10%",
+                  border: "1px solid #ddd",
+                  textAlign: "center",
+                }}
+              >
+                Attachment
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {fileHistory.map((track, index) => (
+              <tr key={index}>
+                <td
+                  style={{
+                    padding: "8px", // Reduced padding
+                    textAlign: "center",
+                    border: "1px solid #ddd",
+                    wordWrap: "break-word", // Prevent overflow
+                  }}
+                >
+                  {formatDate(track.forward_date)}
+                </td>
+                <td
+                  style={{
+                    padding: "8px", // Reduced padding
+                    textAlign: "center",
+                    border: "1px solid #ddd",
+                    wordWrap: "break-word", // Prevent overflow
+                  }}
+                >
+                  {track.current_id}
+                </td>
+                <td
+                  style={{
+                    padding: "8px", // Reduced padding
+                    textAlign: "center",
+                    border: "1px solid #ddd",
+                    wordWrap: "break-word", // Prevent overflow
+                  }}
+                >
+                  {track.receiver_id}
+                </td>
+                <td
+                  style={{
+                    padding: "8px", // Reduced padding
+                    textAlign: "center",
+                    border: "1px solid #ddd",
+                    wordWrap: "break-word", // Prevent overflow
+                  }}
+                >
+                  {track.receive_design}
+                </td>
+                {/* <td
+                        style={{
+                          padding: "8px", // Reduced padding
+                          textAlign: "center",
+                          border: "1px solid #ddd",
+                          wordWrap: "break-word", // Prevent overflow
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleOpenRemarksModal(track.remarks || "No remark")}
+                      > */}
+                <td
+                  style={{
+                    padding: "8px",
+                    textAlign: "center",
+                    border: "1px solid #ddd",
+                  }}
+                >
+                  <button
+                    style={{
+                      all: "unset", // Remove default button styles
+                      cursor: "pointer",
+                      wordWrap: "break-word",
+                      textAlign: "center",
+                      width: "100%",
+                    }}
+                    onClick={() =>
+                      handleOpenRemarksModal(track.remarks || "No remark")
+                    }
+                  >
+                    {track.remarks && track.remarks.length > 15
+                      ? `${track.remarks.slice(0, 15)}...`
+                      : track.remarks || "No remark"}
+                  </button>
+                </td>
+                <td
+                  style={{
+                    padding: "8px",
+                    textAlign: "center",
+                    border: "1px solid #ddd",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {track.upload_file ? (
+                    <a
+                      href={`${host}${track.upload_file}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        textDecoration: "none",
+                        color: "white",
+                        backgroundColor: "#007bff",
+                        padding: "5px 10px",
+                        borderRadius: "4px",
+                        display: "inline-block",
+                      }}
+                    >
+                      View Attachment
+                    </a>
+                  ) : (
+                    "No Attachment"
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        {/* Modal to show remarks */}
+        <Modal
+          opened={opened}
+          onClose={() => setOpened(false)}
+          title="Full Remarks"
+          size="lg"
+        >
+          <Text style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+            {selectedRemarks}
+          </Text>
+        </Modal>
+      </Box>
+
       <Paper shadow="sm" p="lg" radius="md">
         <Title order={3} mb="lg">
           Forward Indent
@@ -595,6 +848,7 @@ export default function NewForwardIndent() {
               value={formValues.remark}
               onChange={handleInputChange("remark")}
               icon={<IconMessageDots size={14} />}
+              required
             />
           </Grid.Col>
           <Grid.Col span={12}>
@@ -610,6 +864,7 @@ export default function NewForwardIndent() {
               onSearchChange={handleSearchChange}
               searchable
               clearable
+              required
             />
           </Grid.Col>
 
@@ -625,6 +880,7 @@ export default function NewForwardIndent() {
               onChange={handleDesignationChange}
               searchable
               clearable
+              required
             />
           </Grid.Col>
 

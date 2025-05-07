@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  MantineProvider,
-  Table,
-  Button,
-  Text,
-  Box,
-  TextInput,
-} from "@mantine/core";
+import { Table, Button, Text, Box, TextInput, Card } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { CaretUp, CaretDown, ArrowsDownUp } from "@phosphor-icons/react";
 import { filedIndentRoute } from "../../routes/purchaseRoutes";
 
-function OutboxTable() {
+export default function OutboxTable() {
   const [outbox, setOutbox] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -113,7 +106,7 @@ function OutboxTable() {
   };
 
   return (
-    <Box p="md">
+    <Card>
       <Box
         mb="md"
         style={{
@@ -341,39 +334,6 @@ function OutboxTable() {
           )}
         </tbody>
       </Table>
-    </Box>
+    </Card>
   );
 }
-
-function Outbox() {
-  return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-          overflow: "auto",
-        }}
-      >
-        <Box
-          style={{
-            maxWidth: "1440px",
-            width: "100%",
-            backgroundColor: "white",
-            borderRadius: "12px",
-            padding: "16px",
-            boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-            overflow: "auto",
-            maxHeight: "80vh",
-          }}
-        >
-          <OutboxTable />
-        </Box>
-      </Box>
-    </MantineProvider>
-  );
-}
-
-export default Outbox;
